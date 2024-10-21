@@ -46,7 +46,7 @@ const Index = () => {
   const currentTheme = theme === "system" ? systemTheme : theme;
 
   const inputStyles =
-    'w-36 md:32 text-xl md:text-lg border text-black border-2 border-black dark:border-gray-700 dark:bg-black dark:text-white rounded-full pl-2  dark:focus:outline dark:focus:outline-slate-500 placeholder:text-gray-400 tranistion-colors duration-500 shadow-lg dark:shadow-gray-900';
+    'min-w-36 max-w-52 md:32 text-2xl md:text-lg border text-black border-2 border-black dark:border-gray-700 dark:bg-black dark:text-white rounded-full pl-2  dark:focus:outline dark:focus:outline-slate-500 placeholder:text-gray-400 tranistion-colors duration-500 shadow-lg dark:shadow-gray-900';
 
   const days = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'];
 
@@ -201,7 +201,7 @@ const Index = () => {
           <input
             type="text"
             placeholder="Sala: abc X "
-            className={`${inputStyles}`}
+            className={`${inputStyles} w-40`}
             list="placeSuggestions"
             value={placeInput}
             onChange={(e) => fetchPlace(e.target.value)}
@@ -215,7 +215,7 @@ const Index = () => {
           )}
           <input
             type="text"
-            placeholder="Dzień"
+            placeholder="Dzień tygodnia"
             className={`${inputStyles}`}
             list="daysList"
             value={dayInput}
@@ -226,7 +226,7 @@ const Index = () => {
               <option key={i} value={day}></option>
             ))}
           </datalist>
-          <input type="text" placeholder="Od HH:MM" className={`${inputStyles}`} list="hoursSuggestions"
+          <input type="text" placeholder="Od HH:MM" className={`${inputStyles} w-40`} list="hoursSuggestions"
             onChange={(e) => fetchHours(e.target.value)} value={hoursInput}
           />
           <datalist id='hoursSuggestions'>
@@ -255,6 +255,7 @@ const Index = () => {
           <Moon className="h-12 md:h-14 w-auto px-2 py-1" />
         )}
       </button>
+      <span className='absolute bottom-1 left-1 text-white'>Beta</span>
     </div>
   );
 };
