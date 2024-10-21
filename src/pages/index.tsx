@@ -46,7 +46,7 @@ const Index = () => {
   const currentTheme = theme === "system" ? systemTheme : theme;
 
   const inputStyles =
-    'w-32 border text-black border-2 border-black dark:border-gray-700 dark:bg-black dark:text-white rounded-full pl-2  dark:focus:outline dark:focus:outline-slate-500 placeholder:text-gray-400 tranistion-colors duration-500 shadow-lg dark:shadow-gray-900';
+    'w-36 md:32 text-xl md:text-lg border text-black border-2 border-black dark:border-gray-700 dark:bg-black dark:text-white rounded-full pl-2  dark:focus:outline dark:focus:outline-slate-500 placeholder:text-gray-400 tranistion-colors duration-500 shadow-lg dark:shadow-gray-900';
 
   const days = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'];
 
@@ -172,7 +172,7 @@ const Index = () => {
       <div className="h-[93vh]">
         <ul className='h-full flex items-center justify-center flex-col gap-2 overflow-y-auto pt-14'>
           {results.map((lesson, index) => (
-            <li key={index} className='w-56 border-2 border-gray-400 dark:border-slate-600 text-black dark:text-white dark:bg-black rounded-lg flex flex-col px-1 py-2 mr-1 text-sm shadow-lg dark:shadow-gray-800 transition-all hover:scale-[1.03] duration-100'>
+            <li key={index} className='w-[21  rem] border-2 border-gray-400 dark:border-slate-600 text-black dark:text-white dark:bg-black rounded-lg flex flex-col px-1 py-2 mr-1 text-xl shadow-lg dark:shadow-gray-800 transition-all hover:scale-[1.03] duration-100'>
               <span><b>{lesson.subject}</b> {lesson.place}</span>
               <span>
                 {lesson.type} {lesson.name}
@@ -194,7 +194,7 @@ const Index = () => {
         <title>Kto ma w ...?</title>
       </Head>
       {showResults && results.length > 0 && (
-        <button className='text-black dark:text-white border border-black dark:border-white rounded-md px-2 m-1 hover:scale-105 active:scale-95 transition-transform duration-150' onClick={() => { goBack() }}>Wróć</button>
+        <button className='text-black dark:text-white border border-black dark:border-white rounded-md text-2xl md:text-lg px-4 md:px-3 mt-2 ml-2 hover:scale-105 active:scale-95 transition-transform duration-150' onClick={() => { goBack() }}>Wróć</button>
       )}
       {!showResults && (
         <div className="h-screen flex items-center justify-center flex-col gap-2">
@@ -236,7 +236,7 @@ const Index = () => {
               ))}
           </datalist>
           <button
-            className="border-2 border-gray-500 bg-white text-black dark:bg-black dark:text-white px-3 py-px rounded-full hover:scale-105 active:scale-95 transition-transform duration-150 select-none"
+            className="border-2 border-gray-500 bg-white text-black dark:bg-black dark:text-white text-lg md:text-xl py-px md:px-3 px-4 md:py-px rounded-full hover:scale-105 active:scale-95 transition-transform duration-150 select-none"
             onClick={handleCheck}>
             Sprawdź
           </button>
@@ -250,9 +250,9 @@ const Index = () => {
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
         className="absolute bottom-1 right-2.5 rounded-md bg-gray-100">
         {currentTheme === "dark" ? (
-          <Sun className="h-8 md:h-14 w-auto px-1 py-1" />
+          <Sun className="h-12 md:h-14 w-auto px-1 py-1" />
         ) : (
-          <Moon className="h-8 md:h-14 w-auto px-2 py-1" />
+          <Moon className="h-12 md:h-14 w-auto px-2 py-1" />
         )}
       </button>
     </div>
