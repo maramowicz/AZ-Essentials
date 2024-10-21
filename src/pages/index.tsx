@@ -1,12 +1,7 @@
-// Todo: Szukanie kto ma zajęcia ✅
-// Todo: Szukanie wykładowcy ❌
-// Todo: Podgląd uczelni ❌
-// Todo: Jakie sale są wolne ❌
-// Todo: Wyświetlenie planu lekcji danego kierunku z danego dnia ❌
 import React, { useState, useEffect } from 'react';
 import data from '../../public/database.json';
-import Sun from '../../public/sun-regular.svg'
-import Moon from '../../public/moon-regular.svg'
+import Sun from '../../public/sun-regular.svg';
+import Moon from '../../public/moon-regular.svg';
 import Head from 'next/head';
 import { useTheme } from "next-themes";
 
@@ -45,16 +40,24 @@ const Index = () => {
   const { systemTheme, theme, setTheme } = useTheme();
   const currentTheme = theme === "system" ? systemTheme : theme;
 
-  const inputStyles =
-    'min-w-52 max-w-64 md:32 text-3xl md:text-lg border text-black border-2 border-black dark:border-gray-700 dark:bg-black dark:text-white rounded-full pl-2 py-1 md:py-0  dark:focus:outline dark:focus:outline-slate-500 placeholder:text-gray-400 tranistion-colors duration-500 shadow-lg dark:shadow-gray-900';
+  const inputStyles = 'min-w-52 max-w-64 md:32 text-3xl md:text-lg border text-black border-2 border-black dark:border-gray-700 dark:bg-black dark:text-white rounded-full pl-2 py-1 md:py-0  dark:focus:outline dark:focus:outline-slate-500 placeholder:text-gray-400 transition-colors duration-500 shadow-lg dark:shadow-gray-900';
+
+  const errorInputStyle = 'border-red-500';
 
   const days = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'];
+
+  const [inputErrors, setInputErrors] = useState({
+    place: false,
+    day: false,
+    hours: false
+  });
 
   useEffect(() => {
     console.clear();
     setPlaceInput("");
     setDayInput("");
     setHoursInput("");
+    setInputErrors({ place: false, day: false, hours: false }); // resetujemy błędy
 
     const placeSet = new Set<string>();
 
@@ -143,21 +146,42 @@ const Index = () => {
       }) as Lesson[];
 
       setResults(matchedLessons || []);
-      console.log(results.length);
       return totalMinutes;
     }
   }
 
-  const handleCheck = () => {
+  function handleCheck() {
+    const errorMessages: string[] = [];
+    const errors = { place: false, day: false, hours: false };
+
     if (!placeInput || !dayInput || !hoursInput) {
-      alert("Proszę wypełnić wszystkie pola.");
+      errorMessages.push("Proszę wypełnić wszystkie pola.");
+      if (!placeInput) errors.place = true;
+      if (!dayInput) errors.day = true;
+      if (!hoursInput) errors.hours = true;
+    }
+
+    if (dayInput.trim() === '' || typeof dayInput !== 'string') {
+      errorMessages.push("Dzień musi być ciągiem znaków.");
+      errors.day = true;
+    }
+
+    if (!hoursInput.startsWith("Od ")) {
+      errorMessages.push("Niepoprawny format godziny.");
+      errors.hours = true;
+    }
+
+    setInputErrors(errors);
+
+    if (errorMessages.length > 0) {
+      alert(errorMessages.join("\n"));
       return;
+    }
+
+    if (results.length > 0) {
+      setShowResults(true);
     } else {
-      if (results.length > 0) {
-        setShowResults(true);
-      } else {
-        alert("Nie znaleziono wykładu dla podanych danych")
-      }
+      alert("Nie znaleziono wykładu dla podanych danych");
     }
   };
 
@@ -177,7 +201,7 @@ const Index = () => {
       <div className="h-[93vh]">
         <ul className='h-full flex items-center justify-center flex-col gap-2 overflow-y-auto pt-14'>
           {results.map((lesson, index) => (
-            <li key={index} className='w-[21  rem] border-2 border-gray-400 dark:border-slate-600 text-black dark:text-white dark:bg-black rounded-lg flex flex-col px-1 py-2 mr-1 text-xl shadow-lg dark:shadow-gray-800 transition-all hover:scale-[1.03] duration-100'>
+            <li key={index} className='w-[21rem] border-2 border-gray-400 dark:border-slate-600 text-black dark:text-white dark:bg-black rounded-lg flex flex-col px-1 py-2 mr-1 text-xl shadow-lg dark:shadow-gray-800 transition-all hover:scale-[1.03] duration-100'>
               <span><b>{lesson.subject}</b> {lesson.place}</span>
               <span>
                 {lesson.type} {lesson.name}
@@ -199,14 +223,14 @@ const Index = () => {
         <title>Kto ma w ...?</title>
       </Head>
       {showResults && results.length > 1 && (
-        <button className='text-black dark:text-white border border-black dark:border-white rounded-md text-2xl md:text-lg px-4 md:px-3 mt-2 ml-2 hover:scale-105 active:scale-95 transition-transform duration-150' onClick={() => { goBack() }}>Wróć</button>
+        <button className='text-black dark:text-white border border-black dark:border-white rounded-md text-2xl md:text-lg px-4 md:px-3 mt-2 ml-2 hover:scale-105 active:scale-95 transition-transform duration-150' onClick={goBack}>Wróć</button>
       )}
       {!showResults && (
         <div className="h-screen flex items-center justify-center flex-col gap-2">
           <input
             type="text"
             placeholder="Sala: abc X "
-            className={`${inputStyles} w-40`}
+            className={`${inputStyles} ${inputErrors.place ? errorInputStyle : ''} w-40`}
             list="placeSuggestions"
             value={placeInput}
             onChange={(e) => fetchPlace(e.target.value)}
@@ -221,7 +245,7 @@ const Index = () => {
           <input
             type="text"
             placeholder="Dzień tygodnia"
-            className={`${inputStyles}`}
+            className={`${inputStyles} ${inputErrors.day ? errorInputStyle : ''}`}
             list="daysList"
             value={dayInput}
             onChange={(e) => fetchDay(e.target.value)}
@@ -231,7 +255,7 @@ const Index = () => {
               <option key={i} value={day}></option>
             ))}
           </datalist>
-          <input type="text" placeholder="Od HH:MM" className={`${inputStyles} w-40`} list="hoursSuggestions"
+          <input type="text" placeholder="Od HH:MM" className={`${inputStyles} ${inputErrors.hours ? errorInputStyle : ''} w-40`} list="hoursSuggestions"
             onChange={(e) => fetchHours(e.target.value)} value={hoursInput}
           />
           <datalist id='hoursSuggestions'>
