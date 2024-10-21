@@ -255,7 +255,7 @@ const Index = () => {
           <Moon className="h-12 md:h-14 w-auto px-2 py-1" />
         )}
       </button>
-      <span className='absolute bottom-1 left-1 text-white'>Beta</span>
+      <span className='absolute bottom-1 left-1 text-gray-400 dark:text-gray-700'>Beta</span>
     </div>
   );
 };
