@@ -46,7 +46,7 @@ const Index = () => {
   const currentTheme = theme === "system" ? systemTheme : theme;
 
   const inputStyles =
-    'min-w-36 max-w-52 md:32 text-2xl md:text-lg border text-black border-2 border-black dark:border-gray-700 dark:bg-black dark:text-white rounded-full pl-2  dark:focus:outline dark:focus:outline-slate-500 placeholder:text-gray-400 tranistion-colors duration-500 shadow-lg dark:shadow-gray-900';
+    'min-w-52 max-w-64 md:32 text-3xl md:text-lg border text-black border-2 border-black dark:border-gray-700 dark:bg-black dark:text-white rounded-full pl-2 py-1 md:py-0  dark:focus:outline dark:focus:outline-slate-500 placeholder:text-gray-400 tranistion-colors duration-500 shadow-lg dark:shadow-gray-900';
 
   const days = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'];
 
@@ -143,6 +143,7 @@ const Index = () => {
       }) as Lesson[];
 
       setResults(matchedLessons || []);
+      console.log(results.length);
       return totalMinutes;
     }
   }
@@ -152,7 +153,11 @@ const Index = () => {
       alert("Proszę wypełnić wszystkie pola.");
       return;
     } else {
-      setShowResults(true);
+      if (results.length > 0) {
+        setShowResults(true);
+      } else {
+        alert("Nie znaleziono wykładu dla podanych danych")
+      }
     }
   };
 
@@ -193,7 +198,7 @@ const Index = () => {
       <Head>
         <title>Kto ma w ...?</title>
       </Head>
-      {showResults && results.length > 0 && (
+      {showResults && results.length > 1 && (
         <button className='text-black dark:text-white border border-black dark:border-white rounded-md text-2xl md:text-lg px-4 md:px-3 mt-2 ml-2 hover:scale-105 active:scale-95 transition-transform duration-150' onClick={() => { goBack() }}>Wróć</button>
       )}
       {!showResults && (
@@ -236,26 +241,26 @@ const Index = () => {
               ))}
           </datalist>
           <button
-            className="border-2 border-gray-500 bg-white text-black dark:bg-black dark:text-white text-lg md:text-xl py-px md:px-3 px-4 md:py-px rounded-full hover:scale-105 active:scale-95 transition-transform duration-150 select-none"
+            className="border-2 border-gray-500 bg-white text-black dark:bg-black dark:text-white text-2xl py-1.5 md:py-px px-6 md:px-3 rounded-full hover:scale-105 active:scale-95 transition-transform duration-150 mt-2.5 select-none"
             onClick={handleCheck}>
             Sprawdź
           </button>
         </div>
       )}
 
-      {showResults && results.length > 0 && (
+      {showResults && results.length > 1 && (
         formatResult()
       )}
       <button
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-        className="absolute bottom-1 right-2.5 rounded-md bg-gray-100">
+        className="absolute bottom-1 right-2.5 rounded-full bg-gray-100">
         {currentTheme === "dark" ? (
           <Sun className="h-12 md:h-14 w-auto px-1 py-1" />
         ) : (
           <Moon className="h-12 md:h-14 w-auto px-2 py-1" />
         )}
       </button>
-      <span className='absolute bottom-1 left-1 text-gray-400 dark:text-gray-700'>Beta</span>
+      <span className='absolute bottom-1 left-2 text-gray-400 dark:text-gray-700'>Beta</span>
     </div>
   );
 };
