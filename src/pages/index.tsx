@@ -51,7 +51,7 @@ function Index() {
   return (
     <>
       {chosenAction == null &&
-        <div className="h-screen border flex items-center justify-center flex-col gap-10">
+        <div className="h-[93vh] sm:h-screen border flex items-center justify-center flex-col gap-10">
           <Head>
             <title>AZ Essentials</title>
           </Head>
