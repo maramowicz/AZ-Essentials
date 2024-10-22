@@ -40,7 +40,7 @@ const Index = () => {
   const { systemTheme, theme, setTheme } = useTheme();
   const currentTheme = theme === "system" ? systemTheme : theme;
 
-  const inputStyles = 'min-w-52 max-w-64 md:32 text-3xl md:text-lg border text-black border-2 border-black dark:border-gray-700 dark:bg-black dark:text-white rounded-full pl-2 py-1 md:py-0  dark:focus:outline dark:focus:outline-slate-500 placeholder:text-gray-400 transition-colors duration-500 shadow-lg dark:shadow-gray-900';
+  //const inputStyles = 'min-w-52 max-w-64 md:32 text-3xl md:text-lg border text-black border-2 border-black dark:border-gray-700 dark:bg-black dark:text-white rounded-full pl-2 py-1 md:py-0  dark:focus:outline dark:focus:outline-slate-500 placeholder:text-gray-400 transition-colors duration-500 shadow-lg dark:shadow-gray-900';
 
   const errorInputStyle = 'border-red-500';
 
