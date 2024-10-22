@@ -47,7 +47,7 @@ const Index = () => {
   const currentTheme = theme === "system" ? systemTheme : theme;
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const optionsStyle = "text-3xl px-2 py-1 md:text-lg text-black dark:text-white bg-gray-400 dark:bg-gray-700 rounded-sm outline-none focus:border-gray-400 border-2 border-transparent hover:scale-[1.05] transition-transform duration-150 cursor-pointer"
+  const optionsStyle = "text-3xl px-2 py-1 md:text-lg text-black dark:text-white bg-gray-400 dark:bg-gray-700 rounded-sm outline-none focus:border-gray-900 dark:focus:border-gray-400 border-2 border-transparent hover:scale-[1.05] transition-transform duration-150 cursor-pointer"
 
   const days = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'];
 
@@ -202,7 +202,7 @@ const Index = () => {
       <div className="h-[93vh] flex items-center justify-center">
         <ul className={`h-3/4 flex items-center justify-center flex-col gap-2 overflow-y-auto overflow-x-hidden px-1.5 pb-1.5 custom-scrollbar`} style={{ paddingTop }}>
           {results.map((lesson, index) => (
-            <li key={index} className='w-[21rem] border-2 border-gray-500 text-center dark:border-slate-600 text-black dark:text-white bg-gray-200 dark:bg-black rounded-lg flex items-center flex-col py-3 mr-1 text-xl shadow-md shadow-gray-400 dark:shadow-gray-800 transition-all hover:scale-[1.03] duration-100'>
+            <li key={index} className='w-[21rem] border-2 border-gray-500 text-center dark:border-slate-600 text-black dark:text-white bg-gray-200 dark:bg-black rounded-lg flex items-center flex-col py-3 mr-1 text-2xl shadow-md shadow-gray-400 dark:shadow-gray-800 transition-all hover:scale-[1.03] duration-100'>
               <span>{dayInput} {lesson.place}</span>
               <span>
                 {formatTime(lesson.start_minute)} - {formatTime(lesson.end_minute)}
@@ -225,7 +225,7 @@ const Index = () => {
         <title>Kto ma w ...?</title>
       </Head>
       {showResults && results.length > 0 && (
-        <button className='relative top-3 sm:top-1 text-black dark:text-white border border-black dark:border-white rounded-md text-2xl md:text-lg px-4 md:px-3 mt-2 ml-2 hover:scale-105 active:scale-95 transition-transform duration-150' onClick={goBack}>Wróć</button>
+        <button className='relative top-2 sm:top-1 text-black dark:text-white border-2 border-black dark:border-white rounded-md text-2xl md:text-lg px-4 md:px-3 mt-2 ml-2 hover:scale-105 active:scale-95 transition-transform duration-150' onClick={goBack}>Wróć</button>
       )}
       {!showResults && (
         <div className="h-screen flex items-center justify-center flex-col gap-5">
