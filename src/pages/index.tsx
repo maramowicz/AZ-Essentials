@@ -4,6 +4,7 @@ import Sun from '../../public/sun-regular.svg';
 import Moon from '../../public/moon-regular.svg';
 import Head from 'next/head';
 import { useTheme } from "next-themes";
+import ErrorModal from './ErrorModal';
 
 interface Lesson {
   place: string;
@@ -39,8 +40,9 @@ const Index = () => {
   const [showResults, setShowResults] = useState<boolean>(false);
   const { systemTheme, theme, setTheme } = useTheme();
   const currentTheme = theme === "system" ? systemTheme : theme;
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const optionsStyle = "text-xl py-1 md:text-lg text-black dark:text-white bg-gray-300 dark:bg-gray-700 rounded-sm outline-none focus:border-gray-400 border-2 border-transparent hover:scale-[1.05] transition-transform duration-150 cursor-pointer"
+  const optionsStyle = "text-xl py-1 md:text-lg text-black dark:text-white bg-gray-100 dark:bg-gray-700 rounded-sm outline-none focus:border-gray-400 border-2 border-transparent hover:scale-[1.05] transition-transform duration-150 cursor-pointer"
 
   const days = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'];
 
@@ -161,7 +163,7 @@ const Index = () => {
     }
 
     if (errorMessages.length > 0) {
-      alert(errorMessages.join("\n"));
+      setErrorMessage(errorMessages.join("\n")); // Ustaw komunikat o błędzie
       return;
     }
 
@@ -170,9 +172,10 @@ const Index = () => {
     if (results.length > 0) {
       setShowResults(true);
     } else {
-      alert("Nie znaleziono wykładu dla podanych danych");
+      setErrorMessage("Nie znaleziono wykładu dla podanych danych");
     }
   }
+
 
   function goBack() {
     setShowResults(false);
@@ -182,14 +185,20 @@ const Index = () => {
     setPlaceInput("");
   }
 
+  function closeErrorModal() {
+    setErrorMessage(null); // Resetuj komunikat o błędzie
+  }
+
   function formatResult() {
     function formatTime(time: number) {
       return `${Math.floor(time / 60)}:${time % 60 === 0 ? '00' : time % 60 < 10 ? '0' + (time % 60) : time % 60}`;
     }
 
+    const paddingTop = `${results.length * 1.25}rem`;
+
     return (
       <div className="h-[93vh] flex items-center justify-center">
-        <ul className='h-3/4 flex items-center justify-center flex-col gap-2 overflow-y-auto overflow-x-hidden pt-1 px-1.5 custom-scrollbar'>
+        <ul className={`h-3/4 flex items-center justify-center flex-col gap-2 overflow-y-auto overflow-x-hidden px-1.5 pb-1.5 custom-scrollbar`} style={{ paddingTop }}>
           {results.map((lesson, index) => (
             <li key={index} className='w-[21rem] border-2 border-gray-500 dark:border-slate-600 text-black dark:text-white bg-gray-200 dark:bg-black rounded-lg flex items-center flex-col py-3 mr-1 text-xl shadow-md shadow-gray-400 dark:shadow-gray-800 transition-all hover:scale-[1.03] duration-100'>
               <span><b>{lesson.subject}</b> {lesson.place}</span>
@@ -216,38 +225,38 @@ const Index = () => {
         <button className='relative top-3 sm:top-1 text-black dark:text-white border border-black dark:border-white rounded-md text-2xl md:text-lg px-4 md:px-3 mt-2 ml-2 hover:scale-105 active:scale-95 transition-transform duration-150' onClick={goBack}>Wróć</button>
       )}
       {!showResults && (
-        <div className="h-screen flex items-center justify-center flex-col gap-2">
-          <input
-            type="text"
-            placeholder="Sala: xyz A"
-            className={`w-52 text-2xl text-black dark:text-white bg-gray-300 dark:bg-gray-700 pl-2 rounded-sm outline-none focus:border-gray-400 border-2 border-transparent placeholder:text-gray-500 dark:placeholder:text-gray-400 hover:scale-[1.05] transition-transform duration-150`}
-            list="placeSuggestions"
-            value={placeInput}
-            onChange={(e) => fetchPlace(e.target.value)}
-          />
-          {placeInput.length > 1 && (
-            <datalist id="placeSuggestions">
-              {placeSuggestions.map((item, i) => (
-                <option key={i} value={item} />
+        <div className="h-screen flex items-center justify-center flex-col gap-5">
+          <div className='bg-gray-300 dark:bg-gray-800/75 rounded-xl py-7 px-4 flex items-center justify-center flex-col gap-2'>
+            <input
+              type="text"
+              placeholder="Sala: xyz A"
+              className={`w-52 text-2xl text-black dark:text-white bg-gray-100 dark:bg-gray-700 pl-2 rounded-sm outline-none focus:border-gray-400 border-2 border-transparent placeholder:text-gray-500 dark:placeholder:text-gray-400 hover:scale-[1.05] transition-transform duration-150`}
+              list="placeSuggestions"
+              value={placeInput}
+              onChange={(e) => fetchPlace(e.target.value)}
+            />
+            {placeInput.length > 1 && (
+              <datalist id="placeSuggestions">
+                {placeSuggestions.map((item, i) => (
+                  <option key={i} value={item} />
+                ))}
+              </datalist>
+            )}
+            <select className={optionsStyle} onChange={(e) => fetchDay(e.target.value)}>
+              <option hidden>--Wybierz dzień tygodnia--</option>
+              {days.map((day, i) => (
+                <option key={i} value={day}>{day}</option>
               ))}
-            </datalist>
-          )}
-          <select className={optionsStyle} onChange={(e) => fetchDay(e.target.value)}>
-            <option hidden>--Wybierz dzień tygodnia--</option>
-            {days.map((day, i) => (
-              <option key={i} value={day}>{day}</option>
-            ))}
-          </select>
-
-          <select className={optionsStyle} onChange={(e) => fetchHours(e.target.value)}>
-            <option hidden>--Wybierz godzine--</option>
-            {hourSuggestions.map((hour, i) => (
-              <option key={i} value={hour}>Od {hour}</option>
-            ))}
-          </select>
-
+            </select>
+            <select className={optionsStyle} onChange={(e) => fetchHours(e.target.value)}>
+              <option hidden>--Wybierz godzine--</option>
+              {hourSuggestions.map((hour, i) => (
+                <option key={i} value={hour}>Od {hour}</option>
+              ))}
+            </select>
+          </div>
           <button
-            className="px-3 py-px rounded-md border-2 border-gray-300 dark:border-gray-500 focus:border-black focus:scale-[1.1] text-black dark:text-white bg-gray-200 dark:bg-gray-700 transition-all duration-150 hover:scale-105 active:scale-95"
+            className="text-2xl px-3 py-px rounded-md border-2 border-gray-300 dark:border-gray-500 focus:border-black focus:scale-[1.1] text-black dark:text-white bg-gray-200 dark:bg-gray-700 transition-all duration-150 hover:scale-105 active:scale-95"
             onClick={handleCheck}
           >
             Sprawdź
@@ -258,6 +267,11 @@ const Index = () => {
       {showResults && results.length > 0 && (
         formatResult()
       )}
+
+      {errorMessage && (
+        <ErrorModal message={errorMessage} onClose={closeErrorModal} /> // Wyświetl modal błędu
+      )}
+
       <button
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
         className="absolute bottom-0 sm:bottom-1 right-2.5 rounded-full bg-gray-100">
