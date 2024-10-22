@@ -40,24 +40,15 @@ const Index = () => {
   const { systemTheme, theme, setTheme } = useTheme();
   const currentTheme = theme === "system" ? systemTheme : theme;
 
-  //const inputStyles = 'min-w-52 max-w-64 md:32 text-3xl md:text-lg border text-black border-2 border-black dark:border-gray-700 dark:bg-black dark:text-white rounded-full pl-2 py-1 md:py-0  dark:focus:outline dark:focus:outline-slate-500 placeholder:text-gray-400 transition-colors duration-500 shadow-lg dark:shadow-gray-900';
-
-  const errorInputStyle = 'border-red-500';
+  const optionsStyle = "text-xl py-1 md:text-lg text-black dark:text-white bg-gray-300 dark:bg-gray-700 rounded-sm outline-none focus:border-gray-400 border-2 border-transparent"
 
   const days = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'];
-
-  const [inputErrors, setInputErrors] = useState({
-    place: false,
-    day: false,
-    hours: false
-  });
 
   useEffect(() => {
     console.clear();
     setPlaceInput("");
     setDayInput("");
     setHoursInput("");
-    setInputErrors({ place: false, day: false, hours: false }); // resetujemy błędy
 
     const placeSet = new Set<string>();
 
@@ -152,26 +143,18 @@ const Index = () => {
 
   function handleCheck() {
     const errorMessages: string[] = [];
-    const errors = { place: false, day: false, hours: false };
 
     if (!placeInput || !dayInput || !hoursInput) {
       errorMessages.push("Proszę wypełnić wszystkie pola.");
-      if (!placeInput) errors.place = true;
-      if (!dayInput) errors.day = true;
-      if (!hoursInput) errors.hours = true;
     }
 
     if (dayInput.trim() === '' || typeof dayInput !== 'string') {
       errorMessages.push("Dzień musi być ciągiem znaków.");
-      errors.day = true;
     }
 
     if (!hoursInput) {
       errorMessages.push("Niepoprawny format godziny.");
-      errors.hours = true;
     }
-
-    setInputErrors(errors);
 
     if (errorMessages.length > 0) {
       alert(errorMessages.join("\n"));
@@ -185,7 +168,7 @@ const Index = () => {
     } else {
       alert("Nie znaleziono wykładu dla podanych danych");
     }
-  };
+  }
 
   function goBack() {
     setShowResults(false);
@@ -194,14 +177,15 @@ const Index = () => {
     setHoursInput("");
     setPlaceInput("");
   }
+
   function formatResult() {
     function formatTime(time: number) {
       return `${Math.floor(time / 60)}:${time % 60 === 0 ? '00' : time % 60 < 10 ? '0' + (time % 60) : time % 60}`;
     }
-  
+
     return (
       <div className="h-[93vh] flex items-center justify-center">
-        <ul className='h-3/4 flex items-center justify-center flex-col gap-2 overflow-y-auto overflow-x-hidden pt-44 px-1.5 custom-scrollbar'>
+        <ul className='h-3/4 flex items-center justify-center flex-col gap-2 overflow-y-auto overflow-x-hidden pt-1 px-1.5 custom-scrollbar'>
           {results.map((lesson, index) => (
             <li key={index} className='w-[21rem] border-2 border-gray-400 dark:border-slate-600 text-black dark:text-white dark:bg-black rounded-lg flex flex-col px-1 py-2 mr-1 text-xl shadow-lg dark:shadow-gray-800 transition-all hover:scale-[1.03] duration-100'>
               <span><b>{lesson.subject}</b> {lesson.place}</span>
@@ -217,7 +201,7 @@ const Index = () => {
         </ul>
       </div>
     );
-  }  
+  }
 
   return (
     <div className='bg-gray-100 dark:bg-gray-950 transition-colors duration-1000'>
@@ -229,29 +213,35 @@ const Index = () => {
       )}
       {!showResults && (
         <div className="h-screen flex items-center justify-center flex-col gap-2">
-          <select className='text-black dark:text-white bg-gray-300 dark:bg-gray-700 rounded-sm'
-            onChange={(e) => fetchPlace(e.target.value)}>
-            <option value="">--Wybierz sale--</option>
-            [{placeSuggestions.map((item, i) => (
-              <option key={i} value={item}>{item}</option>
-            ))}]
-          </select>
-          <select className='text-black dark:text-white bg-gray-300 dark:bg-gray-700 rounded-sm'
-            onChange={(e) => fetchDay(e.target.value)}>
+          <input
+            type="text"
+            placeholder="Sala: xyz A"
+            className={`w-52 text-2xl bg-gray-700 pl-2 rounded-sm  outline-none focus:border-gray-400 border-2 border-transparent`}
+            list="placeSuggestions"
+            value={placeInput}
+            onChange={(e) => fetchPlace(e.target.value)}
+          />
+          {placeInput.length > 1 && (
+            <datalist id="placeSuggestions">
+              {placeSuggestions.map((item, i) => (
+                <option key={i} value={item} />
+              ))}
+            </datalist>
+          )}
+          <select className={optionsStyle} onChange={(e) => fetchDay(e.target.value)}>
             <option value="">--Wybierz dzień tygodnia--</option>
             {days.map((day, i) => (
               <option key={i} value={day}>{day}</option>
             ))}
           </select>
-          <select className='text-black dark:text-white bg-gray-300 dark:bg-gray-700 rounded-sm'
-            onChange={(e) => fetchHours(e.target.value)}>
+
+          <select className={optionsStyle} onChange={(e) => fetchHours(e.target.value)}>
             <option value="">--Wybierz godzine--</option>
             {hourSuggestions.map((hour, i) => (
               <option key={i} value={hour}>Od {hour}</option>
             ))}
           </select>
-          <datalist id='hoursSuggestions'>
-          </datalist>
+
           <button
             className="border-2 border-gray-500 bg-white text-black dark:bg-black dark:text-white text-2xl py-1.5 md:py-px px-6 md:px-3 rounded-full hover:scale-105 active:scale-95 transition-transform duration-150 mt-2.5 select-none"
             onClick={handleCheck}>
