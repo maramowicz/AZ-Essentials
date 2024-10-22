@@ -47,7 +47,7 @@ const Index = () => {
   const currentTheme = theme === "system" ? systemTheme : theme;
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const optionsStyle = "text-2xl py-1 md:text-lg text-black dark:text-white bg-gray-400 dark:bg-gray-700 rounded-sm outline-none focus:border-gray-400 border-2 border-transparent hover:scale-[1.05] transition-transform duration-150 cursor-pointer"
+  const optionsStyle = "text-3xl px-2 py-1 md:text-lg text-black dark:text-white bg-gray-400 dark:bg-gray-700 rounded-sm outline-none focus:border-gray-400 border-2 border-transparent hover:scale-[1.05] transition-transform duration-150 cursor-pointer"
 
   const days = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'];
 
@@ -233,7 +233,7 @@ const Index = () => {
             <input
               type="text"
               placeholder="Sala: xyz A"
-              className={`w-52 text-3xl sm:text-2xl text-black dark:text-white bg-gray-400 dark:bg-gray-700 pl-2 rounded-sm outline-none focus:border-gray-400 border-2 border-transparent placeholder:text-gray-300 dark:placeholder:text-gray-400 hover:scale-[1.05] transition-transform duration-150`}
+              className={`w-52 text-4xl sm:text-2xl text-black dark:text-white bg-gray-400 dark:bg-gray-700 pl-2 rounded-sm outline-none focus:border-gray-400 border-2 border-transparent placeholder:text-gray-300 dark:placeholder:text-gray-400 hover:scale-[1.05] transition-transform duration-150`}
               list="placeSuggestions"
               value={placeInput}
               onChange={(e) => fetchPlace(e.target.value)}
@@ -246,13 +246,13 @@ const Index = () => {
               </datalist>
             )}
             <select className={optionsStyle} onChange={(e) => fetchDay(e.target.value)}>
-              <option hidden>--Wybierz dzień tygodnia--</option>
+              <option hidden>Wybierz dzień</option>
               {days.map((day, i) => (
                 <option key={i} value={day}>{day}</option>
               ))}
             </select>
             <select className={optionsStyle} onChange={(e) => fetchHours(e.target.value)}>
-              <option hidden>--Wybierz godzine--</option>
+              <option hidden>Wybierz godzine</option>
               {hourSuggestions.map((hour, i) => (
                 <option key={i} value={hour}>Od {hour}</option>
               ))}
@@ -284,7 +284,7 @@ const Index = () => {
           <Moon className="h-12 md:h-14 w-auto px-2 py-1" />
         )}
       </button>
-      <span className='absolute bottom-0 sm:bottom-1 left-2 text-gray-400 dark:text-gray-700'>Beta</span>
+      <span className='absolute bottom-0.5 sm:bottom-1 left-2 text-gray-400 dark:text-gray-700'>Beta</span>
     </div>
   );
 };
