@@ -1,3 +1,8 @@
+// Todo: Szukanie kto ma zajęcia ✅
+// Todo: Szukanie wykładowcy ❌
+// Todo: Podgląd uczelni ❌
+// Todo: Jakie sale są wolne ❌
+// Todo: Wyświetlenie planu lekcji danego kierunku z danego dnia ❌
 import React, { useState, useEffect } from 'react';
 import data from '../../public/database.json';
 import Sun from '../../public/sun-regular.svg';
@@ -42,7 +47,7 @@ const Index = () => {
   const currentTheme = theme === "system" ? systemTheme : theme;
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const optionsStyle = "text-xl py-1 md:text-lg text-black dark:text-white bg-gray-100 dark:bg-gray-700 rounded-sm outline-none focus:border-gray-400 border-2 border-transparent hover:scale-[1.05] transition-transform duration-150 cursor-pointer"
+  const optionsStyle = "text-2xl py-1 md:text-lg text-black dark:text-white bg-gray-400 dark:bg-gray-700 rounded-sm outline-none focus:border-gray-400 border-2 border-transparent hover:scale-[1.05] transition-transform duration-150 cursor-pointer"
 
   const days = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'];
 
@@ -163,11 +168,9 @@ const Index = () => {
     }
 
     if (errorMessages.length > 0) {
-      setErrorMessage(errorMessages.join("\n")); // Ustaw komunikat o błędzie
+      setErrorMessage(errorMessages.join("\n"));
       return;
     }
-
-    console.log(placeInput, dayInput, hoursInput, results);
 
     if (results.length > 0) {
       setShowResults(true);
@@ -175,7 +178,6 @@ const Index = () => {
       setErrorMessage("Nie znaleziono wykładu dla podanych danych");
     }
   }
-
 
   function goBack() {
     setShowResults(false);
@@ -186,7 +188,7 @@ const Index = () => {
   }
 
   function closeErrorModal() {
-    setErrorMessage(null); // Resetuj komunikat o błędzie
+    setErrorMessage(null);
   }
 
   function formatResult() {
@@ -200,14 +202,15 @@ const Index = () => {
       <div className="h-[93vh] flex items-center justify-center">
         <ul className={`h-3/4 flex items-center justify-center flex-col gap-2 overflow-y-auto overflow-x-hidden px-1.5 pb-1.5 custom-scrollbar`} style={{ paddingTop }}>
           {results.map((lesson, index) => (
-            <li key={index} className='w-[21rem] border-2 border-gray-500 dark:border-slate-600 text-black dark:text-white bg-gray-200 dark:bg-black rounded-lg flex items-center flex-col py-3 mr-1 text-xl shadow-md shadow-gray-400 dark:shadow-gray-800 transition-all hover:scale-[1.03] duration-100'>
-              <span><b>{lesson.subject}</b> {lesson.place}</span>
-              <span>
-                {lesson.type} {lesson.name}
-              </span>
-              <span className='font-bold'>{lesson.teacher}</span>
+            <li key={index} className='w-[21rem] border-2 border-gray-500 text-center dark:border-slate-600 text-black dark:text-white bg-gray-200 dark:bg-black rounded-lg flex items-center flex-col py-3 mr-1 text-xl shadow-md shadow-gray-400 dark:shadow-gray-800 transition-all hover:scale-[1.03] duration-100'>
+              <span>{dayInput} {lesson.place}</span>
               <span>
                 {formatTime(lesson.start_minute)} - {formatTime(lesson.end_minute)}
+              </span>
+              <b>{lesson.subject}</b>
+              <span className='font-bold'>{lesson.teacher}</span>
+              <span>
+                {lesson.type} {lesson.name}
               </span>
             </li>
           ))}
@@ -226,11 +229,11 @@ const Index = () => {
       )}
       {!showResults && (
         <div className="h-screen flex items-center justify-center flex-col gap-5">
-          <div className='bg-gray-300 dark:bg-gray-800/75 rounded-xl py-7 px-4 flex items-center justify-center flex-col gap-2'>
+          <div className='bg-gray-400/50 dark:bg-gray-800/75 rounded-xl py-7 px-4 flex items-center justify-center flex-col gap-2'>
             <input
               type="text"
               placeholder="Sala: xyz A"
-              className={`w-52 text-2xl text-black dark:text-white bg-gray-100 dark:bg-gray-700 pl-2 rounded-sm outline-none focus:border-gray-400 border-2 border-transparent placeholder:text-gray-500 dark:placeholder:text-gray-400 hover:scale-[1.05] transition-transform duration-150`}
+              className={`w-52 text-3xl sm:text-2xl text-black dark:text-white bg-gray-400 dark:bg-gray-700 pl-2 rounded-sm outline-none focus:border-gray-400 border-2 border-transparent placeholder:text-gray-300 dark:placeholder:text-gray-400 hover:scale-[1.05] transition-transform duration-150`}
               list="placeSuggestions"
               value={placeInput}
               onChange={(e) => fetchPlace(e.target.value)}
@@ -256,7 +259,7 @@ const Index = () => {
             </select>
           </div>
           <button
-            className="text-2xl px-3 py-px rounded-md border-2 border-gray-300 dark:border-gray-500 focus:border-black focus:scale-[1.1] text-black dark:text-white bg-gray-200 dark:bg-gray-700 transition-all duration-150 hover:scale-105 active:scale-95"
+            className="text-3xl px-5 py-1 rounded-lg border-2 border-gray-300 dark:border-gray-500 focus:border-black focus:scale-[1.1] text-black dark:text-white bg-gray-200 dark:bg-gray-700 transition-all duration-150 hover:scale-105 active:scale-95"
             onClick={handleCheck}
           >
             Sprawdź
@@ -269,7 +272,7 @@ const Index = () => {
       )}
 
       {errorMessage && (
-        <ErrorModal message={errorMessage} onClose={closeErrorModal} /> // Wyświetl modal błędu
+        <ErrorModal message={errorMessage} onClose={closeErrorModal} />
       )}
 
       <button
