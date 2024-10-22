@@ -135,10 +135,10 @@ const Index = () => {
     setHoursInput(timeInput);
 
     if (timeInput.length >= 4) {
+
       const lessonsData: Lesson[] | null = fetchDay(dayInput);
 
-      const slicedTime = timeInput.slice(3, timeInput.length);
-      const [hours, minutes] = slicedTime.split(':').map(Number);
+      const [hours, minutes] = timeInput.split(':').map(Number);
       const totalMinutes = hours * 60 + minutes;
 
       const matchedLessons = lessonsData?.filter(lesson => {
@@ -166,7 +166,7 @@ const Index = () => {
       errors.day = true;
     }
 
-    if (!hoursInput.startsWith("Od ")) {
+    if (!hoursInput) {
       errorMessages.push("Niepoprawny format godziny.");
       errors.hours = true;
     }
@@ -177,6 +177,8 @@ const Index = () => {
       alert(errorMessages.join("\n"));
       return;
     }
+
+    console.log(placeInput, dayInput, hoursInput, results);
 
     if (results.length > 0) {
       setShowResults(true);
@@ -192,14 +194,14 @@ const Index = () => {
     setHoursInput("");
     setPlaceInput("");
   }
-
   function formatResult() {
     function formatTime(time: number) {
       return `${Math.floor(time / 60)}:${time % 60 === 0 ? '00' : time % 60 < 10 ? '0' + (time % 60) : time % 60}`;
     }
+  
     return (
-      <div className="h-[93vh]">
-        <ul className='h-full flex items-center justify-center flex-col gap-2 overflow-y-auto pt-14'>
+      <div className="h-[93vh] flex items-center justify-center">
+        <ul className='h-3/4 flex items-center justify-center flex-col gap-2 overflow-y-auto overflow-x-hidden pt-44 px-1.5 custom-scrollbar'>
           {results.map((lesson, index) => (
             <li key={index} className='w-[21rem] border-2 border-gray-400 dark:border-slate-600 text-black dark:text-white dark:bg-black rounded-lg flex flex-col px-1 py-2 mr-1 text-xl shadow-lg dark:shadow-gray-800 transition-all hover:scale-[1.03] duration-100'>
               <span><b>{lesson.subject}</b> {lesson.place}</span>
@@ -215,54 +217,40 @@ const Index = () => {
         </ul>
       </div>
     );
-  }
+  }  
 
   return (
     <div className='bg-gray-100 dark:bg-gray-950 transition-colors duration-1000'>
       <Head>
         <title>Kto ma w ...?</title>
       </Head>
-      {showResults && results.length > 1 && (
+      {showResults && results.length > 0 && (
         <button className='text-black dark:text-white border border-black dark:border-white rounded-md text-2xl md:text-lg px-4 md:px-3 mt-2 ml-2 hover:scale-105 active:scale-95 transition-transform duration-150' onClick={goBack}>Wróć</button>
       )}
       {!showResults && (
         <div className="h-screen flex items-center justify-center flex-col gap-2">
-          <input
-            type="text"
-            placeholder="Sala: abc X "
-            className={`${inputStyles} ${inputErrors.place ? errorInputStyle : ''} w-40`}
-            list="placeSuggestions"
-            value={placeInput}
-            onChange={(e) => fetchPlace(e.target.value)}
-          />
-          {placeInput.length > 1 && (
-            <datalist id="placeSuggestions">
-              {placeSuggestions.map((item, i) => (
-                <option key={i} value={item} />
-              ))}
-            </datalist>
-          )}
-          <input
-            type="text"
-            placeholder="Dzień tygodnia"
-            className={`${inputStyles} ${inputErrors.day ? errorInputStyle : ''}`}
-            list="daysList"
-            value={dayInput}
-            onChange={(e) => fetchDay(e.target.value)}
-          />
-          <datalist id="daysList">
+          <select className='text-black dark:text-white bg-gray-300 dark:bg-gray-700 rounded-sm'
+            onChange={(e) => fetchPlace(e.target.value)}>
+            <option value="">--Wybierz sale--</option>
+            [{placeSuggestions.map((item, i) => (
+              <option key={i} value={item}>{item}</option>
+            ))}]
+          </select>
+          <select className='text-black dark:text-white bg-gray-300 dark:bg-gray-700 rounded-sm'
+            onChange={(e) => fetchDay(e.target.value)}>
+            <option value="">--Wybierz dzień tygodnia--</option>
             {days.map((day, i) => (
-              <option key={i} value={day}></option>
+              <option key={i} value={day}>{day}</option>
             ))}
-          </datalist>
-          <input type="text" placeholder="Od HH:MM" className={`${inputStyles} ${inputErrors.hours ? errorInputStyle : ''} w-40`} list="hoursSuggestions"
-            onChange={(e) => fetchHours(e.target.value)} value={hoursInput}
-          />
+          </select>
+          <select className='text-black dark:text-white bg-gray-300 dark:bg-gray-700 rounded-sm'
+            onChange={(e) => fetchHours(e.target.value)}>
+            <option value="">--Wybierz godzine--</option>
+            {hourSuggestions.map((hour, i) => (
+              <option key={i} value={hour}>Od {hour}</option>
+            ))}
+          </select>
           <datalist id='hoursSuggestions'>
-            {hoursInput.length >= 1 &&
-              hourSuggestions.map((hour, i) => (
-                <option key={i} value={"Od " + hour}></option>
-              ))}
           </datalist>
           <button
             className="border-2 border-gray-500 bg-white text-black dark:bg-black dark:text-white text-2xl py-1.5 md:py-px px-6 md:px-3 rounded-full hover:scale-105 active:scale-95 transition-transform duration-150 mt-2.5 select-none"
@@ -272,7 +260,7 @@ const Index = () => {
         </div>
       )}
 
-      {showResults && results.length > 1 && (
+      {showResults && results.length > 0 && (
         formatResult()
       )}
       <button
