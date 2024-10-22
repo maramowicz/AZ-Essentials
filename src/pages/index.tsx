@@ -255,14 +255,14 @@ const Index = () => {
       )}
       <button
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-        className="absolute bottom-1 right-2.5 rounded-full bg-gray-100">
+        className="absolute bottom-0 sm:bottom-1 right-2.5 rounded-full bg-gray-100">
         {currentTheme === "dark" ? (
           <Sun className="h-12 md:h-14 w-auto px-1 py-1" />
         ) : (
           <Moon className="h-12 md:h-14 w-auto px-2 py-1" />
         )}
       </button>
-      <span className='absolute bottom-1 left-2 text-gray-400 dark:text-gray-700'>Beta</span>
+      <span className='absolute bottom-0 sm:bottom-1 left-2 text-gray-400 dark:text-gray-700'>Beta</span>
     </div>
   );
 };
