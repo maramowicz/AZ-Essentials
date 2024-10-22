@@ -209,7 +209,7 @@ const Index = () => {
         <title>Kto ma w ...?</title>
       </Head>
       {showResults && results.length > 0 && (
-        <button className='text-black dark:text-white border border-black dark:border-white rounded-md text-2xl md:text-lg px-4 md:px-3 mt-2 ml-2 hover:scale-105 active:scale-95 transition-transform duration-150' onClick={goBack}>Wróć</button>
+        <button className='relative top-3 sm:top-1 text-black dark:text-white border border-black dark:border-white rounded-md text-2xl md:text-lg px-4 md:px-3 mt-2 ml-2 hover:scale-105 active:scale-95 transition-transform duration-150' onClick={goBack}>Wróć</button>
       )}
       {!showResults && (
         <div className="h-screen flex items-center justify-center flex-col gap-2">
