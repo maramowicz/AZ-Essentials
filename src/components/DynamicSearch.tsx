@@ -16,7 +16,7 @@ interface Lesson {
     dates: string[];
 }
 
-interface kierunekTypes {
+interface MajorTypes {
     degree: string | null;
     doc_type: number;
     groups: string[];
@@ -27,65 +27,86 @@ interface kierunekTypes {
     year: number | null;
 }
 
-function PlaceInfp({ returnToMenu }: { returnToMenu: () => void }) {
+interface DynamicSearchProps {
+    returnToMenu: () => void;
+    searchType: 'teacher' | 'place';
+}
 
-    const [placeSuggestions, setPlaceSuggestions] = useState<string[]>([]);
+function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
+    const [suggestions, setSuggestions] = useState<string[]>([]);
     const [hourSuggestions, setHourSuggestions] = useState<string[]>([]);
-    const [placeInput, setPlaceInput] = useState<string>('');
+    const [searchInput, setSearchInput] = useState<string>('');
     const [dayInput, setDayInput] = useState<string>('');
     const [hoursInput, setHoursInput] = useState<string>('');
     const [results, setResults] = useState<Lesson[]>([]);
     const [showResults, setShowResults] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    const optionsStyle = "text-3xl px-2 py-1 md:text-lg text-black dark:text-white bg-gray-400 dark:bg-gray-700 rounded-sm outline-none focus:border-gray-900 dark:focus:border-gray-400 border-2 border-transparent hover:scale-[1.05] transition-transform duration-150 cursor-pointer"
-
+    const colorsSmooth = "transition-colors duration-150"
+    const optionsStyle = "text-3xl px-2 py-1 md:text-lg text-black dark:text-white bg-white dark:bg-gray-700 shadow-md dark:shadow-black rounded-md outline-none focus:border-gray-900 dark:focus:border-gray-400 border-2 border-transparent hover:scale-[1.05] transition-all duration-75 cursor-pointer"
     const days = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'];
 
+    function resetInputs() {
+        setSearchInput('');
+        setDayInput('');
+        setHoursInput('');
+    }
+
     useEffect(() => {
+        resetInputs();
         console.clear();
-        setPlaceInput("");
+        setSearchInput("");
         setDayInput("");
         setHoursInput("");
 
-        const placeSet = new Set<string>();
+        const chosenTypeSet = new Set<string>();
 
-        Object.entries(data).forEach((kierunek) => {
-            const kierunekData = kierunek[1] as kierunekTypes;
-            kierunekData.plan.forEach((day) => {
+        Object.entries(data).forEach((major) => {
+            const majorData = major[1] as MajorTypes;
+            majorData.plan.forEach((day) => {
                 if (day) {
                     Object.entries(day).forEach(([, lekcja]) => {
                         const lesson = lekcja as Lesson;
-                        placeSet.add(lesson.place);
+                        if (searchType == "place") {
+                            chosenTypeSet.add(lesson.place);
+                        } else {
+                            chosenTypeSet.add(lesson.teacher);
+                        }
                     });
                 }
             });
         });
 
-        setPlaceSuggestions(Array.from(placeSet));
+        setSuggestions(Array.from(chosenTypeSet));
     }, []);
 
-    function fetchPlace(place: string): (Lesson | string | null)[][] | null {
-        const placeSet: (Lesson | string | null)[][] = [];
-        setPlaceInput(place);
+    function fetchChosenType(searchValue: string): (Lesson | string | null)[][] | null {
+        const chosenTypeSet: (Lesson | string | null)[][] = [];
+        setSearchInput(searchValue);
 
-        if (place.length >= 4) {
-            for (const [, kierunek] of Object.entries(data)) {
-                const kierunekData = kierunek as kierunekTypes;
-                kierunekData.plan.forEach((day, dayIndex) => {
+        if (searchValue.length >= 4) {
+            for (const [, major] of Object.entries(data)) {
+                const majorData = major as MajorTypes;
+                majorData.plan.forEach((day, dayIndex) => {
                     if (day.length > 0) {
                         for (const [, lekcja] of Object.entries(day)) {
                             const lesson = lekcja as Lesson;
-                            if (lesson.place === place) {
-                                placeSet.push([lesson, days[dayIndex]]);
+                            if (searchType == 'place') {
+                                if (lesson.place === searchValue) {
+                                    chosenTypeSet.push([lesson, days[dayIndex]]);
+                                }
+                            } else {
+                                if (lesson.teacher === searchValue) {
+                                    chosenTypeSet.push([lesson, days[dayIndex]]);
+                                }
                             }
                         }
                     }
                 });
             }
 
-            if (placeSet.length > 0) {
-                return placeSet;
+            if (chosenTypeSet.length > 0) {
+                return chosenTypeSet;
             }
         }
 
@@ -97,8 +118,8 @@ function PlaceInfp({ returnToMenu }: { returnToMenu: () => void }) {
         const hoursSuggestions = new Set<string>();
         setDayInput(dayInput);
 
-        if (placeInput.length > 2 && dayInput.length > 2) {
-            const lessons = fetchPlace(placeInput);
+        if (searchInput.length > 2 && dayInput.length > 2) {
+            const lessons = fetchChosenType(searchInput);
 
             if (lessons) {
                 lessons.forEach((lesson) => {
@@ -121,7 +142,7 @@ function PlaceInfp({ returnToMenu }: { returnToMenu: () => void }) {
                     return lessonDetails;
                 }
             } else {
-                alert("Nie ma żadnych lekcji");
+                alert("Brak wyników");
             }
         }
         return null;
@@ -142,20 +163,26 @@ function PlaceInfp({ returnToMenu }: { returnToMenu: () => void }) {
     }
 
     function handleCheck() {
-        const errorMessages: string[] = [];
+        let errorMessages: string = "";
 
-        if (!placeInput && !dayInput && !hoursInput) {
-            errorMessages.push("Proszę wypełnić wszystkie pola.");
-        } else if (!placeInput) {
-            errorMessages.push("Proszę wybrać sale.");
+        if (!searchInput && !dayInput && !hoursInput) {
+            errorMessages = "Proszę wypełnić wszystkie pola.";
+        } else if (!searchInput && !dayInput) {
+            errorMessages = `Proszę wybrać ${searchType == 'place' ? "sale" : "wykładowce"} i dzień.`;
+        } else if (!dayInput && !hoursInput) {
+            errorMessages = "Proszę wybrać dzień i godzine.";
+        } else if (!hoursInput && !searchInput) {
+            errorMessages = `Proszę wybrać ${searchType == 'place' ? "sale" : "wykładowce"} i godzine.`;
+        } else if (!searchInput) {
+            errorMessages = `Proszę wybrać ${searchType == 'place' ? "sale" : "wykładowce"}.`;
         } else if (!dayInput) {
-            errorMessages.push("Proszę wybrać dzień.");
+            errorMessages = "Proszę wybrać dzień.";
         } else if (!hoursInput) {
-            errorMessages.push("Proszę wybrać godzine.");
+            errorMessages = "Proszę wybrać godzine.";
         }
 
         if (errorMessages.length > 0) {
-            setErrorMessage(errorMessages.join("\n"));
+            setErrorMessage(errorMessages);
             return;
         }
 
@@ -166,16 +193,16 @@ function PlaceInfp({ returnToMenu }: { returnToMenu: () => void }) {
         }
     }
 
+    function closeErrorModal() {
+        setErrorMessage(null);
+    }
+
     function goBack() {
         setShowResults(false);
         setResults([]);
         setDayInput("");
         setHoursInput("");
-        setPlaceInput("");
-    }
-
-    function closeErrorModal() {
-        setErrorMessage(null);
+        setSearchInput("");
     }
 
     function formatResult() {
@@ -183,19 +210,19 @@ function PlaceInfp({ returnToMenu }: { returnToMenu: () => void }) {
             return `${Math.floor(time / 60)}:${time % 60 === 0 ? '00' : time % 60 < 10 ? '0' + (time % 60) : time % 60}`;
         }
 
-        const paddingTop = `${results.length * 1.25}rem`;
+        const paddingTop = `${results.length * 3}rem`;
 
         return (
             <div className="h-[93vh] flex items-center justify-center">
                 <ul className={`relative -top-9 sm:top-0 h-3/4 flex items-center justify-center flex-col gap-2 overflow-y-auto overflow-x-hidden px-1.5 pb-1.5 custom-scrollbar`} style={{ paddingTop }}>
                     {results.map((lesson, index) => (
                         <li key={index} className='w-[21rem] border-2 border-gray-500 text-center dark:border-slate-600 text-black dark:text-white bg-gray-200 dark:bg-black rounded-lg flex items-center flex-col py-3 mr-1 text-2xl shadow-md shadow-gray-400 dark:shadow-gray-800 transition-all hover:scale-[1.03] duration-100'>
-                            <span>{dayInput} {lesson.place}</span>
+                            <span>{dayInput} <span className={searchType == "place" ? "font-bold" : ""}>{lesson.place}</span></span>
+                            <span className={searchType == "place" ? "" : "font-bold"}>{lesson.teacher}</span>
                             <span>
                                 {formatTime(lesson.start_minute)} - {formatTime(lesson.end_minute)}
                             </span>
-                            <b>{lesson.subject}</b>
-                            <span className='font-bold'>{lesson.teacher}</span>
+                            <span>{lesson.subject}</span>
                             <span>
                                 {lesson.type} {lesson.name}
                             </span>
@@ -205,8 +232,9 @@ function PlaceInfp({ returnToMenu }: { returnToMenu: () => void }) {
             </div>
         );
     }
+
     return (
-        <div className='bg-gray-100 dark:bg-gray-950 transition-colors duration-1000'>
+        <div className='bg-gray-100 dark:bg-gray-950 transition-colors duration-700'>
             <Head>
                 <title>Kto ma w ...?</title>
             </Head>
@@ -217,33 +245,37 @@ function PlaceInfp({ returnToMenu }: { returnToMenu: () => void }) {
                 <div className="h-screen flex items-center justify-center flex-col gap-5">
                     <button
                         onClick={returnToMenu}
-                        className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-                    >
+                        className={`absolute -top-1 left-2 text-2xl mt-4 border-2 border-gray-400 text-black dark:text-white dark:shadow-gray-600 py-1 px-5 rounded-lg hover:scale-105 active:scale-95 focus:scale-105 transition-transform duration-150 ${colorsSmooth}`}>
                         Cofnij
                     </button>
-                    <div className='bg-gray-400/50 dark:bg-gray-800/75 rounded-xl py-7 px-4 flex items-center justify-center flex-col gap-2'>
+                    <div className={`bg-gray-300/50 dark:bg-gray-800/75 rounded-xl py-7 px-4 flex items-center justify-center flex-col gap-2 ${colorsSmooth} duration-700`}>
+                        {/* Todo: resetowanie reszty pól gdy zmienia się sala */}
                         <input
                             type="text"
-                            placeholder="Sala: xyz A"
-                            className={`w-52 text-4xl sm:text-2xl text-black dark:text-white bg-gray-400 dark:bg-gray-700 pl-2 rounded-sm outline-none focus:border-gray-400 border-2 border-transparent placeholder:text-gray-300 dark:placeholder:text-gray-400 hover:scale-[1.05] transition-transform duration-150`}
-                            list="placeSuggestions"
-                            value={placeInput}
-                            onChange={(e) => fetchPlace(e.target.value)}
+                            placeholder={searchType == "place" ? "Numer sali" : "Wykładowca"}
+                            className={`w-52 text-3xl sm:text-2xl text-black dark:text-white dark:bg-gray-700 pl-2 rounded-md outline-none focus:border-gray-400 border-2 border-transparent placeholder:text-gray-500 dark:placeholder:text-gray-400 hover:scale-[1.05] transition-all duration-150 shadow-md dark:shadow-black`}
+                            list="suggestions"
+                            value={searchInput}
+                            onChange={(e) => fetchChosenType(e.target.value)}
                         />
-                        {placeInput.length > 1 && (
-                            <datalist id="placeSuggestions">
-                                {placeSuggestions.map((item, i) => (
+                        {searchInput.length > 1 && (
+                            <datalist id="suggestions">
+                                {suggestions.map((item, i) => (
                                     <option key={i} value={item} />
                                 ))}
                             </datalist>
                         )}
-                        <select className={optionsStyle} onChange={(e) => fetchDay(e.target.value)}>
+                        <select className={`${optionsStyle} disabled:cursor-not-allowed`} onChange={(e) => fetchDay(e.target.value)}
+                            disabled={searchInput == ""}
+                        >
                             <option hidden>Wybierz dzień</option>
                             {days.map((day, i) => (
                                 <option key={i} value={day}>{day}</option>
                             ))}
                         </select>
-                        <select className={optionsStyle} onChange={(e) => fetchHours(e.target.value)}>
+                        <select className={`${optionsStyle} disabled:cursor-not-allowed`} onChange={(e) => fetchHours(e.target.value)}
+                            disabled={!dayInput}
+                        >
                             <option hidden>Wybierz godzine</option>
                             {hourSuggestions.map((hour, i) => (
                                 <option key={i} value={hour}>Od {hour}</option>
@@ -251,18 +283,18 @@ function PlaceInfp({ returnToMenu }: { returnToMenu: () => void }) {
                         </select>
                     </div>
                     <button
-                        className="text-3xl px-5 py-1 rounded-lg border-2 border-gray-300 dark:border-gray-500 focus:border-black focus:scale-[1.1] text-black dark:text-white bg-gray-200 dark:bg-gray-700 transition-all duration-150 hover:scale-105 active:scale-95"
+                        className={`text-3xl px-5 py-1 rounded-lg border-2 border-gray-500 dark:border-gray-500 focus:border-black focus:scale-[1.1] bg-gray-300 dark:bg-gray-700 transition-transform duration-150 hover:scale-105 active:scale-95 ${colorsSmooth}`}
                         onClick={handleCheck}
                     >
-                        Sprawdź
+                        <span className={`text-black dark:text-white ${colorsSmooth}`}>
+                            Sprawdź
+                        </span>
                     </button>
                 </div>
             )}
-
             {showResults && results.length > 0 && (
                 formatResult()
             )}
-
             {errorMessage && (
                 <ErrorModal message={errorMessage} onClose={closeErrorModal} />
             )}
@@ -270,4 +302,4 @@ function PlaceInfp({ returnToMenu }: { returnToMenu: () => void }) {
     );
 }
 
-export default PlaceInfp
+export default DynamicSearch;
