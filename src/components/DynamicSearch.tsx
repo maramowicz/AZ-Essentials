@@ -45,7 +45,6 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
     const colorsSmooth = "transition-colors duration-150"
     const optionsStyle = "text-3xl px-2 py-1 md:text-lg text-black dark:text-white bg-white dark:bg-gray-700 shadow-md dark:shadow-black rounded-md outline-none focus:border-gray-900 dark:focus:border-gray-400 border-2 border-transparent hover:scale-[1.05] transition-all duration-75 cursor-pointer"
     const days = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'];
-    const allowedDocTypes = [1, 2];
 
     function resetInputs() {
         setSearchInput('');
@@ -63,7 +62,7 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
         const chosenTypeSet = new Set<string>();
 
         Object.entries(data).forEach((major) => {
-            allowedDocTypes.includes(major.doc_type) {
+            if (major.doc_type == 1 || major.doc_type == 2) {
                 const majorData = major[1] as MajorTypes;
                 majorData.plan.forEach((day) => {
                     if (day) {
