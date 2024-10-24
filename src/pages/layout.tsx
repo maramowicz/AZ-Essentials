@@ -1,6 +1,5 @@
 import { useTheme } from "next-themes";
-import Sun from '../../public/sun-regular.svg';
-import Moon from '../../public/moon-regular.svg';
+import { GoMoon, GoSun } from 'react-icons/go'
 export default function DashboardLayout({
     children,
 }: {
@@ -12,11 +11,11 @@ export default function DashboardLayout({
         {children}
         <button
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="absolute bottom-1 right-3 rounded-full bg-gray-100">
+            className="absolute bottom-1 right-3">
             {currentTheme === "dark" ? (
-                <Sun className="h-12 md:h-14 w-auto px-1 py-1" />
+                <GoSun className="h-12 md:h-14 w-auto px-1 py-1" />
             ) : (
-                <Moon className="h-12 md:h-14 w-auto px-2 py-1" />
+                <GoMoon className="h-12 md:h-14 w-auto px-1 py-1 text-black" />
             )}
         </button>
         <span className='absolute bottom-0.5 sm:bottom-1 left-2 text-gray-400/60 dark:text-gray-700'>
