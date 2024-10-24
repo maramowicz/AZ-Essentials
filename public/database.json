@@ -8956,7 +8956,22 @@
                     ]
                 }
             ],
-            []
+            [
+                {
+                    "start_minute": 480,
+                    "end_minute": 735,
+                    "duration": 5,
+                    "whatever": "NP",
+                    "type": "Zp.",
+                    "name": "Psychologia ogólna",
+                    "teacher": "mgr Tomasz Kloc",
+                    "subject": "PED I ZP nst (sem. 1)",
+                    "place": [
+                        "A14",
+                        "S"
+                    ]
+                }
+            ]
         ]
     },
     {
@@ -9034,7 +9049,22 @@
                     ]
                 }
             ],
-            []
+            [
+                {
+                    "start_minute": 480,
+                    "end_minute": 735,
+                    "duration": 5,
+                    "whatever": "NP",
+                    "type": "Wy.",
+                    "name": "Podstawy dydaktyki",
+                    "teacher": "dr Bernard Panasiuk",
+                    "subject": "PED II WY nst (sem. 3)",
+                    "place": [
+                        "A15",
+                        "S"
+                    ]
+                }
+            ]
         ]
     },
     {
@@ -27780,7 +27810,22 @@
                     ]
                 }
             ],
-            []
+            [
+                {
+                    "start_minute": 480,
+                    "end_minute": 735,
+                    "duration": 5,
+                    "whatever": "NP",
+                    "type": "Zp.",
+                    "name": "Psychologia ogólna",
+                    "teacher": "mgr Tomasz Kloc",
+                    "subject": "PED I ZP nst (sem. 1)",
+                    "place": [
+                        "C7",
+                        "S"
+                    ]
+                }
+            ]
         ]
     },
     {
