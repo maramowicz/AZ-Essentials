@@ -68,9 +68,9 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
                     Object.entries(day).forEach(([, lekcja]) => {
                         const lesson = lekcja as Lesson;
                         if (searchType == "place") {
-                            console.log(lesson);
-                            if (lesson.place != null)
+                            if (lesson.place != null) {
                                 chosenTypeSet.add(lesson.place[0] + ' ' + lesson.place[1]);
+                            } else console.log(lesson);
                         } else {
                             if (lesson.teacher != null)
                                 chosenTypeSet.add(lesson.teacher);
