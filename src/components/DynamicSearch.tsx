@@ -61,9 +61,9 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
 
         const chosenTypeSet = new Set<string>();
 
-        Object.entries(data).forEach((major) => {
-            if (major.doc_type == 1 || major.doc_type == 2) {
-                const majorData = major[1] as MajorTypes;
+        Object.entries(data).forEach(([key, major]) => {
+            const majorData = major as MajorTypes; // Cast to MajorTypes
+            if (majorData.doc_type == 1 || majorData.doc_type == 2) {
                 majorData.plan.forEach((day) => {
                     if (day) {
                         Object.entries(day).forEach(([, lekcja]) => {
