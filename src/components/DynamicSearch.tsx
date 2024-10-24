@@ -45,6 +45,7 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
     const colorsSmooth = "transition-colors duration-150"
     const optionsStyle = "text-3xl px-2 py-1 md:text-lg text-black dark:text-white bg-white dark:bg-gray-700 shadow-md dark:shadow-black rounded-md outline-none focus:border-gray-900 dark:focus:border-gray-400 border-2 border-transparent hover:scale-[1.05] transition-all duration-75 cursor-pointer"
     const days = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'];
+    const allowedDocTypes = [1, 2];
 
     function resetInputs() {
         setSearchInput('');
@@ -62,22 +63,24 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
         const chosenTypeSet = new Set<string>();
 
         Object.entries(data).forEach((major) => {
-            const majorData = major[1] as MajorTypes;
-            majorData.plan.forEach((day) => {
-                if (day) {
-                    Object.entries(day).forEach(([, lekcja]) => {
-                        const lesson = lekcja as Lesson;
-                        if (searchType == "place") {
-                            if (lesson.place != null) {
-                                chosenTypeSet.add(lesson.place[0] + ' ' + lesson.place[1]);
-                            } else console.log(lesson);
-                        } else {
-                            if (lesson.teacher != null)
-                                chosenTypeSet.add(lesson.teacher);
-                        }
-                    });
-                }
-            });
+            allowedDocTypes.includes(major.doc_type) {
+                const majorData = major[1] as MajorTypes;
+                majorData.plan.forEach((day) => {
+                    if (day) {
+                        Object.entries(day).forEach(([, lekcja]) => {
+                            const lesson = lekcja as Lesson;
+                            if (searchType == "place") {
+                                if (lesson.place != null) {
+                                    chosenTypeSet.add(lesson.place[0] + ' ' + lesson.place[1]);
+                                } else console.log(lesson);
+                            } else {
+                                if (lesson.teacher != null)
+                                    chosenTypeSet.add(lesson.teacher);
+                            }
+                        });
+                    }
+                });
+            }
         });
 
         setSuggestions(Array.from(chosenTypeSet));
