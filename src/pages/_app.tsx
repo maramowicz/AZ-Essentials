@@ -1,14 +1,17 @@
+import { ThemeProvider } from 'next-themes';
+import { DevProvider } from '@/contexts/DevContext';
+import DashboardLayout from '@/pages/layout';
+import { AppProps } from 'next/app';
 import "@/styles/globals.css";
-import type { AppProps } from "next/app";
-import { ThemeProvider } from "next-themes";
-import DashboardLayout from "@/pages/layout";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider attribute="class">
-      <DashboardLayout>
-        <Component {...pageProps} />
-      </DashboardLayout>
+    <ThemeProvider enableSystem={true} attribute="class" defaultTheme="system">
+      <DevProvider>
+        <DashboardLayout>
+          <Component {...pageProps} />
+        </DashboardLayout>
+      </DevProvider>
     </ThemeProvider>
   );
 }

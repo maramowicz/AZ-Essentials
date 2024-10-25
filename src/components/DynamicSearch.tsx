@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import data from '../../public/database.json';
 import Head from 'next/head';
 import ErrorModal from '@/pages/ErrorModal';
+import { useDev } from '@/contexts/DevContext';
 
 interface Lesson {
     place: [];
@@ -15,7 +16,6 @@ interface Lesson {
     subject: string;
     dates: string[];
 }
-
 interface MajorTypes {
     degree: string | null;
     doc_type: number;
@@ -41,10 +41,12 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
     const [results, setResults] = useState<Lesson[]>([]);
     const [showResults, setShowResults] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [daysInSearchType, setDaysInSearchType] = useState<string[]>([])
+    const { isDev } = useDev();
 
     const colorsSmooth = "transition-colors duration-150"
-    const optionsStyle = "text-3xl md:text-4xl px-2 py-1 md:text-lg text-black dark:text-white bg-white dark:bg-gray-950 shadow-md shadow-gray-400 dark:shadow-[1px_2px_5px_1px_rgb(75,75,75)] rounded-md outline-none focus:border-gray-900 dark:focus:border-gray-400 border-2 border-transparent hover:scale-[1.05] transition-all duration-150 cursor-pointer"
-    const days = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'];
+    const optionsStyle = "text-3xl md:text-4xl px-2 py-1 md:text-lg text-black dark:text-white bg-white dark:bg-gray-900 shadow-md shadow-gray-400 dark:shadow-[1px_2px_5px_1px_rgb(10,10,10)] rounded-md outline-none focus:border-gray-900 dark:focus:border-gray-400 border-2 border-transparent hover:scale-[1.05] transition-all duration-150 cursor-pointer"
+    const daysOfWeek = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'];
 
     function resetInputs() {
         setSearchInput('');
@@ -60,7 +62,6 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
         setHoursInput("");
 
         const chosenTypeSet = new Set<string>();
-
         Object.entries(data).forEach((major) => {
             const majorData = major[1] as MajorTypes;
             majorData.plan.forEach((day) => {
@@ -70,6 +71,7 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
                         if (searchType === "place") {
                             const formattedPlace = formatPlace(lesson.place);
                             chosenTypeSet.add(formattedPlace);
+
                         } else {
                             chosenTypeSet.add(lesson.teacher);
                         }
@@ -88,10 +90,15 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
         }
         return place.toString();
     }
+    const dayOrderMap = daysOfWeek.reduce((acc, day, index) => {
+        acc[day] = index;
+        return acc;
+    }, {} as Record<string, number>);
 
     function fetchChosenType(searchValue: string): (Lesson | string | null)[][] | null {
         const chosenTypeSet: (Lesson | string | null)[][] = [];
         setSearchInput(searchValue);
+        const daysInSearchTypeSet = new Set<string>();
 
         if (searchValue.length >= 4) {
             for (const [, major] of Object.entries(data)) {
@@ -102,23 +109,30 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
                             const lesson = lekcja as Lesson;
                             if (searchType == 'place') {
                                 if (formatPlace(lesson.place) === searchValue) {
-                                    chosenTypeSet.push([lesson, days[dayIndex]]);
+                                    chosenTypeSet.push([lesson, daysOfWeek[dayIndex]]);
+                                    daysInSearchTypeSet.add(daysOfWeek[dayIndex])
                                 }
                             } else {
                                 if (lesson.teacher === searchValue) {
-                                    chosenTypeSet.push([lesson, days[dayIndex]]);
+                                    chosenTypeSet.push([lesson, daysOfWeek[dayIndex]]);
+                                    daysInSearchTypeSet.add(daysOfWeek[dayIndex])
                                 }
                             }
                         }
                     }
                 });
+                const sortedDays = Array.from(daysInSearchTypeSet).sort((a, b) => {
+                    return (dayOrderMap[a] || 0) - (dayOrderMap[b] || 0);
+                });
+                setDaysInSearchType(sortedDays);
             }
-
             if (chosenTypeSet.length > 0) {
+                if (isDev) {
+                    console.log("Lekcje posiadające określoną wartość:", chosenTypeSet);
+                }
                 return chosenTypeSet;
             }
         }
-
         return null;
     }
 
@@ -129,6 +143,7 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
 
         if (searchInput.length > 2 && dayInput.length > 2) {
             const lessons = fetchChosenType(searchInput);
+            console.log("lessons:", lessons);
 
             if (lessons) {
                 lessons.forEach((lesson) => {
@@ -140,17 +155,25 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
                     }
                 });
 
-                if (lessonDetails.length > 0) {
+                // console.log(lessonDetails);
+                if (lessonDetails.length != 0) {
+                    // console.log("Są niepuste wyniki");
+
                     const sortedHours = Array.from(hoursSuggestions).sort((a, b) => {
                         const [aHours, aMinutes] = a.split(':').map(Number);
                         const [bHours, bMinutes] = b.split(':').map(Number);
                         return aHours * 60 + aMinutes - (bHours * 60 + bMinutes);
                     });
+                    // console.log(sortedHours);
 
                     setHourSuggestions(sortedHours);
+                    if (isDev && hoursInput.length < 4) {
+                        // console.log("Lekcje spełniające warunki:", lessonDetails);
+                    }
                     return lessonDetails;
                 }
             } else {
+                console.log("Wynik jest pusty");
                 setErrorMessage("Brak wyników");
             }
         }
@@ -167,6 +190,9 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
                 return typeof lesson === 'object' && lesson.start_minute === totalMinutes;
             }) as Lesson[];
             setResults(matchedLessons || []);
+            if (isDev) {
+                // console.log("Znaleziona lekcja:", matchedLessons);
+            }
             return totalMinutes;
         }
     }
@@ -241,7 +267,6 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
             </div>
         );
     }
-
     return (
         <div className='bg-gray-100 dark:bg-gray-900 transition-colors duration-700'>
             <Head>
@@ -257,12 +282,12 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
                         className={`absolute -top-1 left-2 text-2xl mt-4 border-2 border-gray-400 text-black dark:text-white dark:shadow-gray-600 py-1 px-5 rounded-lg hover:scale-105 active:scale-95 focus:scale-105 transition-transform duration-150 ${colorsSmooth}`}>
                         Cofnij
                     </button>
-                    <div className={`bg-gray-100 shadow-[1px_2px_5px_1px_rgb(200,200,200)] dark:shadow-[1px_1px_10px_2px_rgb(50,50,50)] dark:bg-gray-950  rounded-xl py-7 px-4 flex items-center justify-center flex-col gap-2 ${colorsSmooth} duration-700`}>
+                    <div className={`bg-gray-100 shadow-[1px_2px_5px_1px_rgb(200,200,200)] dark:shadow-[1px_2px_8px_1px_rgb(10,10,10)] dark:bg-gray-900  rounded-xl py-7 px-4 flex items-center justify-center flex-col gap-2 ${colorsSmooth} duration-700`}>
                         {/* Todo: resetowanie reszty pól gdy zmienia się sala */}
                         <input
                             type="text"
                             placeholder={searchType == "place" ? "Numer sali" : "Wykładowca"}
-                            className={`w-52 md:w-60 text-3xl md:text-4xl text-black dark:text-white dark:bg-gray-950 pl-2 rounded-md outline-none focus:border-gray-400 border-2 border-transparent placeholder:text-gray-500 dark:placeholder:text-white/65 hover:scale-[1.05] transition-all duration-150 shadow-md shadow-gray-400 dark:shadow-[1px_2px_5px_1px_rgb(75,75,75)]`}
+                            className={`w-52 md:w-60 text-3xl md:text-4xl text-black dark:text-white dark:bg-gray-900 pl-2 rounded-md outline-none focus:border-gray-400 border-2 border-transparent placeholder:text-gray-500 dark:placeholder:text-white/65 hover:scale-[1.05] transition-all duration-150 shadow-md shadow-gray-400 dark:shadow-[1px_2px_5px_1px_rgb(10,10,10)]`}
                             list="suggestions"
                             value={searchInput}
                             onChange={(e) => fetchChosenType(e.target.value)}
@@ -278,7 +303,7 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
                             disabled={searchInput == ""}
                         >
                             <option hidden>Wybierz dzień</option>
-                            {days.map((day, i) => (
+                            {daysInSearchType.map((day, i) => (
                                 <option key={i} value={day}>{day}</option>
                             ))}
                         </select>
@@ -292,10 +317,10 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
                         </select>
                     </div>
                     <button
-                        className={`text-[32px] px-7 py-1.5 rounded-lg focus:border-black focus:scale-[1.1] bg-gray-100 dark:bg-gray-950 shadow-[0px_2px_10px_2px_rgb(200,200,200)] dark:shadow-[0px_2px_10px_2px_rgb(75,75,75)]  transition-all duration-150 hover:scale-105 active:scale-95 ${colorsSmooth}`}
+                        className={`text-[32px] px-7 py-1.5 rounded-lg focus:border-black focus:scale-[1.1] bg-gray-100 dark:bg-gray-900 shadow-[0px_2px_10px_2px_rgb(200,200,200)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] transition-all duration-150 hover:scale-105 active:scale-95 ${colorsSmooth}`}
                         onClick={handleCheck}
                     >
-                        <span className={`text-black dark:text-white ${colorsSmooth}`}>
+                        <span className={`text-black dark:text-gray-200 ${colorsSmooth}`}>
                             Sprawdź
                         </span>
                     </button>

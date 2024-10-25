@@ -59,12 +59,14 @@ function Index() {
   function ListEl({ mainTask, taskDesc, index }: { mainTask: string, taskDesc: string, index: number | null }) {
     const interStyles = "hover:scale-105 active:scale-95 transition-transform duration-150";
     return (
-      <li onClick={() => setChosenAction(index)} title={taskDesc} className={`relative md:h-32 md:w-52 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 border border-gray-300 dark:border-gray-700 rounded-xl shadow-md shadow-gray-300 dark:shadow-black mx-2 ${index == 2 ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"} ${interStyles}`}>
+      <li onClick={() => setChosenAction(index)} title={taskDesc} className={`relative md:h-32 md:w-52 lg:w-64 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5  rounded-xl shadow-[0px_2px_10px_2px_rgb(225,225,225)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] mx-2 lg:text-2xl ${index == 2 ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"} ${interStyles} ${colorsSmooth}`}>
         <span className="font-bold">
           {mainTask}
         </span>
         {index == 2 && (
-          <span className="absolute top-2 md:top-5 pointer-events-none text-red-500 md:text-4xl font-bold rotate-12 bg-gray-800 rounded-md">Not available</span>
+          <span className="absolute top-2 md:top-10 pointer-events-none text-red-500 md:text-4xl font-bold rotate-12  rounded-md">
+            Niedostępne
+          </span>
         )}
         <p className="hidden md:block w-55 text-xs text-gray-600 dark:text-gray-400">
           {taskDesc}
@@ -99,7 +101,7 @@ function Index() {
                 times: [0, 1]
               }}
               onAnimationComplete={handleAnimationComplete}
-              className={`text-2xl text-center shadow-[1px_1px_3px_1px_rgb(225,225,225)] dark:shadow-[1px_1px_5px_1px_rgb(10,10,10)] text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 rounded-lg z-10`}
+              className={`text-2xl md:text-3xl text-center shadow-[0px_2px_10px_2px_rgb(225,225,225)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 rounded-lg z-10 ${colorsSmooth}`}
             >
               Witam w
               <br />
@@ -113,7 +115,7 @@ function Index() {
               animate={{
                 opacity: 1
               }}
-              className={`text-2xl text-center shadow-[1px_1px_3px_1px_rgb(225,225,225)] dark:shadow-[1px_1px_5px_1px_rgb(10,10,10)] text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 rounded-lg z-10`}>
+              className={`text-2xl md:text-3xl text-center shadow-[0px_2px_10px_2px_rgb(225,225,225)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 rounded-lg z-10 ${colorsSmooth}`}>
               Witam w
               <br />
               <b>AZ Essentials</b>
@@ -130,9 +132,9 @@ function Index() {
                 translateY: 0,
               }}
               transition={{ duration: 1, ease: "easeOut" }}
-              className="flex items-center flex-col gap-2"
+              className="flex items-center flex-col lg:gap-1"
             >
-              <span className={`text-black dark:text-white ${colorsSmooth}`}>
+              <span className={`text-black dark:text-white md:text-xl ${colorsSmooth}`}>
                 Co chcesz zrobić?
               </span>
               <ul
@@ -144,9 +146,9 @@ function Index() {
             </motion.div>
           ) : (
             <motion.div
-              className="flex items-center flex-col gap-2"
+              className="flex items-center flex-col lg:gap-1"
             >
-              <span className={`text-black dark:text-white ${colorsSmooth}`}>
+              <span className={`text-black dark:text-white md:text-xl ${colorsSmooth}`}>
                 Co chcesz zrobić?
               </span>
               <ul
