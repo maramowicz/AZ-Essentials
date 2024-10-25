@@ -155,20 +155,23 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
                     }
                 });
 
-                // console.log(lessonDetails);
                 if (lessonDetails.length != 0) {
-                    // console.log("Są niepuste wyniki");
+                    if (isDev) {
+                        console.log("Są niepuste wyniki");
+                    }
 
                     const sortedHours = Array.from(hoursSuggestions).sort((a, b) => {
                         const [aHours, aMinutes] = a.split(':').map(Number);
                         const [bHours, bMinutes] = b.split(':').map(Number);
                         return aHours * 60 + aMinutes - (bHours * 60 + bMinutes);
                     });
-                    // console.log(sortedHours);
+                    if (isDev) {
+                        console.log(sortedHours);
+                    }
 
                     setHourSuggestions(sortedHours);
                     if (isDev && hoursInput.length < 4) {
-                        // console.log("Lekcje spełniające warunki:", lessonDetails);
+                        console.log("Lekcje spełniające warunki:", lessonDetails);
                     }
                     return lessonDetails;
                 }
@@ -191,7 +194,7 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
             }) as Lesson[];
             setResults(matchedLessons || []);
             if (isDev) {
-                // console.log("Znaleziona lekcja:", matchedLessons);
+                console.log("Znaleziona lekcja:", matchedLessons);
             }
             return totalMinutes;
         }

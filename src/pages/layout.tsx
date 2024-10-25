@@ -7,7 +7,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     const { isDev, setIsDev } = useDev();
     const { systemTheme, theme, setTheme } = useTheme();
     const currentTheme = theme === 'system' ? systemTheme : theme;
-
+    
     return (
         <section>
             {children}
@@ -27,6 +27,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             >
                 Beta
             </span>
+            {isDev && (
+                <div className='absolute top-2 right-2 w-2 h-2 bg-yellow-500/25 rounded-full'/>
+            )}
         </section>
     );
 }
