@@ -115,7 +115,7 @@ function Index() {
           {!showAnimation ? (
             <motion.div
               initial={{
-                opacity: 0,
+                opacity: -1,
                 translateY: 25,
               }}
               animate={{
