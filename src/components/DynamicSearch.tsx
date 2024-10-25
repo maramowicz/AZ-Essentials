@@ -4,7 +4,7 @@ import Head from 'next/head';
 import ErrorModal from '@/pages/ErrorModal';
 
 interface Lesson {
-    place: string;
+    place: [];
     name: string;
     start_minute: number;
     end_minute: number;
@@ -67,8 +67,9 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
                 if (day) {
                     Object.entries(day).forEach(([, lekcja]) => {
                         const lesson = lekcja as Lesson;
-                        if (searchType == "place") {
-                            chosenTypeSet.add(lesson.place);
+                        if (searchType === "place") {
+                            const formattedPlace = formatPlace(lesson.place);
+                            chosenTypeSet.add(formattedPlace);
                         } else {
                             chosenTypeSet.add(lesson.teacher);
                         }
@@ -79,6 +80,14 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
 
         setSuggestions(Array.from(chosenTypeSet));
     }, []);
+
+    function formatPlace(place: string[] | object | undefined): string {
+        if (!place) return "";
+        if (Array.isArray(place)) {
+            return place.join(" ");
+        }
+        return place.toString();
+    }
 
     function fetchChosenType(searchValue: string): (Lesson | string | null)[][] | null {
         const chosenTypeSet: (Lesson | string | null)[][] = [];
@@ -92,7 +101,7 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
                         for (const [, lekcja] of Object.entries(day)) {
                             const lesson = lekcja as Lesson;
                             if (searchType == 'place') {
-                                if (lesson.place === searchValue) {
+                                if (formatPlace(lesson.place) === searchValue) {
                                     chosenTypeSet.push([lesson, days[dayIndex]]);
                                 }
                             } else {
@@ -234,7 +243,7 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
     }
 
     return (
-        <div className='bg-gray-100 dark:bg-gray-950 transition-colors duration-700'>
+        <div className='bg-gray-100 dark:bg-gray-900 transition-colors duration-700'>
             <Head>
                 <title>Kto ma w ...?</title>
             </Head>

@@ -64,7 +64,7 @@ function Index() {
           {mainTask}
         </span>
         {index == 2 && (
-          <span className="absolute top-2 pointer-events-none text-red-500 font-bold rotate-12 bg-slate-900">Not available</span>
+          <span className="absolute top-2 md:top-5 pointer-events-none text-red-500 md:text-4xl font-bold rotate-12 bg-gray-800 rounded-md">Not available</span>
         )}
         <p className="hidden md:block w-55 text-xs text-gray-600 dark:text-gray-400">
           {taskDesc}
@@ -84,14 +84,14 @@ function Index() {
           {showAnimation ? (
             <motion.div
               initial={{
-                opacity: 0,
-                translateY: "250%",
+                opacity: -1,
+                translateY: "275%",
                 scale: 1.75
               }}
               animate={{
                 opacity: [0, 1],
-                translateY: ["250%", "200%", "200%", "200%", "0%"],
-                scale: [1.75, 2, 2,1]
+                translateY: ["275%", "201%", "200%", "200%", "0%"],
+                scale: [1.75, 1.9, 1.9, 1]
               }}
               transition={{
                 duration: 2,
@@ -99,18 +99,25 @@ function Index() {
                 times: [0, 1]
               }}
               onAnimationComplete={handleAnimationComplete}
-              className={`text-2xl text-center border-2 shadow-md text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 rounded-lg z-10`}
+              className={`text-2xl text-center shadow-[1px_1px_3px_1px_rgb(225,225,225)] dark:shadow-[1px_1px_5px_1px_rgb(10,10,10)] text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 rounded-lg z-10`}
             >
               Witam w
               <br />
               <b>AZ Essentials</b>
             </motion.div>
           ) : (
-            <div className={`text-2xl text-center border-2 shadow-md text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 rounded-lg z-10`}>
+            <motion.div
+              initial={{
+                opacity: 0
+              }}
+              animate={{
+                opacity: 1
+              }}
+              className={`text-2xl text-center shadow-[1px_1px_3px_1px_rgb(225,225,225)] dark:shadow-[1px_1px_5px_1px_rgb(10,10,10)] text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 rounded-lg z-10`}>
               Witam w
               <br />
               <b>AZ Essentials</b>
-            </div>
+            </motion.div>
           )}
           {!showAnimation ? (
             <motion.div
@@ -130,7 +137,7 @@ function Index() {
               </span>
               <ul
                 className={`text-black dark:text-white flex flex-col md:flex-row gap-5 overflow-y-auto custom-scrollbar py-3 pr-1 ${colorsSmooth}`}>
-                <ListEl mainTask="Sprawdź plan zajęć" taskDesc="Wybierz kierunek i dzień, aby sprawdzić dostępne zajęcia." index={2} />
+                <ListEl mainTask="Sprawdź plan zajęć" taskDesc="Wybierz kierunek i dzień, aby zobaczyć listę przyszłych zajęć." index={2} />
                 <ListEl mainTask="Znajdź wykładowcę" taskDesc="Podaj imię, dzień i godzinę, aby zobaczyć, gdzie dany wykładowca ma zajęcia." index={1} />
                 <ListEl mainTask="Kto jest w sali?" taskDesc="Podaj numer sali, dzień i godzinę, aby sprawdzić, jakie zajęcia się odbędą." index={0} />
               </ul>
