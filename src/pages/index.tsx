@@ -59,14 +59,14 @@ function Index() {
   function ListEl({ mainTask, taskDesc, index }: { mainTask: string, taskDesc: string, index: number | null }) {
     const interStyles = "hover:scale-105 active:scale-95 transition-transform duration-150";
     return (
-      <li onClick={() => setChosenAction(index)} title={taskDesc} className={`relative md:h-[7.5rem] flex items-center flex-col gap-2 text-center px-2 py-2 md:py-5 border border-gray-300 dark:border-gray-700 rounded-xl shadow-md shadow-gray-300 dark:shadow-black mx-2 ${index == 2 ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"} ${interStyles}`}>
+      <li onClick={() => setChosenAction(index)} title={taskDesc} className={`relative md:h-32 md:w-52 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 border border-gray-300 dark:border-gray-700 rounded-xl shadow-md shadow-gray-300 dark:shadow-black mx-2 ${index == 2 ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"} ${interStyles}`}>
         <span className="font-bold">
           {mainTask}
         </span>
         {index == 2 && (
-          <span className="absolute -top-2 pointer-events-none text-red-500 font-bold">Not available</span>
+          <span className="absolute top-2 pointer-events-none text-red-500 font-bold rotate-12 bg-slate-900">Not available</span>
         )}
-        <p className="hidden md:block w-55 text-xs">
+        <p className="hidden md:block w-55 text-xs text-gray-600 dark:text-gray-400">
           {taskDesc}
         </p>
       </li>
@@ -99,14 +99,14 @@ function Index() {
                 times: [0, 1]
               }}
               onAnimationComplete={handleAnimationComplete}
-              className={`text-2xl text-center border-2 shadow-md text-black dark:text-white px-4 py-1.5 rounded-lg bg-slate-900 z-10`}
+              className={`text-2xl text-center border-2 shadow-md text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 rounded-lg z-10`}
             >
               Witam w
               <br />
               <b>AZ Essentials</b>
             </motion.div>
           ) : (
-            <div className={`text-2xl text-center border-2 shadow-md text-black dark:text-white px-4 py-1.5 rounded-lg bg-slate-900 z-10`}>
+            <div className={`text-2xl text-center border-2 shadow-md text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 rounded-lg z-10`}>
               Witam w
               <br />
               <b>AZ Essentials</b>
@@ -130,9 +130,9 @@ function Index() {
               </span>
               <ul
                 className={`text-black dark:text-white flex flex-col md:flex-row gap-5 overflow-y-auto custom-scrollbar py-3 pr-1 ${colorsSmooth}`}>
-                <ListEl mainTask="Znajdź wykładowce" taskDesc="Podaj imię, dzień tygodnia oraz godzinę, aby znaleźć w której sali powinien mieć zajęcia." index={1} />
-                <ListEl mainTask="Sprawdź plan lekcji" taskDesc="Podaj nazwę kierunku i dzień, aby zobaczyć jakie zajęcia się odbędą" index={2} />
-                <ListEl mainTask="Kto jest w sali?" taskDesc="Podaj numer pomieszczenia, dzień tygodnia oraz godzinę, aby sprawdzić, kto w danej sali ma lekcje." index={0} />
+                <ListEl mainTask="Sprawdź plan zajęć" taskDesc="Wybierz kierunek i dzień, aby sprawdzić dostępne zajęcia." index={2} />
+                <ListEl mainTask="Znajdź wykładowcę" taskDesc="Podaj imię, dzień i godzinę, aby zobaczyć, gdzie dany wykładowca ma zajęcia." index={1} />
+                <ListEl mainTask="Kto jest w sali?" taskDesc="Podaj numer sali, dzień i godzinę, aby sprawdzić, jakie zajęcia się odbędą." index={0} />
               </ul>
             </motion.div>
           ) : (
@@ -144,9 +144,9 @@ function Index() {
               </span>
               <ul
                 className={`text-black dark:text-white flex flex-col md:flex-row gap-5 overflow-y-auto custom-scrollbar py-3 pr-1 ${colorsSmooth}`}>
-                <ListEl mainTask="Znajdź wykładowce" taskDesc="Podaj imię, dzień tygodnia oraz godzinę, aby znaleźć w której sali powinien mieć zajęcia." index={1} />
-                <ListEl mainTask="Sprawdź plan lekcji" taskDesc="Podaj nazwę kierunku i dzień, aby zobaczyć jakie zajęcia się odbędą" index={2} />
-                <ListEl mainTask="Kto jest w sali?" taskDesc="Podaj numer pomieszczenia, dzień tygodnia oraz godzinę, aby sprawdzić, kto w danej sali ma lekcje." index={0} />
+                <ListEl mainTask="Sprawdź plan zajęć" taskDesc="Wybierz kierunek i dzień, aby zobaczyć listę przyszłych zajęć." index={2} />
+                <ListEl mainTask="Znajdź wykładowcę" taskDesc="Podaj imię, dzień i godzinę, aby zobaczyć, gdzie dany wykładowca ma zajęcia." index={1} />
+                <ListEl mainTask="Kto jest w sali?" taskDesc="Podaj numer sali, dzień i godzinę, aby sprawdzić, jakie zajęcia się odbędą." index={0} />
               </ul>
             </motion.div>
           )}
