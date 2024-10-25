@@ -12,17 +12,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             {children}
             <button
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="absolute bottom-1 right-3"
+                className="absolute bottom-2 right-3"
             >
                 {currentTheme === 'dark' ? (
-                    <GoSun className="h-12 md:h-14 w-auto px-1 py-1" />
+                    <GoSun className="h-12 md:h-14 lg:h-16 xl:h-20 w-auto px-1 py-1 hover:text-yellow-200 transition-colors duration-500" />
                 ) : (
-                    <GoMoon className="h-12 md:h-14 w-auto px-1 py-1 text-black" />
+                    <GoMoon className="h-12 md:h-14 lg:h-16 xl:h-20 w-auto px-1 py-1 text-black hover:text-blue-800 transition-colors duration-500" />
                 )}
             </button>
             <span
                 onClick={() => setIsDev(true)}
-                className="absolute bottom-0.5 sm:bottom-1 left-2 text-gray-400/60 dark:text-gray-700"
+                className="absolute bottom-0.5 sm:bottom-1 left-2 text-gray-400/60 dark:text-gray-700 lg:text-xl leading-3"
             >
                 Beta
             </span>

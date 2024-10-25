@@ -3,6 +3,7 @@ import data from '../../public/database.json';
 import Head from 'next/head';
 import ErrorModal from '@/pages/ErrorModal';
 import { useDev } from '@/contexts/DevContext';
+import { motion } from 'framer-motion'
 
 interface Lesson {
     place: [];
@@ -45,7 +46,7 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
     const { isDev } = useDev();
 
     const colorsSmooth = "transition-colors duration-150"
-    const optionsStyle = "text-3xl md:text-4xl px-2 py-1 md:text-lg text-black dark:text-white bg-white dark:bg-gray-900 shadow-md shadow-gray-400 dark:shadow-[1px_2px_5px_1px_rgb(10,10,10)] rounded-md outline-none focus:border-gray-900 dark:focus:border-gray-400 border-2 border-transparent hover:scale-[1.05] transition-all duration-150 cursor-pointer"
+    const optionsStyle = "md:w-72 lg:w-[25rem] text-3xl md:text-[32px] lg:text-5xl px-2 py-1 md:text-lg text-black dark:text-white bg-white dark:bg-gray-900 shadow-md shadow-gray-400 dark:shadow-[1px_2px_5px_1px_rgb(10,10,10)] rounded-md outline-none focus:border-gray-900 dark:focus:border-gray-400 border-2 border-transparent hover:scale-[1.05] transition-all duration-150 cursor-pointer disabled:cursor-not-allowed disabled:opacity-25"
     const daysOfWeek = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'];
 
     function resetInputs() {
@@ -203,9 +204,7 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
     function handleCheck() {
         let errorMessages: string = "";
 
-        if (!searchInput && !dayInput && !hoursInput) {
-            errorMessages = "Proszę wypełnić wszystkie pola.";
-        } else if (!searchInput && !dayInput) {
+        if (!searchInput && !dayInput) {
             errorMessages = `Proszę wybrać ${searchType == 'place' ? "sale" : "wykładowce"} i dzień.`;
         } else if (!dayInput && !hoursInput) {
             errorMessages = "Proszę wybrać dzień i godzine.";
@@ -251,17 +250,18 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
         const paddingTop = `${results.length * 3}rem`;
 
         return (
-            <div className="h-[93vh] flex items-center justify-center">
+            <div className="h-[91vh] md:h-[92vh] flex items-center justify-center">
                 <ul className={`relative -top-9 sm:top-0 h-3/4 flex items-center justify-center flex-col gap-2 overflow-y-auto overflow-x-hidden px-1.5 pb-1.5 custom-scrollbar`} style={{ paddingTop }}>
                     {results.map((lesson, index) => (
-                        <li key={index} className='w-[21rem] border-2 border-gray-500 text-center dark:border-slate-600 text-black dark:text-white bg-gray-200 dark:bg-black rounded-lg flex items-center flex-col py-3 mr-1 text-2xl shadow-md shadow-gray-400 dark:shadow-gray-800 transition-all hover:scale-[1.03] duration-100'>
+                        <li key={index} className='max-w-96 text-center text-black dark:text-white  rounded-lg flex items-center flex-col py-3 mr-1 text-2xl
+                         shadow-[1px_2px_5px_1px_rgb(200,200,200)] dark:shadow-[1px_2px_8px_1px_rgb(10,10,10)] transition-all hover:scale-[1.02] duration-100'>
                             <span>{dayInput} <span className={searchType == "place" ? "font-bold" : ""}>{lesson.place}</span></span>
-                            <span className={searchType == "place" ? "" : "font-bold"}>{lesson.teacher}</span>
+                            <span className={`px-10 ${searchType == "place" ? "" : "font-bold"} `}>{lesson.teacher}</span>
                             <span>
                                 {formatTime(lesson.start_minute)} - {formatTime(lesson.end_minute)}
                             </span>
                             <span>{lesson.subject}</span>
-                            <span>
+                            <span className='px-10'>
                                 {lesson.type} {lesson.name}
                             </span>
                         </li>
@@ -279,18 +279,18 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
                 <button className='relative top-2 sm:top-1 text-black dark:text-white border-2 border-black dark:border-white rounded-md text-2xl md:text-lg px-4 md:px-3 mt-2 ml-2 hover:scale-105 active:scale-95 transition-transform duration-150 ' onClick={goBack}>Wróć</button>
             )}
             {!showResults && (
-                <div className="h-screen flex items-center justify-center flex-col gap-5">
+                <div className="h-screen flex items-center justify-center flex-col gap-5 md:gap-10">
                     <button
                         onClick={returnToMenu}
-                        className={`absolute -top-1 left-2 text-2xl mt-4 border-2 border-gray-400 text-black dark:text-white dark:shadow-gray-600 py-1 px-5 rounded-lg hover:scale-105 active:scale-95 focus:scale-105 transition-transform duration-150 ${colorsSmooth}`}>
+                        className={`absolute -top-1 left-2 text-2xl md:text-3xl lg:text-4xl mt-4 border-2 border-gray-400 text-black dark:text-white dark:shadow-gray-600 py-1 px-5 rounded-lg hover:scale-105 active:scale-95 focus:scale-105 transition-transform duration-150 ${colorsSmooth}`}>
                         Cofnij
                     </button>
-                    <div className={`bg-gray-100 shadow-[1px_2px_5px_1px_rgb(200,200,200)] dark:shadow-[1px_2px_8px_1px_rgb(10,10,10)] dark:bg-gray-900  rounded-xl py-7 px-4 flex items-center justify-center flex-col gap-2 ${colorsSmooth} duration-700`}>
+                    <div className={`bg-gray-100 shadow-[1px_2px_5px_1px_rgb(200,200,200)] dark:shadow-[1px_2px_8px_1px_rgb(10,10,10)] dark:bg-gray-900 rounded-xl py-7 px-4 md:px-7 flex items-center justify-center flex-col gap-2 ${colorsSmooth} duration-700`}>
                         {/* Todo: resetowanie reszty pól gdy zmienia się sala */}
                         <input
                             type="text"
                             placeholder={searchType == "place" ? "Numer sali" : "Wykładowca"}
-                            className={`w-52 md:w-60 text-3xl md:text-4xl text-black dark:text-white dark:bg-gray-900 pl-2 rounded-md outline-none focus:border-gray-400 border-2 border-transparent placeholder:text-gray-500 dark:placeholder:text-white/65 hover:scale-[1.05] transition-all duration-150 shadow-md shadow-gray-400 dark:shadow-[1px_2px_5px_1px_rgb(10,10,10)]`}
+                            className={`w-52 md:w-72 lg:w-[25rem] text-3xl md:text-4xl lg:text-5xl text-black dark:text-white dark:bg-gray-900 pl-2 rounded-md outline-none focus:border-gray-400 border-2 border-transparent placeholder:text-gray-500 dark:placeholder:text-white/65 hover:scale-[1.05] transition-all duration-150 shadow-md shadow-gray-400 dark:shadow-[1px_2px_5px_1px_rgb(10,10,10)]`}
                             list="suggestions"
                             value={searchInput}
                             onChange={(e) => fetchChosenType(e.target.value)}
@@ -302,17 +302,15 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
                                 ))}
                             </datalist>
                         )}
-                        <select className={`${optionsStyle} disabled:cursor-not-allowed`} onChange={(e) => fetchDay(e.target.value)}
-                            disabled={searchInput == ""}
-                        >
+                        <select className={`${optionsStyle}`} onChange={(e) => fetchDay(e.target.value)}
+                            disabled={searchInput == ""}>
                             <option hidden>Wybierz dzień</option>
                             {daysInSearchType.map((day, i) => (
                                 <option key={i} value={day}>{day}</option>
                             ))}
                         </select>
-                        <select className={`${optionsStyle} disabled:cursor-not-allowed`} onChange={(e) => fetchHours(e.target.value)}
-                            disabled={!dayInput}
-                        >
+                        <select className={`${optionsStyle}`} onChange={(e) => fetchHours(e.target.value)}
+                            disabled={!dayInput}>
                             <option hidden>Wybierz godzine</option>
                             {hourSuggestions.map((hour, i) => (
                                 <option key={i} value={hour}>Od {hour}</option>
@@ -320,10 +318,10 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
                         </select>
                     </div>
                     <button
-                        className={`text-[32px] px-7 py-1.5 rounded-lg focus:border-black focus:scale-[1.1] bg-gray-100 dark:bg-gray-900 shadow-[0px_2px_10px_2px_rgb(200,200,200)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] transition-all duration-150 hover:scale-105 active:scale-95 ${colorsSmooth}`}
+                        className={`text-[32px] md:text-6xl px-7 py-1.5 rounded-lg focus:border-black focus:scale-[1.1] bg-gray-100 dark:bg-gray-900 shadow-[0px_2px_10px_2px_rgb(200,200,200)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] transition-all duration-150  hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 ${colorsSmooth}`}
                         onClick={handleCheck}
-                    >
-                        <span className={`text-black dark:text-gray-200 ${colorsSmooth}`}>
+                        disabled={(!searchInput && !dayInput && !hoursInput)}>
+                        <span className={`text-black dark:text-gray-200 ${colorsSmooth} `}>
                             Sprawdź
                         </span>
                     </button>
