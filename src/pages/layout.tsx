@@ -1,4 +1,3 @@
-// components/DashboardLayout.tsx
 import { useTheme } from 'next-themes';
 import { GoMoon, GoSun } from 'react-icons/go';
 import { useDev } from '@/contexts/DevContext';
@@ -7,7 +6,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     const { isDev, setIsDev } = useDev();
     const { systemTheme, theme, setTheme } = useTheme();
     const currentTheme = theme === 'system' ? systemTheme : theme;
-    
+
     return (
         <section>
             {children}
@@ -28,7 +27,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 Beta
             </span>
             {isDev && (
-                <div className='absolute top-2 right-2 w-2 h-2 bg-yellow-500/25 rounded-full'/>
+                <div className='absolute top-2 right-2 w-2 h-2 bg-red-500/25 rounded-full' />
             )}
         </section>
     );
