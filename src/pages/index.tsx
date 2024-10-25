@@ -85,16 +85,16 @@ function Index() {
             <motion.div
               initial={{
                 opacity: 0,
-                translateY: "350%",
+                translateY: "250%",
                 scale: 1.75
               }}
               animate={{
                 opacity: [0, 1],
-                translateY: ["350%", "200%", "197%", "200%", "190%", "0%"],
-                scale: [1.75, 2, 2, 1]
+                translateY: ["250%", "200%", "200%", "200%", "0%"],
+                scale: [1.75, 2, 2,1]
               }}
               transition={{
-                duration: 5,
+                duration: 2,
                 ease: "easeInOut",
                 times: [0, 1]
               }}
