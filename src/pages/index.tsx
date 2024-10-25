@@ -37,34 +37,26 @@ function Index() {
   }
 
   function ListEl({ mainTask, taskDesc, index }: { mainTask: string, taskDesc: string, index: number }) {
-    const interStyles = "hover:scale-105 active:scale-95 transition-transform duration-150";
     return (
       <motion.li
-        initial={{
-          opacity: 0,
-          translateY: 50
-        }}
-        animate={{
-          opacity: 1,
-          translateY: 0
-        }}
+        initial={{ opacity: 0, translateY: 30 }}
+        animate={{ opacity: 1, translateY: 0 }}
         transition={{
-          duration: 2,
-          ease: "linear",
-          delay: index / 2 + 2
+          duration: 1,
+          ease: "easeInOut",
+          delay: index + 2
         }}
-        onClick={() => setChosenAction(index)} title={taskDesc} className={`relative md:h-32 md:w-52 lg:w-64 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-xl shadow-[0px_2px_10px_2px_rgb(225,225,225)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] mx-2 lg:text-2xl ${index == 2 ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"} ${interStyles} ${colorsSmooth}`}>
-        <span className="font-bold">
-          {mainTask}
-        </span>
-        {index == 2 && (
-          <span className="absolute top-2 md:top-10 pointer-events-none text-red-500 md:text-4xl font-bold rotate-12  rounded-md">
+        onClick={() => setChosenAction(index)}
+        title={taskDesc}
+        className={`relative md:h-32 md:w-52 lg:w-64 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-xl shadow-[0px_2px_10px_2px_rgb(225,225,225)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] mx-2 lg:text-2xl ${index == 2 ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"}  ${colorsSmooth}`}
+      >
+        <span className="font-bold">{mainTask}</span>
+        {index === 2 && (
+          <span className="absolute top-2 md:top-10 pointer-events-none text-red-500 md:text-4xl font-bold rotate-12 rounded-md">
             Niedostępne
           </span>
         )}
-        <p className="hidden md:block w-55 text-xs text-gray-600 dark:text-gray-400">
-          {taskDesc}
-        </p>
+        <p className="hidden md:block w-55 text-xs text-gray-600 dark:text-gray-400">{taskDesc}</p>
       </motion.li>
     );
   }
@@ -115,7 +107,7 @@ function Index() {
             </motion.span>
             <ul
               className={`text-black dark:text-white flex flex-col md:flex-row gap-5 py-3 pr-1 ${colorsSmooth}`}>
-              <ListEl mainTask="Kto jest w sali?" taskDesc="Podaj numer sali, dzień i godzinę, aby sprawdzić, jakie zajęcia się odbędą." index={0} />
+              <ListEl mainTask="Wyświetl info o sali?" taskDesc="Podaj numer sali, dzień i godzinę, aby sprawdzić, jakie zajęcia się odbędą." index={0} />
               <ListEl mainTask="Znajdź wykładowcę" taskDesc="Podaj imię, dzień i godzinę, aby zobaczyć, gdzie dany wykładowca ma zajęcia." index={1} />
               <ListEl mainTask="Sprawdź plan zajęć" taskDesc="Wybierz kierunek i dzień, aby zobaczyć listę przyszłych zajęć." index={2} />
             </ul>
