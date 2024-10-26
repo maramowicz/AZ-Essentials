@@ -57,11 +57,11 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
     }
 
     useEffect(() => {
-        // resetInputs();
-        // console.clear();
-        // setSearchInput("");
-        // setDayInput("");
-        // setHoursInput("");
+        resetInputs();
+        console.clear();
+        setSearchInput("");
+        setDayInput("");
+        setHoursInput("");
 
         const chosenTypeSet = new Set<string>();
         Object.entries(data).forEach((major) => {
