@@ -3,7 +3,6 @@ import data from '../../public/database.json';
 import Head from 'next/head';
 import ErrorModal from '@/pages/ErrorModal';
 import { useDev } from '@/contexts/DevContext';
-import { motion } from 'framer-motion'
 
 interface Lesson {
     place: [];
