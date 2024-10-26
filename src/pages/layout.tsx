@@ -7,6 +7,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     const { systemTheme, theme, setTheme } = useTheme();
     const currentTheme = theme === 'system' ? systemTheme : theme;
 
+    console.clear();
+
     return (
         <section>
             {children}

@@ -1,6 +1,5 @@
 // Todo: Wybierz dzisiejszy dzień i może godzine domyślnie
 import React, { useState, useEffect } from 'react';
-import data from '../../public/database.json';
 import Head from 'next/head';
 import ErrorModal from '@/pages/ErrorModal';
 import { useDev } from '@/contexts/DevContext';
@@ -64,7 +63,6 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
                 if (!response.ok) throw new Error("Failed to fetch data");
                 const jsonData = await response.json();
                 setData(jsonData);
-                if (isDev) console.log("Pobrane dane:", jsonData);
             } catch (error) {
                 setErrorMessage("Błąd przy pobieraniu danych.");
             }
@@ -76,7 +74,9 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
         setSearchInput("");
         setDayInput("");
         setHoursInput("");
+    }, []);
 
+    useEffect(() => {
         const chosenTypeSet = new Set<string>();
         if (data) {
             Object.entries(data).forEach((major) => {
@@ -95,9 +95,17 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
                     }
                 });
             });
+
             setSuggestions(Array.from(chosenTypeSet));
+            if (isDev) console.log("Podpowiedzi:", suggestions);
         }
-    }, []);
+    }, [data, searchType]);
+
+    useEffect(() => {
+        if (isDev && data) {
+            console.log("Pobrane dane:", data);
+        }
+    }, [data]);
 
     function formatPlace(place: string[] | object | undefined): string {
         if (!place) return "";
@@ -279,7 +287,7 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
     return (
         <div className={`h-[100vh] bg-gray-100 dark:bg-gray-900 transition-colors duration-700 overflow-y-hidden ${isDev && "border"}`}>
             <Head>
-                <title>Kto ma w ...?</title>
+                <title>{searchType == "place" ? "Kto ma w ...?" : "Gdzie jest ...?"}</title>
             </Head>
             {showResults && results.length > 0 && (
                 <button className='relative top-2 sm:top-1 text-black dark:text-white border-2 border-black dark:border-white rounded-md text-2xl md:text-lg px-4 md:px-3 mt-2 ml-2 hover:scale-105 active:scale-95 transition-transform duration-150 ' onClick={goBack}>Wróć</button>
