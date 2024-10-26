@@ -44,7 +44,7 @@ function Index() {
         transition={{
           duration: 0.5,
           ease: "easeInOut",
-          delay: index + 1
+          delay: index + 2.25
         }}
         onClick={() => setChosenAction(index)}
         title={taskDesc}

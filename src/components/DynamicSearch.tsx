@@ -34,6 +34,7 @@ interface DynamicSearchProps {
 }
 
 function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
+    const [data, setData] = useState<Record<string, MajorTypes> | null>(null);
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [hourSuggestions, setHourSuggestions] = useState<string[]>([]);
     const [searchInput, setSearchInput] = useState<string>('');
@@ -57,6 +58,19 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
     }
 
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('https://maramowicz.dev/azapi/database.json');
+                if (!response.ok) throw new Error("Failed to fetch data");
+                const jsonData = await response.json();
+                setData(jsonData);
+                if (isDev) console.log("Pobrane dane:", jsonData);
+            } catch (error) {
+                setErrorMessage("Błąd przy pobieraniu danych.");
+            }
+        };
+
+        fetchData();
         resetInputs();
         console.clear();
         setSearchInput("");
@@ -64,25 +78,25 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
         setHoursInput("");
 
         const chosenTypeSet = new Set<string>();
-        Object.entries(data).forEach((major) => {
-            const majorData = major[1] as MajorTypes;
-            majorData.plan.forEach((day) => {
-                if (day) {
-                    Object.entries(day).forEach(([, lekcja]) => {
-                        const lesson = lekcja as Lesson;
-                        if (searchType === "place") {
-                            const formattedPlace = formatPlace(lesson.place);
-                            chosenTypeSet.add(formattedPlace);
-
-                        } else {
-                            chosenTypeSet.add(lesson.teacher);
-                        }
-                    });
-                }
+        if (data) {
+            Object.entries(data).forEach((major) => {
+                const majorData = major[1] as MajorTypes;
+                majorData.plan.forEach((day) => {
+                    if (day) {
+                        Object.entries(day).forEach(([, lekcja]) => {
+                            const lesson = lekcja as Lesson;
+                            if (searchType === "place") {
+                                const formattedPlace = formatPlace(lesson.place);
+                                chosenTypeSet.add(formattedPlace);
+                            } else {
+                                chosenTypeSet.add(lesson.teacher);
+                            }
+                        });
+                    }
+                });
             });
-        });
-
-        setSuggestions(Array.from(chosenTypeSet));
+            setSuggestions(Array.from(chosenTypeSet));
+        }
     }, []);
 
     function formatPlace(place: string[] | object | undefined): string {
@@ -102,7 +116,7 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
         setSearchInput(searchValue);
         const daysInSearchTypeSet = new Set<string>();
 
-        if (searchValue.length >= 4) {
+        if (searchValue.length >= 4 && data) {
             for (const [, major] of Object.entries(data)) {
                 const majorData = major as MajorTypes;
                 majorData.plan.forEach((day, dayIndex) => {

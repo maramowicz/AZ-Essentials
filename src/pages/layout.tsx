@@ -22,7 +22,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </button>
             <span
                 onDoubleClick={() => setIsDev(true)}
-                className="absolute bottom-4 md:bottom-1 left-2 text-gray-400/60 dark:text-gray-700 lg:text-xl leading-3"
+                className="absolute bottom-4 md:bottom-1 left-2 text-gray-400 dark:text-gray-700 lg:text-xl leading-3"
             >
                 Beta
             </span>
