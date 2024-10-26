@@ -48,7 +48,7 @@ function Index() {
         }}
         onClick={() => setChosenAction(index)}
         title={taskDesc}
-        className={`relative md:w-52 lg:w-72 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] transition-colors duration-500 hover:bg-gray-100 dark:hover:bg-gray-800/50 ${index == 2 ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"}  ${colorsSmooth}`}
+        className={`relative md:w-52 lg:w-72 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full md:rounded-xl shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] transition-colors duration-500 hover:bg-gray-100 dark:hover:bg-gray-800/50 ${index == 2 ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"}  ${colorsSmooth}`}
       >
         <span className="font-bold md:text-xl text-black dark:text-white transition-colors duration-100">{mainTask}</span>
         {index === 2 && (
