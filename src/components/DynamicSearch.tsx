@@ -64,6 +64,7 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
                 const jsonData = await response.json();
                 setData(jsonData);
             } catch (error) {
+                console.error(error);
                 setErrorMessage("Błąd przy pobieraniu danych.");
             }
         };
