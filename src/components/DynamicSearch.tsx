@@ -1,3 +1,4 @@
+// Todo: Wybierz dzisiejszy dzień i może godzine domyślnie
 import React, { useState, useEffect } from 'react';
 import data from '../../public/database.json';
 import Head from 'next/head';
@@ -45,7 +46,8 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
     const { isDev } = useDev();
 
     const colorsSmooth = "transition-colors duration-150"
-    const optionsStyle = "md:w-72 lg:w-[25rem] text-3xl md:text-[32px] lg:text-5xl px-2 py-1 md:text-lg text-black dark:text-white bg-white dark:bg-gray-900 shadow-md shadow-gray-400 dark:shadow-[1px_2px_5px_1px_rgb(10,10,10)] rounded-md outline-none focus:border-gray-900 dark:focus:border-gray-400 border-2 border-transparent hover:scale-[1.05] transition-all duration-150 cursor-pointer disabled:cursor-not-allowed disabled:opacity-25"
+    const optionsStyle = "md:w-72 lg:w-[25rem] text-3xl md:text-[32px] lg:text-5xl px-2 py-1 md:text-lg text-black dark:text-white bg-white dark:bg-gray-900 shadow-md shadow-gray-400 disabled:shadow-black dark:shadow-[1px_2px_5px_1px_rgb(10,10,10)] rounded-md outline-none focus:border-gray-900 dark:focus:border-gray-400 border-2 border-transparent hover:scale-[1.05] transition-all duration-150 cursor-pointer disabled:cursor-not-allowed disabled:opacity-25"
+
     const daysOfWeek = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'];
 
     function resetInputs() {
@@ -55,11 +57,11 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
     }
 
     useEffect(() => {
-        resetInputs();
-        console.clear();
-        setSearchInput("");
-        setDayInput("");
-        setHoursInput("");
+        // resetInputs();
+        // console.clear();
+        // setSearchInput("");
+        // setDayInput("");
+        // setHoursInput("");
 
         const chosenTypeSet = new Set<string>();
         Object.entries(data).forEach((major) => {
@@ -127,9 +129,7 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
                 setDaysInSearchType(sortedDays);
             }
             if (chosenTypeSet.length > 0) {
-                if (isDev) {
-                    console.log("Lekcje posiadające określoną wartość:", chosenTypeSet);
-                }
+                if (isDev) console.log("Lekcje posiadające określoną wartość:", chosenTypeSet);
                 return chosenTypeSet;
             }
         }
@@ -143,7 +143,7 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
 
         if (searchInput.length > 2 && dayInput.length > 2) {
             const lessons = fetchChosenType(searchInput);
-            console.log("lessons:", lessons);
+            if (isDev) console.log("lessons:", lessons);
 
             if (lessons) {
                 lessons.forEach((lesson) => {
@@ -156,18 +156,15 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
                 });
 
                 if (lessonDetails.length != 0) {
-                    if (isDev) {
-                        console.log("Są niepuste wyniki");
-                    }
+                    if (isDev) console.log("Są niepuste wyniki");
+
 
                     const sortedHours = Array.from(hoursSuggestions).sort((a, b) => {
                         const [aHours, aMinutes] = a.split(':').map(Number);
                         const [bHours, bMinutes] = b.split(':').map(Number);
                         return aHours * 60 + aMinutes - (bHours * 60 + bMinutes);
                     });
-                    if (isDev) {
-                        console.log(sortedHours);
-                    }
+                    if (isDev) console.log(sortedHours);
 
                     setHourSuggestions(sortedHours);
                     if (isDev && hoursInput.length < 4) {
@@ -190,12 +187,10 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
             const [hours, minutes] = timeInput.split(':').map(Number);
             const totalMinutes = hours * 60 + minutes;
             const matchedLessons = lessonsData?.filter(lesson => {
-                return typeof lesson === 'object' && lesson.start_minute === totalMinutes;
+                return typeof lesson === 'object' && lesson.start_minute == totalMinutes;
             }) as Lesson[];
             setResults(matchedLessons || []);
-            if (isDev) {
-                console.log("Znaleziona lekcja:", matchedLessons);
-            }
+            if (isDev) console.log("Znaleziona lekcja:", matchedLessons);
             return totalMinutes;
         }
     }
@@ -246,14 +241,12 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
             return `${Math.floor(time / 60)}:${time % 60 === 0 ? '00' : time % 60 < 10 ? '0' + (time % 60) : time % 60}`;
         }
 
-        const paddingTop = `${results.length * 3}rem`;
-
         return (
             <div className="h-[91vh] md:h-[92vh] flex items-center justify-center">
-                <ul className={`relative -top-9 sm:top-0 h-3/4 flex items-center justify-center flex-col gap-2 overflow-y-auto overflow-x-hidden px-1.5 pb-1.5 custom-scrollbar`} style={{ paddingTop }}>
+                <ul className={`relative -top-9 sm:top-0 h-[78%] flex items-center justify-center flex-col gap-2 md:gap-4 overflow-y-auto overflow-x-hidden px-2 pb-1.5 custom-scrollbar ${isDev && "border border-red-500"}`}>
                     {results.map((lesson, index) => (
-                        <li key={index} className='max-w-96 text-center text-black dark:text-white  rounded-lg flex items-center flex-col py-3 mr-1 text-2xl
-                         shadow-[1px_2px_5px_1px_rgb(200,200,200)] dark:shadow-[1px_2px_8px_1px_rgb(10,10,10)] transition-all hover:scale-[1.02] duration-100'>
+                        <li key={index} className={`w-80 sm:w-96 text-center text-black dark:text-white rounded-lg flex items-center flex-col py-3 mr-1 text-2xl
+                         shadow-[0px_3px_8px_2px_rgb(100,100,100)] dark:shadow-[1px_2px_8px_1px_rgb(10,10,10)] transition-all hover:scale-[1.02] duration-100 ${isDev && "border border-blue-500"}`}>
                             <span>{dayInput} <span className={searchType == "place" ? "font-bold" : ""}>{lesson.place}</span></span>
                             <span className={`px-10 ${searchType == "place" ? "" : "font-bold"} `}>{lesson.teacher}</span>
                             <span>
@@ -270,7 +263,7 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
         );
     }
     return (
-        <div className='bg-gray-100 dark:bg-gray-900 transition-colors duration-700'>
+        <div className={`h-[100vh] bg-gray-100 dark:bg-gray-900 transition-colors duration-700 overflow-y-hidden ${isDev && "border"}`}>
             <Head>
                 <title>Kto ma w ...?</title>
             </Head>
@@ -278,13 +271,14 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
                 <button className='relative top-2 sm:top-1 text-black dark:text-white border-2 border-black dark:border-white rounded-md text-2xl md:text-lg px-4 md:px-3 mt-2 ml-2 hover:scale-105 active:scale-95 transition-transform duration-150 ' onClick={goBack}>Wróć</button>
             )}
             {!showResults && (
-                <div className="h-screen flex items-center justify-center flex-col gap-5 md:gap-10">
+                <div className={`relative h-full flex items-center justify-center flex-col gap-5 md:gap-10 ${isDev && "border border-yellow-500"}`}>
                     <button
                         onClick={returnToMenu}
                         className={`absolute -top-1 left-2 text-2xl md:text-3xl lg:text-4xl mt-4 border-2 border-gray-400 text-black dark:text-white dark:shadow-gray-600 py-1 px-5 rounded-lg hover:scale-105 active:scale-95 focus:scale-105 transition-transform duration-150 ${colorsSmooth}`}>
                         Cofnij
                     </button>
-                    <div className={`bg-gray-100 shadow-[1px_2px_5px_1px_rgb(200,200,200)] dark:shadow-[1px_2px_8px_1px_rgb(10,10,10)] dark:bg-gray-900 rounded-xl py-7 px-4 md:px-7 flex items-center justify-center flex-col gap-2 ${colorsSmooth} duration-700`}>
+                    <div
+                        className={`bg-gray-100 shadow-[1px_2px_10px_1px_rgb(125,125,125)] dark:shadow-[1px_2px_8px_1px_rgb(10,10,10)] dark:bg-gray-900 rounded-xl py-7 px-4 md:px-7 flex items-center justify-center flex-col gap-2 ${colorsSmooth} duration-700 ${isDev && "border border-red-500"}`}>
                         {/* Todo: resetowanie reszty pól gdy zmienia się sala */}
                         <input
                             type="text"
@@ -317,9 +311,9 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
                         </select>
                     </div>
                     <button
-                        className={`text-[32px] md:text-6xl px-7 py-1.5 rounded-lg focus:border-black focus:scale-[1.1] bg-gray-100 dark:bg-gray-900 shadow-[0px_2px_10px_2px_rgb(200,200,200)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] transition-all duration-150  hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 ${colorsSmooth}`}
+                        className={`text-[32px] md:text-6xl px-7 py-1.5 rounded-lg focus:border-black focus:scale-[1.1] bg-gray-100 dark:bg-gray-900 disabled:shadow-[0px_4px_10px_4px_rgb(75,75,75)] shadow-[0px_4px_10px_4px_rgb(150,150,150)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] transition-all duration-150  hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 ${colorsSmooth} transition-transform`}
                         onClick={handleCheck}
-                        disabled={(!searchInput && !dayInput && !hoursInput)}>
+                        disabled={(!hoursInput)}>
                         <span className={`text-black dark:text-gray-200 ${colorsSmooth} `}>
                             Sprawdź
                         </span>

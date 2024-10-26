@@ -42,13 +42,13 @@ function Index() {
         initial={{ opacity: 0, translateY: 30 }}
         animate={{ opacity: 1, translateY: 0 }}
         transition={{
-          duration: 1,
+          duration: 0.5,
           ease: "easeInOut",
-          delay: index + 2
+          delay: index + 1
         }}
         onClick={() => setChosenAction(index)}
         title={taskDesc}
-        className={`relative md:w-52 lg:w-72 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-xl shadow-[0px_2px_10px_2px_rgb(225,225,225)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] transition-colors duration-500 hover:bg-gray-100 dark:hover:bg-gray-800/50 ${index == 2 ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"}  ${colorsSmooth}`}
+        className={`relative md:w-52 lg:w-72 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] transition-colors duration-500 hover:bg-gray-100 dark:hover:bg-gray-800/50 ${index == 2 ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"}  ${colorsSmooth}`}
       >
         <span className="font-bold md:text-xl text-black dark:text-white transition-colors duration-100">{mainTask}</span>
         {index === 2 && (
@@ -81,7 +81,7 @@ function Index() {
               duration: 1,
               ease: "easeOut",
             }}
-            className={`text-2xl md:text-3xl lg:text-5xl text-center shadow-[0px_2px_10px_2px_rgb(225,225,225)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 md:py-3 lg:py-5 rounded-lg z-10  ${colorsSmooth}`}
+            className={`text-2xl md:text-3xl lg:text-5xl text-center shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 md:py-3 lg:py-5 rounded-xl z-10  ${colorsSmooth}`}
           >
             Witam w
             <br />
