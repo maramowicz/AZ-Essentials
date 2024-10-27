@@ -20,9 +20,3 @@ interface MajorTypes {
     type: string | null;
     year: number | null;
 }
-
-interface DynamicSearchProps {
-    returnToMenu: () => void;
-    searchType: string;
-    firstTryFetchingData?: MajorTypes[];
-}
