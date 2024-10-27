@@ -4,36 +4,8 @@ import Head from 'next/head';
 import ErrorModal from '@/pages/ErrorModal';
 import { useDev } from '@/contexts/DevContext';
 
-interface Lesson {
-    place: [];
-    name: string;
-    start_minute: number;
-    end_minute: number;
-    duration: number;
-    whatever: string;
-    type: string;
-    teacher: string;
-    subject: string;
-    dates: string[];
-}
-interface MajorTypes {
-    degree: string | null;
-    doc_type: number;
-    groups: string[];
-    name: string | null;
-    plan: Lesson[][];
-    semester: string | null;
-    type: string | null;
-    year: number | null;
-}
-
-interface DynamicSearchProps {
-    returnToMenu: () => void;
-    searchType: 'teacher' | 'place';
-}
-
-function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
-    const [data, setData] = useState<Record<string, MajorTypes> | null>(null);
+function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: DynamicSearchProps) {
+    const [data, setData] = useState<MajorTypes[]>();
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [hourSuggestions, setHourSuggestions] = useState<string[]>([]);
     const [searchInput, setSearchInput] = useState<string>('');
@@ -57,24 +29,36 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
     }
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch('https://maramowicz.dev/azapi/database.json');
-                if (!response.ok) throw new Error("Failed to fetch data");
-                const jsonData = await response.json();
-                setData(jsonData);
-            } catch (error) {
-                console.error(error);
-                setErrorMessage("Błąd przy pobieraniu danych.");
-            }
-        };
+        if (firstTryFetchingData) {
+            if (isDev) console.log("Dane istnieją, nie trzeba ich pobierać");
+            setData(firstTryFetchingData);
+        } else {
+            const fetchData = async () => {
+                try {
+                    const response = await fetch('https://maramowicz.dev/azapi/database.json');
+                    if (!response.ok) throw new Error("Failed to fetch data");
+                    const jsonData: MajorTypes[] = await response.json();
+                    const filteredData = jsonData.filter((major: MajorTypes) => {
+                        return major.doc_type !== -1 && major.doc_type !== -2;
+                    });
+                    if (isDev) console.log(filteredData);
 
-        fetchData();
-        resetInputs();
-        console.clear();
-        setSearchInput("");
-        setDayInput("");
-        setHoursInput("");
+                    setData(filteredData);
+                } catch (error) {
+                    console.error(error);
+                    setErrorMessage("Błąd przy pobieraniu danych.");
+                    setTimeout(() => {
+                        returnToMenu()
+                    }, 2000)
+                }
+            };
+            console.clear();
+            fetchData();
+            resetInputs();
+            setSearchInput("");
+            setDayInput("");
+            setHoursInput("");
+        }
     }, []);
 
     useEffect(() => {
@@ -96,9 +80,8 @@ function DynamicSearch({ returnToMenu, searchType }: DynamicSearchProps) {
                     }
                 });
             });
-
             setSuggestions(Array.from(chosenTypeSet));
-            if (isDev) console.log("Podpowiedzi:", suggestions);
+            if (isDev) console.log("Podpowiedzi:", Array.from(chosenTypeSet));
         }
     }, [data, searchType]);
 
