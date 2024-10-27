@@ -26,7 +26,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     onDoubleClick={() => {
                         setIsDev(true); console.log("Uruchomiono tryb developera, miłego debugowania");
                     }}
-                    className="absolute bottom-6 md:bottom-1 left-2 text-gray-400 dark:text-gray-700 lg:text-xl leading-3"
+                    className="absolute bottom-6 md:bottom-3 left-2 text-gray-400 dark:text-gray-700 lg:text-xl leading-3"
                 >
                     Beta
                 </span>
