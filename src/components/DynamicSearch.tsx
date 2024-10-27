@@ -4,8 +4,7 @@ import Head from 'next/head';
 import ErrorModal from '@/pages/ErrorModal';
 import { useDev } from '@/contexts/DevContext';
 
-function DynamicSearch(props: DynamicSearchProps) {
-    const { returnToMenu, searchType, firstTryFetchingData } = props;
+function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: DynamicSearchProps) {
     const [data, setData] = useState<MajorTypes[]>();
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [hourSuggestions, setHourSuggestions] = useState<string[]>([]);
