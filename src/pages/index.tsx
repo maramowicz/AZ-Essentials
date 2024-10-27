@@ -5,6 +5,8 @@ import DynamicSearch from "@/components/DynamicSearch";
 import { useEffect, useState } from "react";
 import { motion } from 'framer-motion';
 import MajorSchedule from "@/components/MajorSchedule";
+import { MajorTypes } from '@/types/type';
+
 
 function Index() {
   const [chosenAction, setChosenAction] = useState<number | null>(null);

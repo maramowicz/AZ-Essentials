@@ -1,6 +1,8 @@
 import { useDev } from '@/contexts/DevContext';
 import ErrorModal from '@/pages/ErrorModal';
 import React, { useEffect, useState } from 'react';
+import { MajorTypes } from '@/types/type';
+
 
 interface MajorScheduleProps {
     firstTryFetchingData: MajorTypes[] | undefined;

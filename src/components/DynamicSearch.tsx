@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import ErrorModal from '@/pages/ErrorModal';
 import { useDev } from '@/contexts/DevContext';
-
+import { MajorTypes, LessonTypes } from '@/types/type';
 
 function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {
     returnToMenu: () => void;
@@ -16,7 +16,7 @@ function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {
     const [searchInput, setSearchInput] = useState<string>('');
     const [dayInput, setDayInput] = useState<string>('');
     const [hoursInput, setHoursInput] = useState<string>('');
-    const [results, setResults] = useState<Lesson[]>([]);
+    const [results, setResults] = useState<LessonTypes[]>([]);
     const [showResults, setShowResults] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [daysInSearchType, setDaysInSearchType] = useState<string[]>([])
@@ -74,12 +74,12 @@ function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {
                 majorData.plan.forEach((day) => {
                     if (day) {
                         Object.entries(day).forEach(([, lekcja]) => {
-                            const lesson = lekcja as Lesson;
+                            const LessonTypes = lekcja as LessonTypes;
                             if (searchType === "place") {
-                                const formattedPlace = formatPlace(lesson.place);
+                                const formattedPlace = formatPlace(LessonTypes.place);
                                 chosenTypeSet.add(formattedPlace);
                             } else {
-                                chosenTypeSet.add(lesson.teacher);
+                                chosenTypeSet.add(LessonTypes.teacher);
                             }
                         });
                     }
@@ -108,8 +108,8 @@ function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {
         return acc;
     }, {} as Record<string, number>);
 
-    function fetchChosenType(searchValue: string): (Lesson | string | null)[][] | null {
-        const chosenTypeSet: (Lesson | string | null)[][] = [];
+    function fetchChosenType(searchValue: string): (LessonTypes | string | null)[][] | null {
+        const chosenTypeSet: (LessonTypes | string | null)[][] = [];
         setSearchInput(searchValue);
         const daysInSearchTypeSet = new Set<string>();
 
@@ -119,15 +119,15 @@ function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {
                 majorData.plan.forEach((day, dayIndex) => {
                     if (day.length > 0) {
                         for (const [, lekcja] of Object.entries(day)) {
-                            const lesson = lekcja as Lesson;
+                            const LessonTypes = lekcja as LessonTypes;
                             if (searchType == 'place') {
-                                if (formatPlace(lesson.place) === searchValue) {
-                                    chosenTypeSet.push([lesson, daysOfWeek[dayIndex]]);
+                                if (formatPlace(LessonTypes.place) === searchValue) {
+                                    chosenTypeSet.push([LessonTypes, daysOfWeek[dayIndex]]);
                                     daysInSearchTypeSet.add(daysOfWeek[dayIndex])
                                 }
                             } else {
-                                if (lesson.teacher === searchValue) {
-                                    chosenTypeSet.push([lesson, daysOfWeek[dayIndex]]);
+                                if (LessonTypes.teacher === searchValue) {
+                                    chosenTypeSet.push([LessonTypes, daysOfWeek[dayIndex]]);
                                     daysInSearchTypeSet.add(daysOfWeek[dayIndex])
                                 }
                             }
@@ -147,26 +147,26 @@ function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {
         return null;
     }
 
-    function fetchDay(dayInput: string): Lesson[] | null {
-        const lessonDetails: Lesson[] = [];
+    function fetchDay(dayInput: string): LessonTypes[] | null {
+        const LessonTypesDetails: LessonTypes[] = [];
         const hoursSuggestions = new Set<string>();
         setDayInput(dayInput);
 
         if (searchInput.length > 2 && dayInput.length > 2) {
-            const lessons = fetchChosenType(searchInput);
-            if (isDev) console.log("lessons:", lessons);
+            const LessonTypess = fetchChosenType(searchInput);
+            if (isDev) console.log("LessonTypess:", LessonTypess);
 
-            if (lessons) {
-                lessons.forEach((lesson) => {
-                    const [details, day] = lesson as [Lesson, string];
+            if (LessonTypess) {
+                LessonTypess.forEach((LessonTypes) => {
+                    const [details, day] = LessonTypes as [LessonTypes, string];
                     if (day === dayInput) {
-                        lessonDetails.push(details);
+                        LessonTypesDetails.push(details);
                         const startTime = `${Math.floor(details.start_minute / 60)}:${details.start_minute % 60 === 0 ? '00' : details.start_minute % 60}`;
                         hoursSuggestions.add(startTime);
                     }
                 });
 
-                if (lessonDetails.length != 0) {
+                if (LessonTypesDetails.length != 0) {
                     if (isDev) console.log("Są niepuste wyniki");
 
 
@@ -179,9 +179,9 @@ function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {
 
                     setHourSuggestions(sortedHours);
                     if (isDev && hoursInput.length < 4) {
-                        console.log("Lekcje spełniające warunki:", lessonDetails);
+                        console.log("Lekcje spełniające warunki:", LessonTypesDetails);
                     }
-                    return lessonDetails;
+                    return LessonTypesDetails;
                 }
             } else {
                 console.log("Wynik jest pusty");
@@ -194,14 +194,14 @@ function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {
     function fetchHours(timeInput: string) {
         setHoursInput(timeInput);
         if (timeInput.length >= 4) {
-            const lessonsData: Lesson[] | null = fetchDay(dayInput);
+            const LessonTypessData: LessonTypes[] | null = fetchDay(dayInput);
             const [hours, minutes] = timeInput.split(':').map(Number);
             const totalMinutes = hours * 60 + minutes;
-            const matchedLessons = lessonsData?.filter(lesson => {
-                return typeof lesson === 'object' && lesson.start_minute == totalMinutes;
-            }) as Lesson[];
-            setResults(matchedLessons || []);
-            if (isDev) console.log("Znaleziona lekcja:", matchedLessons);
+            const matchedLessonTypess = LessonTypessData?.filter(LessonTypes => {
+                return typeof LessonTypes === 'object' && LessonTypes.start_minute == totalMinutes;
+            }) as LessonTypes[];
+            setResults(matchedLessonTypess || []);
+            if (isDev) console.log("Znaleziona lekcja:", matchedLessonTypess);
             return totalMinutes;
         }
     }
@@ -255,17 +255,17 @@ function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {
         return (
             <div className="h-[91vh] md:h-[92vh] flex items-center justify-center">
                 <ul className={`relative -top-9 sm:top-0 h-[78%] flex items-center justify-center flex-col gap-2 md:gap-4 overflow-y-auto overflow-x-hidden px-2 pb-1.5 custom-scrollbar ${isDev && "border border-red-500"}`}>
-                    {results.map((lesson, index) => (
+                    {results.map((LessonTypes, index) => (
                         <li key={index} className={`w-80 sm:w-96 text-center text-black dark:text-white rounded-lg flex items-center flex-col py-3 mr-1 text-2xl
                          shadow-[0px_3px_8px_2px_rgb(100,100,100)] dark:shadow-[1px_2px_8px_1px_rgb(10,10,10)] transition-all hover:scale-[1.02] duration-100 ${isDev && "border border-blue-500"}`}>
-                            <span>{dayInput} <span className={searchType == "place" ? "font-bold" : ""}>{lesson.place}</span></span>
-                            <span className={`px-10 ${searchType == "place" ? "" : "font-bold"} `}>{lesson.teacher}</span>
+                            <span>{dayInput} <span className={searchType == "place" ? "font-bold" : ""}>{LessonTypes.place}</span></span>
+                            <span className={`px-10 ${searchType == "place" ? "" : "font-bold"} `}>{LessonTypes.teacher}</span>
                             <span>
-                                {formatTime(lesson.start_minute)} - {formatTime(lesson.end_minute)}
+                                {formatTime(LessonTypes.start_minute)} - {formatTime(LessonTypes.end_minute)}
                             </span>
-                            <span>{lesson.subject}</span>
+                            <span>{LessonTypes.subject}</span>
                             <span className='px-10'>
-                                {lesson.type} {lesson.name}
+                                {LessonTypes.type} {LessonTypes.name}
                             </span>
                         </li>
                     ))}

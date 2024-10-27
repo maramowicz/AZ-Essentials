@@ -1,4 +1,4 @@
-interface Lesson {
+export interface LessonTypes {
     place: [];
     name: string;
     start_minute: number;
@@ -10,13 +10,20 @@ interface Lesson {
     subject: string;
     dates: string[];
 }
-interface MajorTypes {
+
+export interface MajorTypes {
     degree: string | null;
     doc_type: number;
     groups: string[];
     name: string | null;
-    plan: Lesson[][];
+    plan: LessonTypes[][];
     semester: string | null;
     type: string | null;
     year: number | null;
+}
+
+export interface DynamicSearchProps {
+    returnToMenu: () => void;
+    searchType: string;
+    firstTryFetchingData?: MajorTypes[];
 }
