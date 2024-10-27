@@ -21,10 +21,6 @@ interface MajorTypes {
     year: number | null;
 }
 
-interface firstTryFetchingDataType {
-    firstTryFetchingData: MajorTypes[] | undefined;
-}
-
 interface DynamicSearchProps {
     returnToMenu: () => void;
     searchType: 'teacher' | 'place';
