@@ -4,7 +4,10 @@ import Head from 'next/head';
 import ErrorModal from '@/pages/ErrorModal';
 import { useDev } from '@/contexts/DevContext';
 
-function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: DynamicSearchProps) {
+
+function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {    returnToMenu: () => void;
+    searchType: string;
+    firstTryFetchingData?: MajorTypes[];}) {
     const [data, setData] = useState<MajorTypes[]>();
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [hourSuggestions, setHourSuggestions] = useState<string[]>([]);
