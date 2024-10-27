@@ -3,7 +3,6 @@ import ErrorModal from '@/pages/ErrorModal';
 import React, { useEffect, useState } from 'react';
 import { MajorTypes } from '@/types/type';
 
-
 interface MajorScheduleProps {
     firstTryFetchingData: MajorTypes[] | undefined;
     returnToMenu: () => void
@@ -55,7 +54,7 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
         return data.map((major, index) => {
             if (major.name && major.year) {
                 return (
-                    <li className='max-w-72 w-fit flex items-center justify-center flex-col text-center px-2 py-1 border' key={index}>
+                    <li className='max-w-72 flex items-center justify-center flex-col text-center px-2 py-1 border' key={index}>
                         <span>
                             {major.name}
                         </span>
@@ -73,7 +72,7 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
     }
 
     return (
-        <div className={`h-screen flex items-center justify-center overflow-y-hidden ${isDev && "border"}`}>
+        <div className={`h-[92vh] md:h-screen flex items-center justify-center ${isDev && "border"}`}>
             {isDev && (
                 <>
                     <button
@@ -81,7 +80,7 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                         className={`absolute -top-1 left-2 text-2xl md:text-3xl lg:text-4xl mt-4 border-2 border-gray-400 text-black dark:text-white dark:shadow-gray-600 py-1 px-5 rounded-lg hover:scale-105 active:scale-95 focus:scale-105 transition-transform duration-150 ${colorsSmooth}`}>
                         Cofnij
                     </button>
-                    <ul className={`relative top-3 md:top-9 h-[85%] md:h-[85%] grid grid-cols-1 md:grid-cols-2 place-items-center md:gap-2 gap-1 overflow-y-auto ${isDev && "border"}`}>
+                    <ul className={`relative top-3 md:top-9 h-[85%] md:h-[85%] grid grid-cols-1 md:grid-cols-2 place-items-center md:gap-2 gap-1 py-2 overflow-y-auto ${isDev && "border"}`}>
                         {showMajors()}
                     </ul>
                     {errorMessage && (

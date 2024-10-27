@@ -11,7 +11,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <section>
             {children}
             <div>
-
                 <button
                     onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                     className="absolute bottom-2 right-3"
@@ -26,7 +25,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     onDoubleClick={() => {
                         setIsDev(true); console.log("Uruchomiono tryb developera, miłego debugowania");
                     }}
-                    className="absolute bottom-5 md:bottom-3 left-2 text-gray-400 dark:text-gray-700 lg:text-xl leading-3"
+                    className="absolute bottom-4 md:bottom-3 left-2 text-gray-400 dark:text-gray-700 lg:text-xl leading-3"
                 >
                     Beta
                 </span>
