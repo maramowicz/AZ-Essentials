@@ -5,9 +5,11 @@ import ErrorModal from '@/pages/ErrorModal';
 import { useDev } from '@/contexts/DevContext';
 
 
-function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {    returnToMenu: () => void;
+function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {
+    returnToMenu: () => void;
     searchType: string;
-    firstTryFetchingData?: MajorTypes[];}) {
+    firstTryFetchingData?: MajorTypes[];
+}) {
     const [data, setData] = useState<MajorTypes[]>();
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [hourSuggestions, setHourSuggestions] = useState<string[]>([]);
