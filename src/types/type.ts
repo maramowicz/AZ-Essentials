@@ -23,6 +23,6 @@ interface MajorTypes {
 
 interface DynamicSearchProps {
     returnToMenu: () => void;
-    searchType: 'teacher' | 'place';
-    firstTryFetchingData: MajorTypes[] | undefined;
+    searchType: string;
+    firstTryFetchingData?: MajorTypes[];
 }
