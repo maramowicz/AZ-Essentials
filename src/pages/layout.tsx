@@ -18,10 +18,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         }
     }, []);
 
-    useEffect(() => {
-        console.log("Zmienna:", animationOn);
-    }, [animationOn]);
-
     function updateAnimationPreference() {
         const newAnimationPreference = !animationOn;
         setAnimationOn(newAnimationPreference);
@@ -32,18 +28,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <section>
             {children}
             <div>
-                <label title='Włącz lub wyłącz animacje' className="absolute top-2 right-3 inline-block h-[34px] w-[60px]" htmlFor="checkbox">
+                <label title='Włącz lub wyłącz animacje' className="absolute top-2 right-3 inline-block h-6 w-14" htmlFor="checkbox">
                     <input
                         className='hidden'
                         type="checkbox"
                         id="checkbox"
                         onChange={() => updateAnimationPreference()}
                     />
-                    <div className="absolute inset-0 bg-slate-400 rounded-full transition-colors duration-300">
+                    <div className="absolute inset-0 bg-slate-100 dark:bg-slate-800 rounded-full transition-colors duration-300">
                         <motion.div
-                            className="absolute bottom-[4px] h-[26px] w-[26px] bg-white rounded-full"
+                            className="absolute bottom-1/2 translate-y-1/2 h-4 w-4 bg-white dark:bg-slate-900 rounded-full shadow-md dark:shadow-sm dark:shadow-black"
                             initial={{ left: '4px' }}
-                            animate={{ left: animationOn === true ? 'calc(100% - 30px)' : '4px' }}
+                            animate={{ left: animationOn === true ? 'calc(100% - 20px)' : '4px' }}
                             transition={{ type: 'spring', stiffness: 150 }}
                         />
                     </div>
