@@ -171,9 +171,11 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                     </div>
                 </>
             }
-            <div className={`h-[75%] overflow-y-hidden ${devBorder}`}>
-                {chosenScheduleData && renderChosenSchedule()}
-            </div>
+            {isDev && chosenScheduleData && (
+                <div className={`h-[75%] overflow-y-hidden ${devBorder}`}>
+                    {renderChosenSchedule()}
+                </div>
+            )}
         </div>
     );
 };

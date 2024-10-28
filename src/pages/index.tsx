@@ -6,11 +6,13 @@ import { useEffect, useState } from "react";
 import { motion } from 'framer-motion';
 import MajorSchedule from "@/components/MajorSchedule";
 import { MajorTypes } from '@/types/type';
+import { useAnimation } from '@/contexts/AnimationContext';
 
 function Index() {
   const [chosenAction, setChosenAction] = useState<number | null>(null);
   const [firstTryFetchingData, setFirstTryFetchingData] = useState<MajorTypes[] | null>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { animationOn } = useAnimation()
 
   const colorsSmooth = "transition-colors duration-200";
 
@@ -73,27 +75,47 @@ function Index() {
 
   function ListEl({ mainTask, taskDesc, index }: { mainTask: string, taskDesc: string, index: number }) {
     return (
-      <motion.li
-        initial={{ opacity: 0, translateY: 30 }}
-        animate={{ opacity: 1, translateY: 0 }}
-        transition={{
-          duration: 0.5,
-          ease: "easeInOut",
-          delay: index / 2 + 2.25
-        }}
-        onClick={() => setChosenAction(index)}
-        title={taskDesc}
-        className={`relative md:w-52 lg:w-72 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full md:rounded-xl shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] transition-colors duration-500 hover:bg-gray-200/75 dark:hover:bg-gray-800/50 cursor-pointer ${colorsSmooth}`}
-      >
-        <span className="font-bold md:text-xl text-black dark:text-white transition-colors duration-100">{mainTask}</span>
-        {index === 2 && (
-          <span className="absolute top-2 md:top-10 pointer-events-none text-yellow-500 md:text-4xl font-bold rotate-12 rounded-sm bg-gray-900 px-3">
-            Rozwijane
-          </span>
-        )}
-        <p className="hidden md:block w-55 text-xs md:text-sm md:leading-[19px
+      <>
+        {animationOn ? (
+
+          <motion.li
+            initial={{ opacity: 0, translateY: 30 }}
+            animate={{ opacity: 1, translateY: 0 }}
+            transition={{
+              duration: 0.5,
+              ease: "easeInOut",
+              delay: index / 2 + 1.3
+            }}
+            onClick={() => setChosenAction(index)}
+            title={taskDesc}
+            className={`relative md:w-52 lg:w-72 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full md:rounded-xl shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] transition-colors duration-500 hover:bg-gray-200/75 dark:hover:bg-gray-800/50 cursor-pointer ${colorsSmooth}`}
+          >
+            <span className="font-bold md:text-xl text-black dark:text-white transition-colors duration-100">{mainTask}</span>
+            {index === 2 && (
+              <span className="absolute top-2 md:top-10 pointer-events-none text-yellow-500 md:text-4xl font-bold rotate-12 rounded-sm bg-gray-900 px-3">
+                Rozwijane
+              </span>
+            )}
+            <p className="hidden md:block w-55 text-xs md:text-sm md:leading-[19px
             lg:text-lg lg:leading-[24px] text-gray-600 dark:text-gray-400">{taskDesc}</p>
-      </motion.li>
+          </motion.li>
+        ) : (
+          <li
+            onClick={() => setChosenAction(index)}
+            title={taskDesc}
+            className={`relative md:w-52 lg:w-72 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full md:rounded-xl shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] transition-colors duration-500 hover:bg-gray-200/75 dark:hover:bg-gray-800/50 cursor-pointer ${colorsSmooth}`}
+          >
+            <span className="font-bold md:text-xl text-black dark:text-white transition-colors duration-100">{mainTask}</span>
+            {index === 2 && (
+              <span className="absolute top-2 md:top-10 pointer-events-none text-yellow-500 md:text-4xl font-bold rotate-12 rounded-sm bg-gray-900 px-3">
+                Rozwijane
+              </span>
+            )}
+            <p className="hidden md:block w-55 text-xs md:text-sm md:leading-[19px
+            lg:text-lg lg:leading-[24px] text-gray-600 dark:text-gray-400">{taskDesc}</p>
+          </li>
+        )}
+      </>
     );
   }
 
@@ -104,43 +126,62 @@ function Index() {
           <Head>
             <title>AZ Essentials</title>
           </Head>
-          <motion.div
-            initial={{
-              opacity: 0,
-              translateY: 50,
-            }}
-            animate={{
-              opacity: 1,
-              translateY: 0,
-            }}
-            transition={{
-              duration: 1,
-              ease: "easeOut",
-            }}
-            className={`text-2xl md:text-3xl lg:text-5xl text-center shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 md:py-3 lg:py-5 rounded-xl z-10 ${colorsSmooth}`}
-          >
-            Witam w
-            <br />
-            <b>AZ Essentials</b>
-          </motion.div>
-          <div className="flex items-center flex-col gap-1 lg:gap-5">
-            <motion.span
+          {animationOn ? (
+
+            <motion.div
               initial={{
-                opacity: -1,
+                opacity: 0,
                 translateY: 50,
               }}
               animate={{
                 opacity: 1,
-                translateY: 0
+                translateY: 0,
               }}
               transition={{
                 duration: 1,
-                ease: "linear",
-                delay: 1
+                ease: "easeOut",
               }}
-              className={`text-black dark:text-white md:text-xl lg:text-2xl`}>
-              Co chcesz zrobić?
-            </motion.span>
+              className={`text-2xl md:text-3xl lg:text-5xl text-center shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 md:py-3 lg:py-5 rounded-xl z-10 ${colorsSmooth}`}
+            >
+              Witam w
+              <br />
+              <b>AZ Essentials</b>
+            </motion.div>
+          ) : (
+            <div
+              className={`text-2xl md:text-3xl lg:text-5xl text-center shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 md:py-3 lg:py-5 rounded-xl z-10 ${colorsSmooth}`}
+            >
+              Witam w
+              <br />
+              <b>AZ Essentials</b>
+            </div>
+          )}
+          <div className="flex items-center flex-col gap-1 lg:gap-5">
+            {animationOn ? (
+
+              <motion.span
+                initial={{
+                  opacity: -1,
+                  translateY: 50,
+                }}
+                animate={{
+                  opacity: 1,
+                  translateY: 0
+                }}
+                transition={{
+                  duration: 0.5,
+                  ease: "linear",
+                  delay: 0.75
+                }}
+                className={`text-black dark:text-white md:text-xl lg:text-2xl`}>
+                Co chcesz zrobić?
+              </motion.span>
+            ) : (
+              <span
+                className={`text-black dark:text-white md:text-xl lg:text-2xl`}>
+                Co chcesz zrobić?
+              </span>
+            )}
             <ul
               className={`flex flex-col md:flex-row gap-5 py-3 pr-1 ${colorsSmooth}`}>
               <ListEl mainTask="Wyświetl info o sali" taskDesc="Podaj numer sali, dzień i godzinę, aby sprawdzić, jakie zajęcia się odbędą." index={0} />
@@ -148,22 +189,32 @@ function Index() {
               <ListEl mainTask="Sprawdź plan zajęć" taskDesc="Wybierz kierunek i dzień, aby zobaczyć listę przyszłych zajęć." index={2} />
             </ul>
           </div>
-          <motion.span
-            initial={{
-              opacity: 0
-            }}
-            animate={{
-              opacity: isLoading ? [0, 1, 0, 1] : 1
-            }}
-            transition={{
-              duration: 2,
-              ease: 'linear'
-            }}
-            className="absolute bottom-3 md:bottom-2 text-gray-500">
-            {isLoading && "Pobieranie danych..."}
-            {!isLoading && firstTryFetchingData && "Dane pobrano pomyślnie."}
-            {!isLoading && firstTryFetchingData === null && "Nie udało się pobrać danych."}
-          </motion.span>
+          {animationOn ? (
+
+            <motion.span
+              initial={{
+                opacity: 0
+              }}
+              animate={{
+                opacity: isLoading ? [0, 1, 0, 1] : 1
+              }}
+              transition={{
+                duration: 2,
+                ease: 'linear'
+              }}
+              className="absolute bottom-3 md:bottom-2 text-gray-500">
+              {isLoading && "Pobieranie danych..."}
+              {!isLoading && firstTryFetchingData && "Dane pobrano pomyślnie."}
+              {!isLoading && firstTryFetchingData === null && "Nie udało się pobrać danych."}
+            </motion.span>
+          ) : (
+            <span
+              className="absolute bottom-3 md:bottom-2 text-gray-500">
+              {isLoading && "Pobieranie danych..."}
+              {!isLoading && firstTryFetchingData && "Dane pobrano pomyślnie."}
+              {!isLoading && firstTryFetchingData === null && "Nie udało się pobrać danych."}
+            </span>
+          )}
         </div>
       }
       {getAction()}
