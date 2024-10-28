@@ -19,7 +19,7 @@ export interface MajorTypes {
     plan: LessonTypes[][];
     semester: string | null;
     type: string | null;
-    year: number | null;
+    year: string | null;
 }
 
 export interface DynamicSearchProps {

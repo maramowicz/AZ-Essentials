@@ -8,7 +8,7 @@ import { MajorTypes, LessonTypes } from '@/types/type';
 function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {
     returnToMenu: () => void;
     searchType: string;
-    firstTryFetchingData?: MajorTypes[];
+    firstTryFetchingData?: MajorTypes[] | null;
 }) {
     const [data, setData] = useState<MajorTypes[]>();
     const [suggestions, setSuggestions] = useState<string[]>([]);

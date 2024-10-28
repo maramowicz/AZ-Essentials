@@ -7,16 +7,17 @@ import { motion } from 'framer-motion';
 import MajorSchedule from "@/components/MajorSchedule";
 import { MajorTypes } from '@/types/type';
 
-
 function Index() {
   const [chosenAction, setChosenAction] = useState<number | null>(null);
-  const [firstTryFetchingData, setFirstTryFetchingData] = useState<MajorTypes[]>();
+  const [firstTryFetchingData, setFirstTryFetchingData] = useState<MajorTypes[] | null>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const colorsSmooth = "trasition-colors duration-200";
+  const colorsSmooth = "transition-colors duration-200";
 
   useEffect(() => {
     console.clear();
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         const response = await fetch('https://maramowicz.dev/azapi/database.json');
         if (!response.ok) throw new Error("Nie udało się pobrać danych");
@@ -24,11 +25,13 @@ function Index() {
         const filteredData = jsonData.filter((major: MajorTypes) => {
           return major.doc_type !== -1 && major.doc_type !== -2;
         });
-        // console.log(filteredData);
 
         setFirstTryFetchingData(filteredData);
       } catch (error) {
         console.error(error);
+        setFirstTryFetchingData(null);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchData();
@@ -63,8 +66,7 @@ function Index() {
               returnToMenu={returnToMenu}
               firstTryFetchingData={firstTryFetchingData}
             />
-          )
-          break;
+          );
       }
     }
   }
@@ -89,7 +91,8 @@ function Index() {
             Rozwijane
           </span>
         )}
-        <p className="hidden md:block w-55 text-xs md:text-sm md:leading-[19px] lg:text-lg lg:leading-[24px] text-gray-600 dark:text-gray-400">{taskDesc}</p>
+        <p className="hidden md:block w-55 text-xs md:text-sm md:leading-[19px
+            lg:text-lg lg:leading-[24px] text-gray-600 dark:text-gray-400">{taskDesc}</p>
       </motion.li>
     );
   }
@@ -139,7 +142,7 @@ function Index() {
               Co chcesz zrobić?
             </motion.span>
             <ul
-              className={` flex flex-col md:flex-row gap-5 py-3 pr-1 ${colorsSmooth}`}>
+              className={`flex flex-col md:flex-row gap-5 py-3 pr-1 ${colorsSmooth}`}>
               <ListEl mainTask="Wyświetl info o sali" taskDesc="Podaj numer sali, dzień i godzinę, aby sprawdzić, jakie zajęcia się odbędą." index={0} />
               <ListEl mainTask="Znajdź wykładowcę" taskDesc="Podaj imię, dzień i godzinę, aby zobaczyć, gdzie dany wykładowca ma zajęcia." index={1} />
               <ListEl mainTask="Sprawdź plan zajęć" taskDesc="Wybierz kierunek i dzień, aby zobaczyć listę przyszłych zajęć." index={2} />
@@ -150,15 +153,16 @@ function Index() {
               opacity: 0
             }}
             animate={{
-              opacity: [0, 1, 0, 1]
+              opacity: isLoading ? [0, 1, 0, 1] : 1
             }}
             transition={{
               duration: 2,
               ease: 'linear'
             }}
-
-            className="absolute bottom-4 md:bottom-2 text-gray-500">
-            {firstTryFetchingData ? "Dane pobrane pomyślnie" : "Nie udało się pobrać danych"}
+            className="absolute bottom-3 md:bottom-2 text-gray-500">
+            {isLoading && "Pobieranie danych..."}
+            {!isLoading && firstTryFetchingData && "Dane pobrano pomyślnie."}
+            {!isLoading && firstTryFetchingData === null && "Nie udało się pobrać danych."}
           </motion.span>
         </div>
       }
