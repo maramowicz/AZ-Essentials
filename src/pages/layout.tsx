@@ -4,6 +4,7 @@ import { useDev } from '@/contexts/DevContext';
 import { useEffect } from 'react';
 import { motion } from 'framer-motion'
 import { useAnimation } from '@/contexts/AnimationContext';
+import Head from 'next/head';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const { isDev, setIsDev } = useDev();
@@ -26,6 +27,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
     return (
         <section>
+            <Head>
+                <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+                <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+                <link rel="shortcut icon" href="/favicon/favicon.ico" />
+                <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+                <meta name="apple-mobile-web-app-title" content="MyWebSite" />
+                <link rel="manifest" href="/favicon/site.webmanifest" />
+            </Head>
             {children}
             <div>
                 <label title='Włącz lub wyłącz animacje' className="absolute top-2 right-3 inline-block h-6 w-14" htmlFor="checkbox">
