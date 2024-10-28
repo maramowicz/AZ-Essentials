@@ -2,7 +2,6 @@ import { useDev } from '@/contexts/DevContext';
 import ErrorModal from '@/pages/ErrorModal';
 import React, { useEffect, useState } from 'react';
 import { MajorTypes } from '@/types/type';
-import { div } from 'framer-motion/client';
 
 interface MajorScheduleProps {
     firstTryFetchingData: MajorTypes[] | null | undefined;
@@ -88,15 +87,15 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                         {
                             chosenScheduleData.plan.map((day, index) => {
                                 return (
-                                    <li className='flex flex-col gap-3 border-b-2'>
+                                    <li key={index} className='flex flex-col gap-3 border-b-2'>
                                         <b>
                                             {daysOfWeek[index]}
                                         </b>
                                         {
-                                            day.map(lesson => {
+                                            day.map((lesson, index) => {
                                                 console.log(lesson);
                                                 return (
-                                                    <div className='flex items-center flex-col'>
+                                                    <div key={index} className='flex items-center flex-col'>
                                                         <p className='w-52 text-center'>{lesson.type} {lesson.name}</p>
                                                         <p>{lesson.teacher}</p>
                                                         <span>{lesson.subject}</span>
