@@ -275,7 +275,7 @@ function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {
         );
     }
     return (
-        <div className={`h-[100vh] bg-gray-100 dark:bg-gray-900 transition-colors duration-700 overflow-y-hidden ${isDev && "border"}`}>
+        <div className={`h-[100vh] bg-white dark:bg-gray-900 transition-colors duration-700 overflow-y-hidden ${isDev && "border"}`}>
             <Head>
                 <title>{searchType == "place" ? "Kto ma w ...?" : "Gdzie jest ...?"}</title>
             </Head>

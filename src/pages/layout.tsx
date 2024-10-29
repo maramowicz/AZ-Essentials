@@ -37,14 +37,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </Head>
             {children}
             <div>
-                <label title='Włącz lub wyłącz animacje' className="absolute top-2 right-3 inline-block h-6 w-14" htmlFor="checkbox">
+                <label className="absolute top-2 right-3 inline-block h-6 w-14 md:border-2 md:border-gray-200 md:dark:border-gray-700 rounded-full" htmlFor="checkbox">
                     <input
                         className='hidden'
                         type="checkbox"
                         id="checkbox"
                         onChange={() => updateAnimationPreference()}
                     />
-                    <div className="absolute inset-0 bg-slate-100 dark:bg-slate-800 rounded-full transition-colors duration-300">
+                    <div className="absolute inset-0 bg-slate-100 dark:bg-slate-800 rounded-full transition-colors duration-300 group">
+                        <span className='absolute top-7 -left-3 text-xs leading-3 text-center dark:text-gray-500 opacity-0 group-hover:opacity-100 -translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-500 bg-gray-800/75 px-1 py-1 rounded-md'>Wyłącz/włącz animacje</span>
                         <motion.div
                             className="absolute bottom-1/2 translate-y-1/2 h-4 w-4 bg-white dark:bg-slate-900 rounded-full shadow-md dark:shadow-sm dark:shadow-black"
                             initial={{ left: '4px' }}
@@ -72,7 +73,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     Beta
                 </span>
                 {isDev && (
-                    <div className='absolute top-2 right-2 w-2 h-2 md:w-4 md:h-4 bg-red-500/25 rounded-full' />
+                    <div className='absolute top-2 left-2 w-2 h-2 md:w-4 md:h-4 bg-red-500/25 rounded-full' />
                 )}
             </div>
 

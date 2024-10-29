@@ -18,7 +18,7 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
     const colorsSmooth = "transition-colors duration-150";
     const devBorder = "border border-black dark:border-white";
     const yearSelectionEl = "px-1.5 dark:bg-gray-700 rounded-sm";
-    const majorYears = ["I", "II", "III"];
+    const majorYears = ["1", "2", "3"];
     const daysOfWeek = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', "Sobota", "Niedziela"];
 
     function closeErrorModal() {
@@ -71,32 +71,32 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                     className={`absolute -top-1 left-2 text-2xl md:text-3xl lg:text-4xl mt-4 border-2 border-gray-400 text-black dark:text-white dark:shadow-gray-600 py-1 px-5 rounded-lg hover:scale-105 active:scale-95 focus:scale-105 transition-transform duration-150 ${colorsSmooth}`}>
                     Wróć
                 </button>
-                <div className={`flex items-center flex-col`}>
+                <div className={`flex items-center flex-col bg-slate-700`}>
                     <span className='w-40 text-center'>
-                        {chosenScheduleData.name}
+                        {chosenScheduleData.name} {chosenScheduleData.groups[0]}
                     </span>
-                    <b>
-                        {chosenScheduleData.year}
-                    </b>
-                    {/* <span>
+                    <span>
                         {chosenScheduleData.type}
-                    </span> */}
+                    </span>
                 </div>
                 <div className='h-full overflow-y-auto custom-scrollbar'>
                     <ul>
                         {
                             chosenScheduleData.plan.map((day, index) => {
+                                if (typeof day == "string") return
                                 return (
-                                    <li key={index} className='flex flex-col gap-3 border-b-2'>
-                                        <b>
+                                    <li key={index} className='flex flex-col'>
+                                        <b className='bg-gray-900 text-xl py-1'>
                                             {daysOfWeek[index]}
                                         </b>
                                         {
                                             day.map((lesson, index) => {
                                                 console.log(lesson);
                                                 return (
-                                                    <div key={index} className='flex items-center flex-col'>
-                                                        <p className='w-52 text-center'>{lesson.type} {lesson.name}</p>
+                                                    <div key={index} className='flex items-center flex-col bg-gray-700 py-2 border-b-2'>
+                                                        <p className='w-52 text-center'>
+                                                            {lesson.type} {lesson.name}
+                                                        </p>
                                                         <p>{lesson.teacher}</p>
                                                         <span>{lesson.subject}</span>
                                                         <span>{lesson.place}</span>
@@ -112,22 +112,21 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                     </ul>
                 </div>
             </>
-
         );
     }
 
     function showMajors() {
         if (!data) return null;
         return data.map((major, index) => {
-            if (major.name && major.year && major.type && (selectedYear === null || major.year === selectedYear)) {
+            if (major.name && major.year && major.type && (selectedYear === null || major.year == selectedYear)) {
                 return (
-                    <li onClick={() => showChosenSchedule(major)} className={`h-32 min-w-44 max-w-80 flex items-center justify-center flex-col gap-1 text-center px-2 py-1 text-black dark:text-white rounded-md shadow-[0px_2px_5px_2px_rgb(200,200,200)] dark:shadow-[0px_2px_10px_2px_rgb(5,5,5)] ${isDev && devBorder}`}
+                    <li onClick={() => showChosenSchedule(major)} className={`h-32 min-w-44 max-w-80 flex items-center justify-center flex-col gap-1 text-center px-2 py-1 mx-2 text-black dark:text-white rounded-md shadow-[0px_2px_5px_2px_rgb(200,200,200)] dark:shadow-[0px_2px_10px_2px_rgb(5,5,5)] ${isDev && devBorder}`}
                         key={index}>
                         <span className='w-40'>
                             {major.name}
                         </span>
                         <b>
-                            {major.year}
+                            {major.groups[0]}
                         </b>
                         <span>
                             {major.type}
@@ -141,20 +140,20 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
 
     return (
         <div className={`relative h-[91vh] md:h-screen flex items-center justify-center flex-col overflow-y-hidden ${isDev && devBorder}`}>
+            <button
+                onClick={returnToMenu}
+                className={`absolute -top-1 left-2 text-2xl md:text-3xl lg:text-4xl mt-4 border-2 border-gray-400 text-black dark:text-white dark:shadow-gray-600 py-1 px-5 rounded-lg hover:scale-105 active:scale-95 focus:scale-105 transition-transform duration-150 ${colorsSmooth}`}>
+                Cofnij
+            </button>
             {!chosenScheduleData && isDev &&
                 <>
-                    <button
-                        onClick={returnToMenu}
-                        className={`absolute -top-1 left-2 text-2xl md:text-3xl lg:text-4xl mt-4 border-2 border-gray-400 text-black dark:text-white dark:shadow-gray-600 py-1 px-5 rounded-lg hover:scale-105 active:scale-95 focus:scale-105 transition-transform duration-150 ${colorsSmooth}`}>
-                        Cofnij
-                    </button>
                     <div className='flex items-end justify-end flex-col overflow-y-hidden'>
                         <div className='w-full flex justify-between text-base pb-0.5'>
                             <span>Rok:</span>
-                            <ul className='flex gap-2'>
+                            <ul className='relative flex gap-2'>
                                 {majorYears.map((year, index) => (
                                     <li
-                                        onClick={() => setSelectedYear("Rok " + year)}
+                                        onClick={() => setSelectedYear(year)}
                                         key={index}
                                         className={yearSelectionEl}>
                                         {year}
@@ -162,7 +161,8 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                                 ))}
                             </ul>
                         </div>
-                        <ul className={`md:w-fit h-[85%] md:h-[85%] grid grid-cols-1 sm:grid-cols-3 place-items-center gap-3 md:gap-5 px-2 py-2 custom-scrollbar overflow-y-auto ${isDev && devBorder}`}>
+                        <ul className={`md:w-fit h-[85%] md:h-[85%] grid grid-cols-1 sm:grid-cols-3 place-items-center gap-3 md:gap-5 pb-2 custom-scrollbar overflow-y-auto ${isDev && devBorder}`}>
+                            <input className='bg-gray-500 pl-2' type="text" placeholder='Wpisz kierunek' />
                             {showMajors()}
                         </ul>
                         {errorMessage && (
