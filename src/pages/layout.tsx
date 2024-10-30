@@ -17,7 +17,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <meta name="apple-mobile-web-app-title" content="MyWebSite" />
                 <link rel="manifest" href="/favicon/site.webmanifest" />
             </Head>
-            <main className='relative h-[92vh] flex flex-col overflow-hidden my-1'>
+            <main className='relative h-[85vh] flex flex-col overflow-hidden'>
                 {children}
                 <footer className='absolute sm:relative bottom-0 md:bottom-0 lg:bottom-0 xl:bottom-0 2xl:-bottom-1 w-screen h-fit flex items-center justify-between px-2 z-0'>
                     <span

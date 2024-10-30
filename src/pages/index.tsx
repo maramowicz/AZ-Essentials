@@ -58,7 +58,7 @@ function Index() {
   function getAction() {
     if (chosenAction != null) {
       switch (chosenAction) {
-        case 0:
+        case 1:
           return (
             <DynamicSearch
               searchType="place"
@@ -66,7 +66,7 @@ function Index() {
               firstTryFetchingData={firstTryFetchingData}
             />
           );
-        case 1:
+        case 2:
           return (
             <DynamicSearch
               searchType="teacher"
@@ -74,7 +74,7 @@ function Index() {
               firstTryFetchingData={firstTryFetchingData}
             />
           );
-        case 2:
+        case 3:
           return (
             <MajorSchedule
               returnToMenu={returnToMenu}
@@ -211,9 +211,9 @@ function Index() {
             )}
             <ul
               className={`flex flex-col md:flex-row gap-5 py-3 pr-1 ${colorsSmooth}`}>
-              <ListEl mainTask="Wyświetl info o sali" taskDesc="Podaj numer sali, dzień i godzinę, aby sprawdzić, jakie zajęcia się odbędą." index={0} />
-              <ListEl mainTask="Znajdź wykładowcę" taskDesc="Podaj imię, dzień i godzinę, aby zobaczyć, gdzie dany wykładowca ma zajęcia." index={1} />
-              <ListEl mainTask="Sprawdź plan zajęć" taskDesc="Wybierz kierunek i dzień, aby zobaczyć listę przyszłych zajęć." index={2} />
+              <ListEl mainTask="Wyświetl info o sali" taskDesc="Podaj numer sali, dzień i godzinę, aby sprawdzić, jakie zajęcia się odbędą." index={1} />
+              <ListEl mainTask="Znajdź wykładowcę" taskDesc="Podaj imię, dzień i godzinę, aby zobaczyć, gdzie dany wykładowca ma zajęcia." index={2} />
+              <ListEl mainTask="Sprawdź plan zajęć" taskDesc="Wybierz kierunek i dzień, aby zobaczyć listę przyszłych zajęć." index={3} />
             </ul>
           </div>
           {animationOn ? (
@@ -243,9 +243,11 @@ function Index() {
           )}
         </div>
       }
-      <div className="h-[92vh]">
-        {getAction()}
-      </div>
+      {chosenAction && (
+        <div className="h-[92vh]">
+          {getAction()}
+        </div>
+      )}
     </>
   );
 }
