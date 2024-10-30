@@ -142,7 +142,7 @@ function MajorSchedule({ firstTryFetchingData, returnToMenu }: MajorScheduleProp
             <Head>
                 <title>Plany zajęć</title>
             </Head>
-            <div className={`max-[480px]:h-screen min-[480px]:h-[87vh] flex items-center flex-col overflow-hidden`}>
+            <div className={`max-[480px]:h-full min-[480px]:h-[90%] flex items-center flex-col overflow-hidden`}>
                 <div className={`w-screen flex items-center justify-start p-2 ${isDev && devBorder}`}>
                     {!chosenScheduleData ? (
                         <button
