@@ -2,6 +2,7 @@ import { useDev } from '@/contexts/DevContext';
 import ErrorModal from '@/pages/ErrorModal';
 import React, { useEffect, useState } from 'react';
 import { MajorTypes } from '@/types/type';
+import Head from 'next/head';
 
 interface MajorScheduleProps {
     firstTryFetchingData: MajorTypes[] | null | undefined;
@@ -140,57 +141,63 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
     }
 
     return (
-        <div className={`relative h-[91vh] md:h-screen flex items-center justify-center flex-col overflow-y-hidden ${isDev && devBorder}`}>
-            {!chosenScheduleData && (
-                <button
-                    onClick={returnToMenu}
-                    className={`absolute -top-1 left-2 text-2xl md:text-3xl lg:text-4xl mt-4 border-2 border-gray-400 text-black dark:text-white dark:shadow-gray-600 py-1 px-5 rounded-lg hover:scale-105 active:scale-95 focus:scale-105 transition-transform duration-150 ${colorsSmooth}`}>
-                    Cofnij
-                </button>
-            )}
-            {!chosenScheduleData &&
-                <>
-                    <div className='w-full flex items-center justify-end flex-col overflow-y-hidden px-3'>
-                        <div className={`relative -top-6 md:-top-8 w-full sm:w-fit h-[85%] flex items-center justify-center flex-col shadow-[3px_3px_5px_1px_rgb(200,200,200)] dark:shadow-[4px_4px_10px_3px_rgb(0,0,0)] rounded-lg overflow-hidden mb-1 ${isDev && devBorder}`}>
-                            <div className='w-full flex flex-col items-center justify-between text-base pb-0.5 shadow-lg px-3'>
-                                <div className='w-full flex flex-col-reverse sm:flex-row items-center justify-between py-1'>
-                                    <input className='w-52 pl-2 py-1 mt-2 mb-1.5 md:text-2xl text-black dark:text-white bg-transparent border-2 border-gray-700 rounded-3xl outline-none focus:border-gray-200 dark:focus:border-gray-400 shadow-[inset_1px_1px_6px_1px_rgb(225,225,225)] dark:shadow-[inset_1px_1px_6px_1px_rgb(10,10,10)]' type="text" placeholder='Wpisz kierunek' />
-                                    <div className='flex items-center gap-2 md:text-xl pt-1 sm:pt-0'>
-                                        <span className={`text-black dark:text-white ${colorsSmooth}`}>Rok:</span>
-                                        <ul className='flex gap-2'>
-                                            <li
-                                                onClick={() => setSelectedYear(null)}
-                                                className={`${yearSelectionEl} ${interStyles}`}>
-                                                Wszysktie
-                                            </li>
-                                            {majorYears.map((year, index) => (
+        <>
+            <Head>
+                <title>Plany zajęć</title>
+            </Head>
+            <div className={`relative h-[91vh] md:h-screen flex items-center justify-center flex-col overflow-y-hidden ${isDev && devBorder}`}>
+                {!chosenScheduleData && (
+                    <button
+                        onClick={returnToMenu}
+                        className={`absolute -top-1 left-2 text-2xl md:text-3xl lg:text-4xl mt-4 border-2 border-gray-400 text-black dark:text-white dark:shadow-gray-600 py-1 px-5 rounded-lg hover:scale-105 active:scale-95 focus:scale-105 transition-transform duration-150 ${colorsSmooth}`}>
+                        Cofnij
+                    </button>
+                )}
+                {!chosenScheduleData &&
+                    <>
+                        <div className='w-full flex items-center justify-end flex-col overflow-y-hidden px-3'>
+                            <div className={`relative -top-9 w-full sm:w-fit h-[85%] flex items-center justify-center flex-col rounded-lg overflow-hidden mb-1 ${isDev && devBorder}`}>
+                                <div className='w-full flex flex-col items-center justify-between text-base pb-0.5 shadow-lg px-3'>
+                                    <div className='w-full flex flex-col-reverse sm:flex-row items-center justify-between py-1'>
+                                        <input className='w-52 pl-2 py-1 mt-2 mb-1.5 md:text-2xl text-black dark:text-white bg-transparent border-2 border-gray-700 rounded-3xl outline-none focus:border-gray-200 dark:focus:border-gray-400 shadow-[inset_1px_1px_6px_1px_rgb(225,225,225)] dark:shadow-[inset_1px_1px_6px_1px_rgb(10,10,10)]' type="text" placeholder='Wpisz kierunek' />
+                                        <div className='flex items-center gap-2 md:text-xl pt-1 sm:pt-0'>
+                                            <span className={`text-black dark:text-white ${colorsSmooth}`}>Rok:</span>
+                                            <ul className='flex gap-2'>
                                                 <li
-                                                    onClick={() => setSelectedYear(year)}
-                                                    key={index}
+                                                    onClick={() => setSelectedYear(null)}
                                                     className={`${yearSelectionEl} ${interStyles}`}>
-                                                    {year}
+                                                    Wszysktie
                                                 </li>
-                                            ))}
-                                        </ul>
+                                                {majorYears.map((year, index) => (
+                                                    <li
+                                                        onClick={() => setSelectedYear(year)}
+                                                        key={index}
+                                                        className={`${yearSelectionEl} ${interStyles}`}>
+                                                        {year}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
+                                <ul className='w-full h-full grid grid-cols-1 min-[480px]:grid-cols-2 sm:grid-cols-3 place-items-center gap-3 md:gap-x-0.5 md:gap-y-3 mt-1 pb-12 custom-scrollbar overflow-y-auto px-3'>
+                                    {showMajors()}
+                                </ul>
                             </div>
-                            <ul className='w-full h-full grid grid-cols-1 min-[480px]:grid-cols-2 sm:grid-cols-3 place-items-center gap-3 md:gap-x-0.5 md:gap-y-3 mt-1 pb-12 custom-scrollbar overflow-y-auto px-3'>
-                                {showMajors()}
-                            </ul>
+                            {errorMessage && (
+                                <ErrorModal message={errorMessage} onClose={closeErrorModal} />
+                            )}
                         </div>
-                        {errorMessage && (
-                            <ErrorModal message={errorMessage} onClose={closeErrorModal} />
-                        )}
+                    </>
+                }
+                {isDev && chosenScheduleData && (
+                    <div className={`h-[75%] overflow-y-hidden ${devBorder}`}>
+                        {renderChosenSchedule()}
                     </div>
-                </>
-            }
-            {isDev && chosenScheduleData && (
-                <div className={`h-[75%] overflow-y-hidden ${devBorder}`}>
-                    {renderChosenSchedule()}
-                </div>
-            )}
-        </div>
+                )}
+            </div>
+        </>
+
     );
 };
 

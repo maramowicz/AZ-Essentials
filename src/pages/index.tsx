@@ -6,13 +6,25 @@ import { useEffect, useState } from "react";
 import { motion } from 'framer-motion';
 import MajorSchedule from "@/components/MajorSchedule";
 import { MajorTypes } from '@/types/type';
-import { useAnimation } from '@/contexts/AnimationContext';
 
 function Index() {
   const [chosenAction, setChosenAction] = useState<number | null>(null);
   const [firstTryFetchingData, setFirstTryFetchingData] = useState<MajorTypes[] | null>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { animationOn } = useAnimation()
+  const [animationOn, setAnimationOn] = useState(true)
+
+  useEffect(() => {
+    const storedPreference = localStorage.getItem("az-essentials");
+    if (storedPreference !== null) {
+      setAnimationOn(storedPreference === 'true');
+    }
+  }, []);
+
+  function updateAnimationPreference() {
+    const newAnimationPreference = !animationOn;
+    setAnimationOn(newAnimationPreference);
+    localStorage.setItem("az-essentials", String(newAnimationPreference));
+  }
 
   const colorsSmooth = "transition-colors duration-100";
 
@@ -125,6 +137,25 @@ function Index() {
           <Head>
             <title>AZ Essentials</title>
           </Head>
+          <label className="absolute top-3 right-5 inline-block h-6 w-14 md:border-2 md:border-gray-200 md:dark:border-gray-700 rounded-full" htmlFor="checkbox">
+            <input
+              className='hidden'
+              type="checkbox"
+              id="checkbox"
+              onChange={() => updateAnimationPreference()}
+            />
+            <div className="absolute inset-0 bg-slate-100 dark:bg-slate-800 rounded-full transition-colors duration-300 group">
+              <span className='absolute -left-[5.5rem] -top-1 md:top-7 md:-left-7 w-20 md:w-24 text-xs md:text-sm leading-3 md:leading-4 text-center text-gray-600 dark:text-gray-200 md:opacity-0 md:group-hover:opacity-100 md:-translate-y-4 group-hover:translate-y-0 transition-all duration-100 delay-500 bg-gray-200 dark:bg-gray-800/75 px-1 py-1 rounded-md'>
+                Wyłącz/włącz animacje
+              </span>
+              <motion.div
+                className="absolute bottom-1/2 translate-y-1/2 h-4 w-4 bg-white dark:bg-slate-900 rounded-full shadow-md dark:shadow-sm dark:shadow-black"
+                initial={{ left: '4px' }}
+                animate={{ left: animationOn === true ? 'calc(100% - 20px)' : '4px' }}
+                transition={{ type: 'spring', stiffness: 150 }}
+              />
+            </div>
+          </label>
           {animationOn ? (
             <motion.div
               initial={{
