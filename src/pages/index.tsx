@@ -136,7 +136,7 @@ function Index() {
         <title>AZ Essentials</title>
       </Head>
       {chosenAction == null &&
-        <div className="h-[100vh] flex items-center justify-center flex-col gap-16 md:gap-24 lg:gap-32 overflow-hidden">
+        <div className="h-[100vh] flex items-center justify-center flex-col gap-16 md:gap-24 lg:gap-32 overflow-hidden my-5">
           <label className="absolute top-3 right-5 inline-block h-6 w-14 md:border-2 md:border-gray-200 md:dark:border-gray-700 rounded-full" htmlFor="checkbox">
             <input
               className='hidden'
