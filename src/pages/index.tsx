@@ -243,7 +243,9 @@ function Index() {
           )}
         </div>
       }
-      {getAction()}
+      <div className="h-[92vh]">
+        {getAction()}
+      </div>
     </>
   );
 }
