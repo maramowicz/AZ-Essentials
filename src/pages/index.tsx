@@ -99,7 +99,7 @@ function Index() {
             }}
             onClick={() => setChosenAction(index)}
             title={taskDesc}
-            className={`relative md:w-52 lg:w-72 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full md:rounded-xl shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] hover:bg-gray-200/75 dark:hover:bg-gray-800/50 cursor-pointer ${colorsSmooth}`}
+            className={`relative md:w-52 lg:w-72 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full md:rounded-xl shadow-[0px_2px_5px_2px_rgb(200,200,200)] dark:shadow-[0px_4px_5px_1px_rgb(10,10,10)] hover:bg-gray-200/75 dark:hover:bg-gray-800/50 cursor-pointer ${colorsSmooth}`}
           >
             <span className="font-bold md:text-xl text-black dark:text-white">{mainTask}</span>
             {index === 2 && (
@@ -114,7 +114,7 @@ function Index() {
           <li
             onClick={() => setChosenAction(index)}
             title={taskDesc}
-            className={`relative md:w-52 lg:w-72 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full md:rounded-xl shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] hover:bg-gray-200/75 dark:hover:bg-gray-800/50 cursor-pointer ${colorsSmooth}`}
+            className={`relative md:w-52 lg:w-72 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full md:rounded-xl shadow-[0px_4px_5px_1px_rgb(200,200,200)] dark:shadow-[0px_4px_5px_1px_rgb(10,10,10)] hover:bg-gray-200/75 dark:hover:bg-gray-800/50 cursor-pointer ${colorsSmooth}`}
           >
             <span className="font-bold md:text-xl text-black dark:text-white">{mainTask}</span>
             {index === 2 && (
@@ -132,11 +132,11 @@ function Index() {
 
   return (
     <>
+      <Head>
+        <title>AZ Essentials</title>
+      </Head>
       {chosenAction == null &&
-        <div className="h-[92vh] sm:h-screen flex items-center justify-center flex-col gap-16 md:gap-24 lg:gap-32 overflow-hidden">
-          <Head>
-            <title>AZ Essentials</title>
-          </Head>
+        <div className="h-[100vh] flex items-center justify-center flex-col gap-16 md:gap-24 lg:gap-32 overflow-hidden">
           <label className="absolute top-3 right-5 inline-block h-6 w-14 md:border-2 md:border-gray-200 md:dark:border-gray-700 rounded-full" htmlFor="checkbox">
             <input
               className='hidden'
@@ -170,14 +170,14 @@ function Index() {
                 duration: 1,
                 ease: "easeOut",
               }}
-              className={`text-2xl md:text-3xl lg:text-5xl text-center shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 md:py-3 lg:py-5 rounded-xl z-10 ${colorsSmooth}`}>
+              className={`text-2xl md:text-3xl lg:text-5xl text-center shadow-[1px_3px_5px_1px_rgb(200,200,200)] dark:shadow-[1px_3px_5px_1px_rgb(10,10,10)] text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 md:py-3 lg:py-5 rounded-xl z-10 ${colorsSmooth}`}>
               Witam w
               <br />
               <b>AZ Essentials</b>
             </motion.div>
           ) : (
             <div
-              className={`text-2xl md:text-3xl lg:text-5xl text-center shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 md:py-3 lg:py-5 rounded-xl z-10`}
+              className={`text-2xl md:text-3xl lg:text-5xl text-center shadow-[1px_3px_5px_1px_rgb(200,200,200)] dark:shadow-[1px_3px_5px_1px_rgb(10,10,10)] text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 md:py-3 lg:py-5 rounded-xl z-10`}
             >
               Witam w
               <br />
@@ -217,7 +217,6 @@ function Index() {
             </ul>
           </div>
           {animationOn ? (
-
             <motion.span
               initial={{
                 opacity: 0
@@ -229,14 +228,14 @@ function Index() {
                 duration: 2,
                 ease: 'linear'
               }}
-              className="absolute bottom-3 md:bottom-2 text-gray-500">
+              className="absolute bottom-3 md:bottom-4 text-gray-500 z-[1]">
               {isLoading && "Pobieranie danych..."}
               {!isLoading && firstTryFetchingData && "Dane pobrano pomyślnie."}
               {!isLoading && firstTryFetchingData === null && "Nie udało się pobrać danych."}
             </motion.span>
           ) : (
             <span
-              className="absolute bottom-3 md:bottom-2 text-gray-500">
+              className="absolute bottom-3 md:bottom-4 text-gray-500 z-[1]">
               {isLoading && "Pobieranie danych..."}
               {!isLoading && firstTryFetchingData && "Dane pobrano pomyślnie."}
               {!isLoading && firstTryFetchingData === null && "Nie udało się pobrać danych."}
