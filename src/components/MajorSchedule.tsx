@@ -142,23 +142,14 @@ function MajorSchedule({ firstTryFetchingData, returnToMenu }: MajorScheduleProp
             <Head>
                 <title>Plany zajęć</title>
             </Head>
-            <div className={`max-[480px]:h-full min-[480px]:h-[90%] flex items-center flex-col overflow-hidden`}>
-                <div className={`w-screen flex items-center justify-start p-2 ${isDev && devBorder}`}>
-                    {!chosenScheduleData ? (
-                        <button
-                            onClick={returnToMenu}
-                            className={`text-2xl md:text-3xl lg:text-4xl border-2 border-gray-400 text-black dark:text-white dark:shadow-gray-600 py-1 px-5 rounded-lg hover:scale-105 active:scale-95 focus:scale-105 transition-transform duration-150 ${colorsSmooth}`}>
-                            Cofnij
-                        </button>
-                    ) : (
-                        <button
-                            onClick={() => setChosenScheduleData(null)}
-                            className={`text-2xl md:text-3xl lg:text-4xl border-2 border-gray-400 text-black dark:text-white dark:shadow-gray-600 py-1 px-5 rounded-lg hover:scale-105 active:scale-95 focus:scale-105 transition-transform duration-150 ${colorsSmooth}`}>
-                            Wróć
-                        </button>
-                    )}
-
-                </div>
+            <div className={`relative h-[91vh] md:h-screen flex items-center justify-center flex-col overflow-y-hidden ${isDev && devBorder}`}>
+                {!chosenScheduleData && (
+                    <button
+                        onClick={returnToMenu}
+                        className={`absolute -top-1 left-2 text-2xl md:text-3xl lg:text-4xl mt-4 border-2 border-gray-400 text-black dark:text-white dark:shadow-gray-600 py-1 px-5 rounded-lg hover:scale-105 active:scale-95 focus:scale-105 transition-transform duration-150 ${colorsSmooth}`}>
+                        Cofnij
+                    </button>
+                )}
                 {!chosenScheduleData &&
                     <div className='h-screen w-full flex sm:h-full items-center justify-end flex-col overflow-y-hidden px-3 z-[1] sm:z-0'>
                         <div className={`w-full sm:w-fit flex items-center justify-center flex-col rounded-lg overflow-hidden mb-1  ${isDev && devBorder}`}>
