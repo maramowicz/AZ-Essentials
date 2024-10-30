@@ -290,7 +290,7 @@ function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {
                         Cofnij
                     </button>
                     <div
-                        className={`bg-gray-100 shadow-[1px_2px_10px_1px_rgb(125,125,125)] dark:shadow-[1px_2px_8px_1px_rgb(10,10,10)] dark:bg-gray-900 rounded-xl py-7 px-4 md:px-7 flex items-center justify-center flex-col gap-2 ${colorsSmooth} duration-700 ${isDev && "border border-red-500"}`}>
+                        className={`bg-transparent shadow-[1px_2px_10px_1px_rgb(125,125,125)] dark:shadow-[1px_2px_8px_1px_rgb(10,10,10)] dark:bg-gray-900 rounded-xl py-7 px-4 md:px-7 flex items-center justify-center flex-col gap-2 ${colorsSmooth} duration-700 ${isDev && "border border-red-500"}`}>
                         {/* Todo: resetowanie reszty pól gdy zmienia się sala */}
                         <input
                             type="text"

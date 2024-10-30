@@ -14,7 +14,7 @@ function Index() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { animationOn } = useAnimation()
 
-  const colorsSmooth = "transition-colors duration-200";
+  const colorsSmooth = "transition-colors duration-100";
 
   useEffect(() => {
     console.clear();
@@ -77,7 +77,6 @@ function Index() {
     return (
       <>
         {animationOn ? (
-
           <motion.li
             initial={{ opacity: 0, translateY: 30 }}
             animate={{ opacity: 1, translateY: 0 }}
@@ -88,9 +87,9 @@ function Index() {
             }}
             onClick={() => setChosenAction(index)}
             title={taskDesc}
-            className={`relative md:w-52 lg:w-72 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full md:rounded-xl shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] transition-colors duration-500 hover:bg-gray-200/75 dark:hover:bg-gray-800/50 cursor-pointer ${colorsSmooth}`}
+            className={`relative md:w-52 lg:w-72 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full md:rounded-xl shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] hover:bg-gray-200/75 dark:hover:bg-gray-800/50 cursor-pointer ${colorsSmooth}`}
           >
-            <span className="font-bold md:text-xl text-black dark:text-white transition-colors duration-100">{mainTask}</span>
+            <span className="font-bold md:text-xl text-black dark:text-white">{mainTask}</span>
             {index === 2 && (
               <span className="absolute top-2 md:top-10 pointer-events-none text-yellow-500 md:text-4xl font-bold rotate-12 rounded-sm bg-gray-900 px-3">
                 Rozwijane
@@ -103,9 +102,9 @@ function Index() {
           <li
             onClick={() => setChosenAction(index)}
             title={taskDesc}
-            className={`relative md:w-52 lg:w-72 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full md:rounded-xl shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] transition-colors duration-500 hover:bg-gray-200/75 dark:hover:bg-gray-800/50 cursor-pointer ${colorsSmooth}`}
+            className={`relative md:w-52 lg:w-72 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full md:rounded-xl shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] hover:bg-gray-200/75 dark:hover:bg-gray-800/50 cursor-pointer ${colorsSmooth}`}
           >
-            <span className="font-bold md:text-xl text-black dark:text-white transition-colors duration-100">{mainTask}</span>
+            <span className="font-bold md:text-xl text-black dark:text-white">{mainTask}</span>
             {index === 2 && (
               <span className="absolute top-2 md:top-10 pointer-events-none text-yellow-500 md:text-4xl font-bold rotate-12 rounded-sm bg-gray-900 px-3">
                 Rozwijane
@@ -127,7 +126,6 @@ function Index() {
             <title>AZ Essentials</title>
           </Head>
           {animationOn ? (
-
             <motion.div
               initial={{
                 opacity: 0,
@@ -141,15 +139,14 @@ function Index() {
                 duration: 1,
                 ease: "easeOut",
               }}
-              className={`text-2xl md:text-3xl lg:text-5xl text-center shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 md:py-3 lg:py-5 rounded-xl z-10 ${colorsSmooth}`}
-            >
+              className={`text-2xl md:text-3xl lg:text-5xl text-center shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 md:py-3 lg:py-5 rounded-xl z-10 ${colorsSmooth}`}>
               Witam w
               <br />
               <b>AZ Essentials</b>
             </motion.div>
           ) : (
             <div
-              className={`text-2xl md:text-3xl lg:text-5xl text-center shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 md:py-3 lg:py-5 rounded-xl z-10 ${colorsSmooth}`}
+              className={`text-2xl md:text-3xl lg:text-5xl text-center shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 md:py-3 lg:py-5 rounded-xl z-10`}
             >
               Witam w
               <br />
@@ -158,7 +155,6 @@ function Index() {
           )}
           <div className="flex items-center flex-col gap-1 lg:gap-5">
             {animationOn ? (
-
               <motion.span
                 initial={{
                   opacity: -1,
