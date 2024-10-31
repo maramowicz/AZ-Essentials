@@ -98,7 +98,6 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                                                         <span>{lesson.subject}</span>
                                                         <span>{lesson.place}</span>
                                                     </div>
-
                                                 )
                                             })
                                         }
@@ -140,7 +139,7 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
             <Head>
                 <title>Plany zajęć</title>
             </Head>
-            <div className={`relative h-[91vh] md:h-screen flex items-center flex-col overflow-hidden ${isDev && devBorder}`}>
+            <div className={`relative h-screen min-[480px]:h-[93vh] flex items-center flex-col overflow-hidden ${isDev && devBorder}`}>
                 <div className='relative w-screen flex items-center py-3 px-2'>
                     {!chosenScheduleData ? (
                         <button
@@ -158,23 +157,23 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                 </div>
                 {!chosenScheduleData &&
                     <div className='w-full flex items-center justify-end flex-col overflow-y-hidden sm:px-3'>
-                        <div className={`relative top-72 sm:-top-9 w-full sm:w-fit h-[120vh] min-[480px]:h-[85%] flex items-center justify-center flex-col rounded-lg mb-1 ${isDev && devBorder}`}>
-                            <div className='w-full flex flex-col items-center justify-between text-base pb-0.5 shadow-lg px-3'>
-                                <div className='w-full flex flex-col-reverse min-[480px]:flex-row items-center justify-between py-1'>
-                                    <input className='w-52 pl-2 py-1 mt-2 mb-1.5 md:text-2xl text-black dark:text-white bg-transparent border-2 border-gray-700 rounded-3xl outline-none focus:border-gray-200 dark:focus:border-gray-400 shadow-[inset_1px_1px_6px_1px_rgb(225,225,225)] dark:shadow-[inset_1px_1px_6px_1px_rgb(10,10,10)]' type="text" placeholder='Wpisz kierunek' />
+                        <div className={`w-full sm:w-fit flex items-center justify-center flex-col rounded-lg overflow-hidden mb-1 ${isDev && devBorder}`}>
+                            <div className='w-full flex flex-col items-center justify-between text-base py-0.5 px-3'>
+                                <div className='w-full flex flex-col-reverse min-[480px]:flex-row items-center justify-between py-1 px-2 shadow-[0px_2px_5px_1px_rgb(200,200,200)] dark:shadow-[0px_4px_5px_1px_rgb(10,10,10)] rounded-md'>
+                                    <input className='w-52 md:w-72 pl-2 py-1 mt-2 mb-1.5 md:text-2xl text-black dark:text-white bg-transparent border-2 border-gray-700 rounded-lg outline-none focus:border-gray-200 dark:focus:border-gray-400 shadow-[inset_1px_1px_6px_1px_rgb(225,225,225)] dark:shadow-[inset_1px_1px_6px_1px_rgb(10,10,10)]' type="text" placeholder='Wpisz kierunek' />
                                     <div className='flex items-center gap-2 md:text-xl pt-1 sm:pt-0'>
                                         <span className={`text-black dark:text-white ${colorsSmooth}`}>Rok:</span>
                                         <ul className='flex gap-2'>
                                             <li
                                                 onClick={() => setSelectedYear(null)}
-                                                className={`${yearSelectionEl} ${interStyles}`}>
+                                                className={`${yearSelectionEl} ${interStyles} ${selectedYear == null && "bg-gray-900 dark:bg-gray-300 text-white dark:text-black"} ${colorsSmooth}`}>
                                                 Wszysktie
                                             </li>
                                             {majorYears.map((year, index) => (
                                                 <li
                                                     onClick={() => setSelectedYear(year)}
                                                     key={index}
-                                                    className={`${yearSelectionEl} ${interStyles}`}>
+                                                    className={`${yearSelectionEl} ${interStyles} ${selectedYear == year && "bg-gray-900 dark:bg-gray-300 text-white dark:text-black"} ${colorsSmooth}`}>
                                                     {year}
                                                 </li>
                                             ))}
@@ -182,7 +181,7 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                                     </div>
                                 </div>
                             </div>
-                            <ul className='w-full h-full grid grid-cols-1 min-[480px]:grid-cols-2 sm:grid-cols-3 place-items-center gap-3 md:gap-x-0.5 md:gap-y-3 mt-1 pb-12 custom-scrollbar overflow-y-auto px-3'>
+                            <ul className='w-full h-full grid grid-cols-1 min-[480px]:grid-cols-2 sm:grid-cols-3 min-[886px]:grid-cols-4 lg:grid-cols-5 place-items-center gap-3 md:gap-x-0.5 md:gap-y-3 mt-1 pb-12 custom-scrollbar overflow-y-auto px-3'>
                                 {showMajors()}
                             </ul>
                         </div>
@@ -198,7 +197,6 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                 )}
             </div>
         </>
-
     );
 };
 
