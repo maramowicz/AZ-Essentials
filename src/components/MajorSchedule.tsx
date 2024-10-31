@@ -158,7 +158,7 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                 </div>
                 {!chosenScheduleData &&
                     <div className='w-full flex items-center justify-end flex-col overflow-y-hidden sm:px-3'>
-                        <div className={`relative top-2 sm:-top-9 w-full sm:w-fit h-screen min-[480px]:h-[85%] flex items-center justify-center flex-col rounded-lg overflow-hidden mb-1 ${isDev && devBorder}`}>
+                        <div className={`relative top-0 sm:-top-9 w-full sm:w-fit h-[120vh] min-[480px]:h-[85%] flex items-center justify-center flex-col rounded-lg overflow-hidden mb-1 ${isDev && devBorder}`}>
                             <div className='w-full flex flex-col items-center justify-between text-base pb-0.5 shadow-lg px-3'>
                                 <div className='w-full flex flex-col-reverse min-[480px]:flex-row items-center justify-between py-1'>
                                     <input className='w-52 pl-2 py-1 mt-2 mb-1.5 md:text-2xl text-black dark:text-white bg-transparent border-2 border-gray-700 rounded-3xl outline-none focus:border-gray-200 dark:focus:border-gray-400 shadow-[inset_1px_1px_6px_1px_rgb(225,225,225)] dark:shadow-[inset_1px_1px_6px_1px_rgb(10,10,10)]' type="text" placeholder='Wpisz kierunek' />
