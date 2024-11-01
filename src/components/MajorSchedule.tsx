@@ -166,14 +166,14 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                                         <ul className='flex gap-2'>
                                             <li
                                                 onClick={() => setSelectedYear(null)}
-                                                className={`${yearSelectionEl} ${interStyles} ${selectedYear == null && "bg-gray-900 dark:bg-gray-100 text-white dark:text-black"} ${colorsSmooth}`}>
+                                                className={`${yearSelectionEl} ${interStyles} ${selectedYear == null && "bg-gray-900 dark:bg-white text-white dark:text-black"} ${colorsSmooth}`}>
                                                 Wszysktie
                                             </li>
                                             {majorYears.map((year, index) => (
                                                 <li
                                                     onClick={() => setSelectedYear(year)}
                                                     key={index}
-                                                    className={`${yearSelectionEl} ${interStyles} ${selectedYear == year && "bg-gray-900 dark:bg-gray-100 text-white dark:text-black"} ${colorsSmooth}`}>
+                                                    className={`${yearSelectionEl} ${interStyles} ${selectedYear == year && "bg-gray-900 dark:bg-white text-white dark:text-black"} ${colorsSmooth}`}>
                                                     {year}
                                                 </li>
                                             ))}
