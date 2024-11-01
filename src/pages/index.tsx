@@ -99,7 +99,7 @@ function Index() {
             }}
             onClick={() => setChosenAction(index)}
             title={taskDesc}
-            className={`relative md:w-52 lg:w-72 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full md:rounded-xl shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] hover:bg-gray-200/75 dark:hover:bg-gray-800/50 cursor-pointer ${colorsSmooth}`}
+            className={`relative md:w-52 lg:w-72 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full md:rounded-xl transition-shadow duration-1000 delay-500 dark:duration-1000 dark:delay-100 shadow-[0px_3px_3px_1px_rgb(225,225,225)] dark:shadow-[0px_3px_3px_1px_rgb(10,10,10)] hover:bg-gray-200/75 dark:hover:bg-gray-800/50 cursor-pointer ${colorsSmooth}`}
           >
             <span className="font-bold md:text-xl text-black dark:text-white">{mainTask}</span>
             {index === 2 && (
@@ -114,7 +114,7 @@ function Index() {
           <li
             onClick={() => setChosenAction(index)}
             title={taskDesc}
-            className={`relative md:w-52 lg:w-72 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full md:rounded-xl shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] hover:bg-gray-200/75 dark:hover:bg-gray-800/50 cursor-pointer ${colorsSmooth}`}
+            className={`relative md:w-52 lg:w-72 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full md:rounded-xl transition-shadow duration-1000 delay-500 dark:duration-1000 dark:delay-100 shadow-[0px_3px_3px_1px_rgb(225,225,225)] dark:shadow-[0px_3px_3px_1px_rgb(10,10,10)] hover:bg-gray-200/75 dark:hover:bg-gray-800/50 cursor-pointer ${colorsSmooth}`}
           >
             <span className="font-bold md:text-xl text-black dark:text-white">{mainTask}</span>
             {index === 2 && (
@@ -144,9 +144,11 @@ function Index() {
               id="checkbox"
               onChange={() => updateAnimationPreference()}
             />
-            <div className="absolute inset-0 bg-slate-100 dark:bg-slate-800 rounded-full transition-colors duration-300 group">
-              <span className='absolute -left-[5.5rem] -top-1 md:top-7 md:-left-7 w-20 md:w-24 text-xs md:text-sm leading-3 md:leading-4 text-center text-gray-600 dark:text-gray-200 md:opacity-0 md:group-hover:opacity-100 md:-translate-y-4 group-hover:translate-y-0 transition-all duration-100 delay-500 bg-gray-200 dark:bg-gray-800/75 px-1 py-1 rounded-md'>
-                Wyłącz/włącz animacje
+            <div className="absolute inset-0 bg-slate-200/75 dark:bg-slate-800 rounded-full transition-colors duration-300 group">
+              <span className='absolute -left-[5.5rem] -top-1 md:top-7 md:-left-7 w-20 md:w-24 text-xs md:text-sm leading-3 md:leading-4 text-center  md:opacity-0 md:group-hover:opacity-100 md:-translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-500 px-1 py-1 rounded-md border'>
+                <span className={`text-gray-600 dark:text-gray-200 ${colorsSmooth}`}>
+                  Wyłącz/włącz animacje
+                </span>
               </span>
               <motion.div
                 className="absolute bottom-1/2 translate-y-1/2 h-4 w-4 bg-white dark:bg-slate-900 rounded-full shadow-md dark:shadow-sm dark:shadow-black"
@@ -170,14 +172,14 @@ function Index() {
                 duration: 1,
                 ease: "easeOut",
               }}
-              className={`text-2xl md:text-3xl lg:text-5xl text-center shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 md:py-3 lg:py-5 rounded-xl z-10 ${colorsSmooth}`}>
+              className={`text-2xl md:text-3xl lg:text-5xl text-center text-black dark:text-white ${colorsSmooth}`}>
               Witam w
               <br />
               <b>AZ Essentials</b>
             </motion.div>
           ) : (
             <div
-              className={`text-2xl md:text-3xl lg:text-5xl text-center shadow-[0px_2px_10px_2px_rgb(125,125,125)] dark:shadow-[0px_2px_10px_2px_rgb(10,10,10)] text-black dark:text-white bg-white dark:bg-slate-900 px-4 py-1.5 md:py-3 lg:py-5 rounded-xl z-10`}
+              className={`text-2xl md:text-3xl lg:text-5xl text-center text-black dark:text-white`}
             >
               Witam w
               <br />

@@ -139,8 +139,8 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
             <Head>
                 <title>Plany zajęć</title>
             </Head>
-            <div className={`relative h-[99vh] min-[480px]:h-[93vh] flex items-center flex-col overflow-hidden ${isDev && devBorder}`}>
-                <div className='relative w-screen flex items-center py-3 px-2 shadow-[0px_1px_10px_1px_rgb(225,225,225)]'>
+            <div className={`relative h-[97vh] min-[480px]:h-[93vh] flex items-center flex-col overflow-hidden ${isDev && devBorder}`}>
+                <div className='relative w-screen flex items-center py-3 px-2 shadow-[0px_1px_10px_1px_rgb(225,225,225)] dark:shadow-[0px_1px_10px_1px_rgb(10,10,10)]'>
                     {!chosenScheduleData ? (
                         <button
                             onClick={returnToMenu}
