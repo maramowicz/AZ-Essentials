@@ -17,8 +17,9 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
     const { isDev } = useDev();
 
     const colorsSmooth = "transition-colors duration-75";
+    const shadowSmooth = "transition-shadow duration-[1.5s] delay-700 dark:duration-1000 dark:delay-100"
     const devBorder = "border border-black dark:border-white";
-    const yearSelectionEl = "px-3.5 py-1 text-lg min-[480px]:px-3 min-[480px]:py-0.5 min-[480px]:text-base rounded-md cursor-pointer bg-gray-300 dark:bg-gray-700";
+    const yearSelectionEl = "px-3 py-0.5 text-lg min-[480px]:px-3 min-[480px]:py-0.5 min-[480px]:text-base 2xl:text-2xl rounded-md cursor-pointer bg-gray-300 dark:bg-gray-700 transition-colors duration-100";
     const interStyles = "hover:scale-105 active:scale-95 transition-all duration-75"
     const majorYears = ["1", "2", "3"];
     const daysOfWeek = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', "Sobota", "Niedziela"];
@@ -116,9 +117,9 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
         return data.map((major, index) => {
             if (major.name && major.year && major.type && (selectedYear === null || major.year == selectedYear)) {
                 return (
-                    <button onClick={() => showChosenSchedule(major)} className={`h-[8.5rem] min-w-48 max-w-80 flex items-center justify-center flex-col gap-0.5 text-center px-2 py-1 mx-2 text-black dark:text-white rounded-md shadow-[0px_2px_5px_2px_rgb(200,200,200)] dark:shadow-[0px_2px_10px_2px_rgb(5,5,5)] ${isDev && devBorder} transition-colors duration-75`}
+                    <button onClick={() => showChosenSchedule(major)} className={`h-[8.5rem] min-w-48 max-w-80 min-[1300px]:w-full min-[1300px]:h-44 flex items-center justify-center flex-col gap-0.5 text-center px-2 py-1 text-black dark:text-white rounded-md shadow-[0px_2px_5px_2px_rgb(200,200,200)] dark:shadow-[0px_2px_10px_2px_rgb(5,5,5)] ${shadowSmooth} ${isDev && devBorder} transition-colors duration-75 xl:text-base min-[1300px]:text-2xl ${interStyles}`}
                         key={index}>
-                        <span className='w-40'>
+                        <span className='w-40 min-[1300px]:w-full'>
                             {major.name}
                         </span>
                         <span>
@@ -139,8 +140,8 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
             <Head>
                 <title>Plany zajęć</title>
             </Head>
-            <div className={`relative h-[97vh] min-[480px]:h-[93vh] flex items-center flex-col overflow-hidden ${isDev && devBorder}`}>
-                <div className='relative w-screen flex items-center py-3 px-2 shadow-[0px_1px_10px_1px_rgb(225,225,225)] dark:shadow-[0px_1px_10px_1px_rgb(10,10,10)]'>
+            <div className={`relative h-[96vh] min-[480px]:h-[93vh] flex items-center flex-col overflow-hidden ${isDev && devBorder}`}>
+                <div className={`relative w-screen flex items-center py-3 px-2 shadow-[0px_1px_10px_1px_rgb(225,225,225)] dark:shadow-[0px_1px_10px_1px_rgb(10,10,10)] ${shadowSmooth}`}>
                     {!chosenScheduleData ? (
                         <button
                             onClick={returnToMenu}
@@ -150,41 +151,39 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                     ) : (
                         <button
                             onClick={() => setChosenScheduleData(null)}
-                            className={`text-2xl md:text-3xl lg:text-4xl border-2 border-gray-400 text-black dark:text-white dark:shadow-gray-600 py-1 px-5 rounded-lg hover:scale-105 active:scale-95 focus:scale-105 transition-transform duration-150 ${colorsSmooth}`}>
+                            className={`text-2xl md:text-3xl lg:text-4xl border-2 border-gray-400 text-black dark:text-white py-1 px-5 rounded-lg hover:scale-105 active:scale-95 focus:scale-105 transition-transform duration-150 ${colorsSmooth}`}>
                             Wróć
                         </button>
                     )}
                 </div>
                 {!chosenScheduleData &&
                     <div className='w-full sm:h-full flex items-center sm:justify-center flex-col overflow-y-hidden sm:px-3'>
-                        <div className={`w-full sm:w-fit flex items-center justify-center flex-col sm:rounded-lg overflow-hidden sm:mb-1 ${isDev && devBorder}`}>
-                            <div className='w-full flex flex-col items-center justify-between text-base py-0.5 px-3'>
-                                <div className='w-screen sm:w-full flex flex-col-reverse sm:flex-row items-center justify-between py-1 px-2 shadow-[0px_5px_5px_1px_rgb(200,200,200)] sm:shadow-[0px_2px_5px_1px_rgb(200,200,200)] dark:shadow-[0px_4px_5px_1px_rgb(10,10,10)] sm:rounded-md'>
-                                    <input className='w-[19rem] md:w-72 pl-2 py-1 mt-2 mb-1.5 md:text-2xl bg-transparent border-2 border-gray-700 rounded-lg outline-none focus:border-gray-200 dark:focus:border-gray-400 shadow-[inset_1px_1px_6px_1px_rgb(225,225,225)] dark:shadow-[inset_1px_1px_6px_1px_rgb(10,10,10)]' type="text" placeholder='Wpisz kierunek' />
-                                    <div className='flex items-center gap-2 md:text-xl pt-1 sm:pt-0'>
-                                        <span className={`text-2xl min-[480px]:text-xl text-black dark:text-white ${colorsSmooth}`}>Rok:</span>
-                                        <ul className='flex gap-2'>
-                                            {/* Todo: większe przyciski i dark mode nie działa */}
+                        <div className={`w-full sm:w-fit min-[1300px]:w-[90vw] flex items-center justify-center flex-col sm:rounded-lg overflow-hidden sm:mb-1 px-2 ${isDev && devBorder}`}>
+                            <div className={`w-screen sm:w-full flex flex-col-reverse sm:flex-row items-center justify-between py-1 px-2 shadow-[0px_5px_5px_1px_rgb(200,200,200)] sm:shadow-[0px_2px_5px_1px_rgb(200,200,200)] dark:shadow-[0px_4px_5px_1px_rgb(10,10,10)] ${shadowSmooth} sm:rounded-md`}>
+                                <input className={`w-[19rem] md:w-72 pl-2 py-1.5 mt-2 mb-1.5 text-xl md:text-lg 2xl:text-2xl bg-transparent border-2 border-gray-700 rounded-lg outline-none focus:border-gray-200 dark:focus:border-gray-400 shadow-[inset_1px_1px_6px_1px_rgb(225,225,225)] dark:shadow-[inset_1px_1px_6px_1px_rgb(10,10,10)] text-black dark:text-white ${shadowSmooth}`} type="text" placeholder='Wpisz kierunek' />
+                                <div className='flex items-center gap-2 md:text-xl pt-1 sm:pt-0'>
+                                    <span className={`text-2xl min-[480px]:text-xl xl:text-2xl text-black dark:text-white transition-colors duration-200`}>Rok:</span>
+                                    <ul className='flex gap-2'>
+                                        {/* Todo: większe przyciski i dark mode nie działa */}
+                                        <li
+                                            onClick={() => setSelectedYear(null)}
+                                            className={`${yearSelectionEl} ${interStyles} 
+                                                ${selectedYear == null ? "bg-gray-600 dark:bg-white text-white dark:text-black" : "text-black dark:text-white"} ${colorsSmooth}`}>
+                                            Wszysktie
+                                        </li>
+                                        {majorYears.map((year, index) => (
                                             <li
-                                                onClick={() => setSelectedYear(null)}
+                                                onClick={() => setSelectedYear(year)}
+                                                key={index}
                                                 className={`${yearSelectionEl} ${interStyles} 
-                                                ${selectedYear == null ? "bg-gray-600 dark:bg-white text-white dark:text-black": "text-black dark:text-white"} ${colorsSmooth}`}>
-                                                Wszysktie
+                                                    ${selectedYear == year ? "bg-gray-600 dark:bg-white text-white dark:text-black" : "text-black dark:text-white"} ${colorsSmooth}`}>
+                                                {year}
                                             </li>
-                                            {majorYears.map((year, index) => (
-                                                <li
-                                                    onClick={() => setSelectedYear(year)}
-                                                    key={index}
-                                                    className={`${yearSelectionEl} ${interStyles} 
-                                                    ${selectedYear == year ? "bg-gray-600 dark:bg-white text-white dark:text-black": "text-black dark:text-white"} ${colorsSmooth}`}>
-                                                    {year}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
+                                        ))}
+                                    </ul>
                                 </div>
                             </div>
-                            <ul className='w-full h-full grid grid-cols-1 min-[480px]:grid-cols-2 sm:grid-cols-3 min-[886px]:grid-cols-4 lg:grid-cols-5 place-items-center gap-3 md:gap-x-0.5 md:gap-y-3 mt-1 pb-12 custom-scrollbar overflow-y-auto px-3'>
+                            <ul className='w-full h-full grid grid-cols-1 min-[480px]:grid-cols-2 sm:grid-cols-3 min-[886px]:grid-cols-4 min-[1060px]:grid-cols-5 place-items-center gap-3 md:gap-y-3 mt-1 sm:px-2 py-2 custom-scrollbar overflow-y-auto'>
                                 {showMajors()}
                             </ul>
                         </div>
