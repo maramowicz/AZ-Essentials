@@ -18,7 +18,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <link rel="manifest" href="/favicon/site.webmanifest" />
             </Head>
             {children}
-            <div className='w-screen flex items-center justify-between flex-row-reverse'>
+            <div className='relative -top-7 w-screen flex items-center justify-between flex-row-reverse'>
                 <button
                     onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                     className=""
