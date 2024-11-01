@@ -18,7 +18,7 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
 
     const colorsSmooth = "transition-colors duration-75";
     const devBorder = "border border-black dark:border-white";
-    const yearSelectionEl = "px-1.5 md:px-3 md:py-1 rounded-sm md:rounded-md cursor-pointer bg-gray-200 dark:bg-gray-700 text-black dark:text-white";
+    const yearSelectionEl = "px-1.5 md:px-3 md:py-1 rounded-sm md:rounded-md cursor-pointer bg-gray-300 dark:bg-gray-700 text-black dark:text-white";
     const interStyles = "hover:scale-105 active:scale-95 transition-all duration-75"
     const majorYears = ["1", "2", "3"];
     const daysOfWeek = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', "Sobota", "Niedziela"];
@@ -116,7 +116,7 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
         return data.map((major, index) => {
             if (major.name && major.year && major.type && (selectedYear === null || major.year == selectedYear)) {
                 return (
-                    <li onClick={() => showChosenSchedule(major)} className={`h-[8.5rem] min-w-48 max-w-80 flex items-center justify-center flex-col gap-0.5 text-center px-2 py-1 mx-2 text-black dark:text-white rounded-md shadow-[0px_2px_5px_2px_rgb(200,200,200)] dark:shadow-[0px_2px_10px_2px_rgb(5,5,5)] ${isDev && devBorder} transition-colors duration-75`}
+                    <button onClick={() => showChosenSchedule(major)} className={`h-[8.5rem] min-w-48 max-w-80 flex items-center justify-center flex-col gap-0.5 text-center px-2 py-1 mx-2 text-black dark:text-white rounded-md shadow-[0px_2px_5px_2px_rgb(200,200,200)] dark:shadow-[0px_2px_10px_2px_rgb(5,5,5)] ${isDev && devBorder} transition-colors duration-75`}
                         key={index}>
                         <span className='w-40'>
                             {major.name}
@@ -127,7 +127,7 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                         <span>
                             {major.type}
                         </span>
-                    </li>
+                    </button>
                 );
             }
             return null;
@@ -166,14 +166,14 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                                         <ul className='flex gap-2'>
                                             <li
                                                 onClick={() => setSelectedYear(null)}
-                                                className={`${yearSelectionEl} ${interStyles} ${selectedYear == null && "bg-gray-900 dark:bg-white text-white dark:text-black"} ${colorsSmooth}`}>
+                                                className={`${yearSelectionEl} ${interStyles} ${selectedYear == null && "bg-gray-600 text-white dark:text-black dark:bg-gray-300"} ${colorsSmooth}`}>
                                                 Wszysktie
                                             </li>
                                             {majorYears.map((year, index) => (
                                                 <li
                                                     onClick={() => setSelectedYear(year)}
                                                     key={index}
-                                                    className={`${yearSelectionEl} ${interStyles} ${selectedYear == year && "bg-gray-900 dark:bg-white text-white dark:text-black"} ${colorsSmooth}`}>
+                                                    className={`${yearSelectionEl} ${interStyles} ${selectedYear == year && "bg-gray-600 text-white dark:text-black dark:bg-gray-300"} ${colorsSmooth}`}>
                                                     {year}
                                                 </li>
                                             ))}
