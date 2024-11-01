@@ -133,7 +133,7 @@ function Index() {
   return (
     <>
       {chosenAction == null &&
-        <div className="relative h-full flex items-center justify-center flex-col gap-16 md:gap-24 lg:gap-32 overflow-hidden">
+        <div className="h-[92vh] sm:h-screen flex items-center justify-center flex-col gap-16 md:gap-24 lg:gap-32 overflow-hidden">
           <Head>
             <title>AZ Essentials</title>
           </Head>
@@ -229,14 +229,14 @@ function Index() {
                 duration: 2,
                 ease: 'linear'
               }}
-              className="absolute bottom-0 text-gray-500">
+              className="absolute bottom-3 md:bottom-2 text-gray-500">
               {isLoading && "Pobieranie danych..."}
               {!isLoading && firstTryFetchingData && "Dane pobrano pomyślnie."}
               {!isLoading && firstTryFetchingData === null && "Nie udało się pobrać danych."}
             </motion.span>
           ) : (
             <span
-              className="absolute bottom-0 text-gray-500">
+              className="absolute bottom-3 md:bottom-2 text-gray-500">
               {isLoading && "Pobieranie danych..."}
               {!isLoading && firstTryFetchingData && "Dane pobrano pomyślnie."}
               {!isLoading && firstTryFetchingData === null && "Nie udało się pobrać danych."}
