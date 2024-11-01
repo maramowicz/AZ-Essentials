@@ -18,18 +18,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <link rel="manifest" href="/favicon/site.webmanifest" />
             </Head>
             {children}
-            <div className='w-screen flex flex-row justify-between items-center'>
+            <div className=''>
                 <span
                     onDoubleClick={() => {
                         setIsDev(true); console.log("Uruchomiono tryb developera, miłego debugowania");
                     }}
-                    className=" bottom-5 md:bottom-3 left-2 text-gray-400 dark:text-gray-700 lg:text-xl leading-3"
+                    className="absolute bottom-5 md:bottom-3 left-2 text-gray-400 dark:text-gray-700 lg:text-xl leading-3"
                 >
                     Beta
                 </span>
                 <button
                     onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                    className=" bottom-2 right-3"
+                    className="absolute bottom-2 right-3"
                 >
                     {currentTheme === 'dark' ? (
                         <GoSun className="h-12 md:h-14 lg:h-16 xl:h-20 w-auto px-1 py-1 hover:text-yellow-200 transition-colors duration-500" />

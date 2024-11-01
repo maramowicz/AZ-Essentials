@@ -139,7 +139,7 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
             <Head>
                 <title>Plany zajęć</title>
             </Head>
-            <div className={`relative h-screen min-[480px]:h-[93vh] flex items-center flex-col overflow-hidden ${isDev && devBorder}`}>
+            <div className={`relative h-[98vh] min-[480px]:h-[93vh] flex items-center flex-col overflow-hidden ${isDev && devBorder}`}>
                 <div className='relative w-screen flex items-center py-3 px-2'>
                     {!chosenScheduleData ? (
                         <button
