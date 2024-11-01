@@ -8,7 +8,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     const { systemTheme, theme, setTheme } = useTheme();
     const currentTheme = theme === 'system' ? systemTheme : theme;
     return (
-        <section className='h-screen flex flex-col justify-between'>
+        <section className='h-[91vh] sm:h-screen flex flex-col justify-between'>
             <Head>
                 <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
                 <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
