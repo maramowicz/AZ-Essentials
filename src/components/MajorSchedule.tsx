@@ -160,20 +160,20 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                         <div className={`w-full sm:w-fit flex items-center justify-center flex-col rounded-lg overflow-hidden mb-1 ${isDev && devBorder}`}>
                             <div className='w-full flex flex-col items-center justify-between text-base py-0.5 px-3'>
                                 <div className='w-screen sm:w-full flex flex-col-reverse min-[480px]:flex-row items-center justify-between py-1 px-2 shadow-[0px_2px_5px_1px_rgb(200,200,200)] dark:shadow-[0px_4px_5px_1px_rgb(10,10,10)] rounded-md'>
-                                    <input className='w-52 md:w-72 pl-2 py-1 mt-2 mb-1.5 md:text-2xl text-black dark:text-white bg-transparent border-2 border-gray-700 rounded-lg outline-none focus:border-gray-200 dark:focus:border-gray-400 shadow-[inset_1px_1px_6px_1px_rgb(225,225,225)] dark:shadow-[inset_1px_1px_6px_1px_rgb(10,10,10)]' type="text" placeholder='Wpisz kierunek' />
+                                    <input className='w-52 md:w-72 pl-2 py-1 mt-2 mb-1.5 md:text-2xl bg-transparent border-2 border-gray-700 rounded-lg outline-none focus:border-gray-200 dark:focus:border-gray-400 shadow-[inset_1px_1px_6px_1px_rgb(225,225,225)] dark:shadow-[inset_1px_1px_6px_1px_rgb(10,10,10)]' type="text" placeholder='Wpisz kierunek' />
                                     <div className='flex items-center gap-2 md:text-xl pt-1 sm:pt-0'>
                                         <span className={`text-black dark:text-white ${colorsSmooth}`}>Rok:</span>
                                         <ul className='flex gap-2'>
                                             <li
                                                 onClick={() => setSelectedYear(null)}
-                                                className={`${yearSelectionEl} ${interStyles} ${selectedYear == null && "bg-gray-600 text-white dark:text-black dark:bg-gray-300"} ${colorsSmooth}`}>
+                                                className={`${yearSelectionEl} ${interStyles} ${selectedYear == null && "bg-gray-600 dark:bg-gray-200 text-white dark:text-gray-950"} ${colorsSmooth}`}>
                                                 Wszysktie
                                             </li>
                                             {majorYears.map((year, index) => (
                                                 <li
                                                     onClick={() => setSelectedYear(year)}
                                                     key={index}
-                                                    className={`${yearSelectionEl} ${interStyles} ${selectedYear == year && "bg-gray-600 text-white dark:text-black dark:bg-gray-300"} ${colorsSmooth}`}>
+                                                    className={`${yearSelectionEl} ${interStyles} ${selectedYear == year && "bg-gray-600 dark:bg-gray-200 text-white dark:text-gray-950"} ${colorsSmooth}`}>
                                                     {year}
                                                 </li>
                                             ))}
