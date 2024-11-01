@@ -164,10 +164,11 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                                     <div className='flex items-center gap-2 md:text-xl pt-1 sm:pt-0'>
                                         <span className={`text-black dark:text-white ${colorsSmooth}`}>Rok:</span>
                                         <ul className='flex gap-2'>
+                                            {/* Todo: większe przyciski i dark mode nie działa */}
                                             <li
                                                 onClick={() => setSelectedYear(null)}
                                                 className={`${yearSelectionEl} ${interStyles} 
-                                                ${selectedYear == null && "bg-gray-600 dark:bg-gray-200 text-white dark:text-gray-950"} ${colorsSmooth}`}>
+                                                ${selectedYear == null && "bg-gray-600 dark:bg-white text-white dark:text-gray-950"} ${colorsSmooth}`}>
                                                 Wszysktie
                                             </li>
                                             {majorYears.map((year, index) => (
@@ -175,7 +176,7 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                                                     onClick={() => setSelectedYear(year)}
                                                     key={index}
                                                     className={`${yearSelectionEl} ${interStyles} 
-                                                    ${selectedYear == year && "bg-gray-600 dark:bg-gray-200 text-white dark:text-gray-950"} ${colorsSmooth}`}>
+                                                    ${selectedYear == year && "bg-gray-600 dark:bg-white text-white dark:text-gray-950"} ${colorsSmooth}`}>
                                                     {year}
                                                 </li>
                                             ))}
