@@ -18,7 +18,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <link rel="manifest" href="/favicon/site.webmanifest" />
             </Head>
             {children}
-            <div className='w-screen flex items-center justify-between border '>
+            <div className='w-screen h-32 flex items-center justify-between border '>
                 <span
                     onDoubleClick={() => {
                         setIsDev(true); console.log("Uruchomiono tryb developera, miłego debugowania");
