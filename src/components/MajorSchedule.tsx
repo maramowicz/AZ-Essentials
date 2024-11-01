@@ -168,7 +168,7 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                                             <li
                                                 onClick={() => setSelectedYear(null)}
                                                 className={`${yearSelectionEl} ${interStyles} 
-                                                ${selectedYear == null && "bg-gray-600 dark:bg-white text-white dark:text-gray-950"} ${colorsSmooth}`}>
+                                                ${selectedYear == null && "bg-gray-600 dark:bg-white text-white dark:text-black"} ${colorsSmooth}`}>
                                                 Wszysktie
                                             </li>
                                             {majorYears.map((year, index) => (
@@ -176,7 +176,7 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                                                     onClick={() => setSelectedYear(year)}
                                                     key={index}
                                                     className={`${yearSelectionEl} ${interStyles} 
-                                                    ${selectedYear == year && "bg-gray-600 dark:bg-white text-white dark:text-gray-950"} ${colorsSmooth}`}>
+                                                    ${selectedYear == year && "bg-gray-600 dark:bg-white text-white dark:text-black"} ${colorsSmooth}`}>
                                                     {year}
                                                 </li>
                                             ))}
