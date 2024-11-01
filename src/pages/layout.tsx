@@ -18,7 +18,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <link rel="manifest" href="/favicon/site.webmanifest" />
             </Head>
             {children}
-            <div className=''>
+            <footer>
                 <span
                     onDoubleClick={() => {
                         setIsDev(true); console.log("Uruchomiono tryb developera, miłego debugowania");
@@ -40,7 +40,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 {isDev && (
                     <div className='absolute top-2 right-2 w-2 h-2 md:w-4 md:h-4 bg-red-500/25 rounded-full' />
                 )}
-            </div>
+            </footer>
 
         </section>
     );
