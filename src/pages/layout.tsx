@@ -8,7 +8,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     const { systemTheme, theme, setTheme } = useTheme();
     const currentTheme = theme === 'system' ? systemTheme : theme;
     return (
-        <section>
+        <section className='h-screen flex flex-col justify-between'>
             <Head>
                 <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
                 <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
@@ -18,7 +18,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <link rel="manifest" href="/favicon/site.webmanifest" />
             </Head>
             {children}
-            <div className='relative -top-7 w-screen flex items-center justify-between flex-row-reverse'>
+            <div className='w-screen flex items-center justify-between flex-row-reverse'>
                 <button
                     onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                     className=""
