@@ -18,7 +18,7 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
 
     const colorsSmooth = "transition-colors duration-75";
     const devBorder = "border border-black dark:border-white";
-    const yearSelectionEl = "px-1.5 md:px-3 md:py-1 rounded-sm md:rounded-md cursor-pointer bg-gray-300 dark:bg-gray-700 text-black dark:text-white";
+    const yearSelectionEl = "px-3.5 py-1 text-lg min-[480px]:px-3 min-[480px]:py-0.5 min-[480px]:text-base rounded-md cursor-pointer bg-gray-300 dark:bg-gray-700";
     const interStyles = "hover:scale-105 active:scale-95 transition-all duration-75"
     const majorYears = ["1", "2", "3"];
     const daysOfWeek = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', "Sobota", "Niedziela"];
@@ -159,16 +159,16 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                     <div className='w-full sm:h-full flex items-center sm:justify-center flex-col overflow-y-hidden sm:px-3'>
                         <div className={`w-full sm:w-fit flex items-center justify-center flex-col sm:rounded-lg overflow-hidden sm:mb-1 ${isDev && devBorder}`}>
                             <div className='w-full flex flex-col items-center justify-between text-base py-0.5 px-3'>
-                                <div className='w-screen sm:w-full flex flex-col-reverse min-[480px]:flex-row items-center justify-between py-1 px-2 shadow-[0px_5px_5px_1px_rgb(200,200,200)] sm:shadow-[0px_2px_5px_1px_rgb(200,200,200)] dark:shadow-[0px_4px_5px_1px_rgb(10,10,10)] sm:rounded-md'>
-                                    <input className='w-52 md:w-72 pl-2 py-1 mt-2 mb-1.5 md:text-2xl bg-transparent border-2 border-gray-700 rounded-lg outline-none focus:border-gray-200 dark:focus:border-gray-400 shadow-[inset_1px_1px_6px_1px_rgb(225,225,225)] dark:shadow-[inset_1px_1px_6px_1px_rgb(10,10,10)]' type="text" placeholder='Wpisz kierunek' />
+                                <div className='w-screen sm:w-full flex flex-col-reverse sm:flex-row items-center justify-between py-1 px-2 shadow-[0px_5px_5px_1px_rgb(200,200,200)] sm:shadow-[0px_2px_5px_1px_rgb(200,200,200)] dark:shadow-[0px_4px_5px_1px_rgb(10,10,10)] sm:rounded-md'>
+                                    <input className='w-[19rem] md:w-72 pl-2 py-1 mt-2 mb-1.5 md:text-2xl bg-transparent border-2 border-gray-700 rounded-lg outline-none focus:border-gray-200 dark:focus:border-gray-400 shadow-[inset_1px_1px_6px_1px_rgb(225,225,225)] dark:shadow-[inset_1px_1px_6px_1px_rgb(10,10,10)]' type="text" placeholder='Wpisz kierunek' />
                                     <div className='flex items-center gap-2 md:text-xl pt-1 sm:pt-0'>
-                                        <span className={`text-black dark:text-white ${colorsSmooth}`}>Rok:</span>
+                                        <span className={`text-2xl min-[480px]:text-xl text-black dark:text-white ${colorsSmooth}`}>Rok:</span>
                                         <ul className='flex gap-2'>
                                             {/* Todo: większe przyciski i dark mode nie działa */}
                                             <li
                                                 onClick={() => setSelectedYear(null)}
                                                 className={`${yearSelectionEl} ${interStyles} 
-                                                ${selectedYear == null && "bg-gray-600 dark:bg-white text-white dark:text-red-500"} ${colorsSmooth}`}>
+                                                ${selectedYear == null ? "bg-gray-600 dark:bg-white text-white dark:text-black": "text-black dark:text-white"} ${colorsSmooth}`}>
                                                 Wszysktie
                                             </li>
                                             {majorYears.map((year, index) => (
@@ -176,7 +176,7 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                                                     onClick={() => setSelectedYear(year)}
                                                     key={index}
                                                     className={`${yearSelectionEl} ${interStyles} 
-                                                    ${selectedYear == year && "bg-gray-600 dark:bg-white text-white dark:text-red-500"} ${colorsSmooth}`}>
+                                                    ${selectedYear == year ? "bg-gray-600 dark:bg-white text-white dark:text-black": "text-black dark:text-white"} ${colorsSmooth}`}>
                                                     {year}
                                                 </li>
                                             ))}
