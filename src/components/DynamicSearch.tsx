@@ -26,7 +26,7 @@ function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {
     const optionsStyle = "md:w-72 lg:w-[25rem] text-3xl md:text-4xl lg:text-5xl px-2 py-1 md:text-lg text-black dark:text-white bg-white dark:bg-gray-900 shadow-md shadow-gray-400 disabled:shadow-black dark:shadow-[1px_2px_5px_1px_rgb(10,10,10)] rounded-md outline-none focus:border-gray-900 dark:focus:border-gray-400 border-2 border-transparent hover:scale-[1.05] transition-all duration-150 cursor-pointer disabled:cursor-not-allowed disabled:opacity-25";
     const inputStyles = "w-52 md:w-72 lg:w-[25rem] text-3xl md:text-4xl lg:text-5xl text-black dark:text-white dark:bg-gray-900 pl-2 rounded-md outline-none focus:border-gray-400 border-2 border-transparent placeholder:text-gray-500 dark:placeholder:text-white/65 hover:scale-[1.05] transition-all duration-150 shadow-md shadow-gray-400 dark:shadow-[1px_2px_5px_1px_rgb(10,10,10)]"
 
-    const daysOfWeek = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek','Sobota','Niedziela'];
+    const daysOfWeek = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela'];
 
     function resetInputs() {
         setSearchInput('');
@@ -246,9 +246,9 @@ function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {
     function goBack() {
         setShowResults(false);
         setResults([]);
-        setDayInput("");
-        setHoursInput("");
-        setSearchInput("");
+        // setDayInput("");
+        // setHoursInput("");
+        // setSearchInput("");
     }
 
     function formatResult() {
@@ -260,10 +260,13 @@ function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {
             <div className="h-[91vh] md:h-[92vh] flex items-center justify-center">
                 <ul className={`relative -top-9 sm:top-0 h-[78%] flex items-center justify-center flex-col gap-2 md:gap-4 overflow-y-auto overflow-x-hidden px-2 pb-1.5 custom-scrollbar ${isDev && "border border-red-500"}`}>
                     {results.map((LessonTypes, index) => (
-                        <li key={index} className={`w-80 sm:w-96 text-center text-black dark:text-white rounded-lg flex items-center flex-col py-3 mr-1 text-2xl
-                         shadow-[0px_3px_8px_2px_rgb(100,100,100)] dark:shadow-[1px_2px_8px_1px_rgb(10,10,10)] transition-all hover:scale-[1.02] duration-100 ${isDev && "border border-blue-500"}`}>
-                            <span>{dayInput} <span className={searchType == "place" ? "font-bold" : ""}>{LessonTypes.place}</span></span>
-                            <span className={`px-10 ${searchType == "place" ? "" : "font-bold"} `}>{LessonTypes.teacher}</span>
+                        <li key={index} className={`w-80 sm:w-96 xl:w-[28rem] 2xl:w-[30rem] text-center text-black dark:text-white rounded-lg flex items-center flex-col md:gap-1 xl:gap-1.5 py-3 mr-1 text-2xl xl:text-3xl 2xl:text-4xl shadow-[0px_3px_8px_2px_rgb(100,100,100)] dark:shadow-[1px_2px_8px_1px_rgb(10,10,10)] transition-all hover:scale-[1.02] duration-100 ${isDev && "border border-blue-500"}`}>
+                            <span>{dayInput}
+                                <span className={`${searchType == "place" && "font-bold"}`}>
+                                    {LessonTypes.place}
+                                </span>
+                            </span>
+                            <span className={`px-10 ${searchType == "teacher" && "font-bold"} `}>{LessonTypes.teacher}</span>
                             <span>
                                 {formatTime(LessonTypes.start_minute)} - {formatTime(LessonTypes.end_minute)}
                             </span>
@@ -283,7 +286,10 @@ function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {
                 <title>{searchType == "place" ? "Kto ma w ...?" : "Gdzie jest ...?"}</title>
             </Head>
             {showResults && results.length > 0 && (
-                <button className='relative top-2 sm:top-1 text-black dark:text-white border-2 border-black dark:border-white rounded-md text-2xl md:text-lg px-4 md:px-3 mt-2 ml-2 hover:scale-105 active:scale-95 transition-transform duration-150 ' onClick={goBack}>Wróć</button>
+                <button className='relative top-2 sm:top-1 text-black dark:text-white border-2 border-black dark:border-white rounded-md text-2xl 
+                md:text-lg lg:text-3xl 2xl:text-5xl px-4 md:px-3 xl:py-1 mt-2 ml-2 hover:scale-105 active:scale-95 transition-transform duration-150 ' onClick={goBack}>
+                    Wróć
+                </button>
             )}
             {!showResults && (
                 <div className={`relative h-full flex items-center justify-center flex-col gap-5 md:gap-10 ${isDev && "border border-yellow-500"}`}>

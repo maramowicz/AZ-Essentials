@@ -26,9 +26,6 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
     const majorYears = ["1", "2", "3"];
     const daysOfWeek = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', "Sobota", "Niedziela"];
 
-    function closeErrorModal() {
-        setErrorMessage(null);
-    }
 
     useEffect(() => {
         console.clear();
@@ -60,11 +57,6 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
             fetchData();
         }
     }, []);
-
-    function showChosenSchedule(major: MajorTypes) {
-        console.log(major);
-        setChosenScheduleData(major);
-    }
 
     function renderChosenSchedule() {
         if (!chosenScheduleData) return null;
@@ -115,10 +107,9 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
     }
 
     function fetchSearchedMajor(searchedMajor: string) {
-        console.clear();
+        setSearchedMajor(searchedMajor);
         if (searchedMajor.length >= 2) {
             const resultMajors = new Set<MajorTypes>();
-            setSearchedMajor(searchedMajor);
             console.log(searchedMajor);
 
             data?.forEach(major => {
@@ -135,10 +126,12 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
     }
 
     function getMajors(majors: MajorTypes[]) {
+        // Todo: Sortowanie, czyli na początku wyświetlą się 1 roki
         return majors.map((major, index) => {
-            if (major.name && major.year && major.type && (selectedYear === null || major.year === selectedYear)) {
+            if (major.name && major.year && major.type && (selectedYear === null || major.year == selectedYear)) {
                 return (
-                    <button onClick={() => showChosenSchedule(major)} className={`h-[8.5rem] min-w-48 max-w-80 min-[1300px]:w-full min-[1300px]:h-44 flex items-center justify-center flex-col gap-0.5 text-center px-2 py-1 text-black dark:text-white rounded-md shadow-[0px_2px_5px_2px_rgb(200,200,200)] dark:shadow-[0px_2px_10px_2px_rgb(5,5,5)] ${shadowSmooth} ${isDev && devBorder} transition-colors duration-75 xl:text-base min-[1300px]:text-2xl ${interStyles}`}
+                    // Todo: Dodać ikonki odpowiadające kierunkom
+                    <button onClick={() => setChosenScheduleData(major)} className={`h-[8.5rem] min-w-48 max-w-80 min-[1300px]:w-full min-[1300px]:h-44 flex items-center justify-center flex-col gap-0.5 text-center px-2 py-1 text-black dark:text-white rounded-md shadow-[0px_2px_5px_2px_rgb(200,200,200)] dark:shadow-[0px_2px_10px_2px_rgb(5,5,5)] ${shadowSmooth} ${isDev && devBorder} transition-colors duration-75 xl:text-base min-[1300px]:text-2xl ${interStyles}`}
                         key={index}>
                         <span className='w-40 min-[1300px]:w-full'>
                             {major.name}
@@ -158,8 +151,10 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
 
     const showMajors = useCallback(() => {
         if (filteredMajors && searchedMajor.length >= 2) {
+            console.log("To się wywoła potem");
             return getMajors(filteredMajors);
         } else {
+            console.log("To się wywoła kiedy zmienimy selectedYear:", selectedYear);
             if (data) return getMajors(data);
         }
     }, [filteredMajors, selectedYear, data]);
@@ -188,8 +183,9 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                 </div>
                 {!chosenScheduleData &&
                     <div className='w-full sm:h-full flex items-center sm:justify-center flex-col overflow-y-hidden sm:px-3'>
-                        <div className={`w-full sm:w-fit min-[1300px]:w-[90vw] flex items-center justify-center flex-col sm:rounded-lg overflow-hidden sm:mb-1 px-2 ${isDev && devBorder}`}>
+                        <div className={`w-full h-full sm:w-fit min-[1300px]:w-[90vw] flex items-center justify-center flex-col sm:rounded-lg overflow-hidden sm:mb-1 px-2 ${isDev && devBorder}`}>
                             <div className={`w-screen sm:w-full flex flex-col-reverse sm:flex-row items-center justify-between py-1 px-2 shadow-[0px_5px_5px_1px_rgb(200,200,200)] sm:shadow-[0px_2px_5px_1px_rgb(200,200,200)] dark:shadow-[0px_4px_5px_1px_rgb(10,10,10)] ${shadowSmooth} sm:rounded-md`}>
+                                {/* Todo: Dodaj liste proponowanych */}
                                 <input onChange={(e) => fetchSearchedMajor(e.target.value)} className={`w-[19rem] md:w-72 pl-2 py-1.5 mt-2 mb-1.5 text-xl md:text-lg 2xl:text-2xl bg-transparent border-2 border-gray-700 rounded-lg outline-none focus:border-gray-200 dark:focus:border-gray-400 shadow-[inset_1px_1px_6px_1px_rgb(225,225,225)] dark:shadow-[inset_1px_1px_6px_1px_rgb(10,10,10)] text-black dark:text-white ${shadowSmooth}`} type="text" placeholder='Wpisz kierunek' />
                                 <div className='flex items-center gap-2 md:text-xl pt-1 sm:pt-0'>
                                     <span className={`text-2xl min-[480px]:text-xl xl:text-2xl text-black dark:text-white transition-colors duration-200`}>Rok:</span>
@@ -213,12 +209,13 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                                     </ul>
                                 </div>
                             </div>
-                            <ul className='w-full h-full grid grid-cols-1 min-[480px]:grid-cols-2 sm:grid-cols-3 min-[886px]:grid-cols-4 min-[1060px]:grid-cols-5 place-items-center gap-3 md:gap-y-3 mt-1 sm:px-2 py-2 custom-scrollbar overflow-y-auto'>
+                            {/* min-[1893px]:w-fit */}
+                            <ul className={`w-fit md:w-full h-full  grid grid-cols-1 min-[430px]:grid-cols-2 sm:grid-cols-3 min-[886px]:grid-cols-4 min-[1060px]:grid-cols-5 place-items-center content-start gap-3 mt-1 px-2 py-2 custom-scrollbar overflow-y-auto ${isDev && devBorder}`}>
                                 {showMajors()}
                             </ul>
                         </div>
                         {errorMessage && (
-                            <ErrorModal message={errorMessage} onClose={closeErrorModal} />
+                            <ErrorModal message={errorMessage} onClose={() => setErrorMessage(null)} />
                         )}
                     </div>
                 }

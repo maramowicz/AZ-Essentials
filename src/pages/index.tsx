@@ -134,6 +134,7 @@ function Index() {
     <>
       {chosenAction == null &&
         <div className="h-[92vh] sm:h-screen flex items-center justify-center flex-col gap-16 md:gap-24 lg:gap-32 overflow-hidden">
+          {/* Todo: Pokaż za pomocą procentów poprawność danych */}
           <Head>
             <title>AZ Essentials</title>
           </Head>
@@ -145,7 +146,7 @@ function Index() {
               onChange={() => updateAnimationPreference()}
             />
             <div className="absolute inset-0 bg-slate-200/75 dark:bg-slate-800 rounded-full transition-colors duration-300 group">
-              <span className='absolute -left-[5.5rem] -top-1 md:top-7 md:-left-7 w-20 md:w-24 text-xs md:text-sm leading-3 md:leading-4 text-center  md:opacity-0 md:group-hover:opacity-100 md:-translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-500 px-1 py-1 rounded-md border'>
+              <span className='absolute -left-[5.5rem] -top-1 md:top-7 md:-left-7 w-20 md:w-24 text-xs md:text-sm leading-3 md:leading-4 text-center  md:opacity-0 md:group-hover:opacity-100 md:-translate-y-4 group-hover:translate-y-0 tranasition-all duration-300 delay-500 px-1 py-1 rounded-md border'>
                 <span className={`text-gray-600 dark:text-gray-200 ${colorsSmooth}`}>
                   Wyłącz/włącz animacje
                 </span>
