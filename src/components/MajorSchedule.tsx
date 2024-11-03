@@ -3,6 +3,34 @@ import ErrorModal from '@/pages/ErrorModal';
 import React, { useCallback, useEffect, useState } from 'react';
 import { MajorTypes } from '@/types/type';
 import Head from 'next/head';
+// My
+import { HiCommandLine } from "react-icons/hi2";
+// Fizjoterapia
+import { FaDumbbell } from "react-icons/fa6";
+// Pielegniarstwo
+import { GiAngelOutfit } from "react-icons/gi";
+// import { FaBriefcaseMedical } from "react-icons/fa6";
+// Położnictwo
+import { FaUserNurse } from "react-icons/fa6";
+// import { FaBaby } from "react-icons/fa6";
+// Fir
+import { FaCoins } from "react-icons/fa";
+// Pedagogika
+import { FaChalkboardTeacher } from "react-icons/fa";
+// Prawo
+import { GoLaw } from "react-icons/go";
+// Bezpieczeństwo narodowe
+import { FaShieldAlt } from "react-icons/fa";
+// Rynek sztuki 
+import { FaImages } from "react-icons/fa";
+// Ratownictwo medyczne
+import { FaAmbulance } from "react-icons/fa";
+// Mechanika i budowa maszyn
+import { MdEngineering } from "react-icons/md";
+// Turystyka i rekreacja
+import { FaMapMarkedAlt } from "react-icons/fa";
+// Logistycy
+import { FaToilet } from "react-icons/fa6";
 
 interface MajorScheduleProps {
     firstTryFetchingData: MajorTypes[] | null | undefined;
@@ -125,14 +153,65 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
         }
     }
 
+    function getMajorIcon(majorName: string) {
+        switch (majorName) {
+            case "Pielęgniarstwo":
+                return <GiAngelOutfit />
+                break;
+            case "Rynek sztuki i zarządzanie w kulturze":
+                return <FaImages />
+                break;
+            case "Fizjoterapia":
+                return <FaDumbbell />
+                break;
+            case "Ratownictwo medyczne":
+                return <FaAmbulance />
+                break;
+            case "Turystyka i rekreacja":
+                return <FaMapMarkedAlt />
+                break;
+            case "Informatyka":
+                return <HiCommandLine />
+                break;
+            case "Mechanika i budowa maszyn":
+                return <MdEngineering />
+                break;
+            case "Położnictwo":
+                return <FaUserNurse />
+                break;
+            case "Pedagogika":
+                return <FaChalkboardTeacher />
+                break;
+            case "Finanse i rachunkowość":
+                return <FaCoins />
+                break;
+            case "Prawo":
+                return <GoLaw />
+                break;
+            case "Bezpieczeństwo narodowe":
+                return <FaShieldAlt />
+                break;
+            case "Logistyka":
+                return <FaToilet />
+                break;
+            default:
+                break;
+        }
+    }
+
     function getMajors(majors: MajorTypes[]) {
         // Todo: Sortowanie, czyli na początku wyświetlą się 1 roki
         return majors.map((major, index) => {
             if (major.name && major.year && major.type && (selectedYear === null || major.year == selectedYear)) {
+                console.log(major.name);
+
                 return (
                     // Todo: Dodać ikonki odpowiadające kierunkom
-                    <button onClick={() => setChosenScheduleData(major)} className={`h-[8.5rem] min-w-48 max-w-80 min-[1300px]:w-full min-[1300px]:h-44 flex items-center justify-center flex-col gap-0.5 text-center px-2 py-1 text-black dark:text-white rounded-md shadow-[0px_2px_5px_2px_rgb(200,200,200)] dark:shadow-[0px_2px_10px_2px_rgb(5,5,5)] ${shadowSmooth} ${isDev && devBorder} transition-colors duration-75 xl:text-base min-[1300px]:text-2xl ${interStyles}`}
+                    <button onClick={() => setChosenScheduleData(major)} className={`relative h-[8.5rem] min-w-48 max-w-80 min-[1300px]:w-full min-[1300px]:h-44 flex items-center justify-center flex-col gap-0.5 text-center px-2 py-1 text-black dark:text-white rounded-md shadow-[0px_2px_5px_2px_rgb(200,200,200)] dark:shadow-[0px_2px_10px_2px_rgb(5,5,5)] ${shadowSmooth} ${isDev && devBorder} transition-colors duration-500 xl:text-base min-[1300px]:text-2xl ${interStyles}`}
                         key={index}>
+                        <div className='absolute top-1 right-1 text-4xl'>
+                            {getMajorIcon(major.name)}
+                        </div>
                         <span className='w-40 min-[1300px]:w-full'>
                             {major.name}
                         </span>

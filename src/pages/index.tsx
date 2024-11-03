@@ -1,11 +1,21 @@
-// Todo: pobieranie danych tutaj, jeśli się nie uda to spróbuj ponownie w dynamicSearch
-// Trzeba scrollować, wybrać wydział, wybrać kierunek i wybrać rok
 import Head from "next/head";
 import DynamicSearch from "@/components/DynamicSearch";
 import { useEffect, useState } from "react";
 import { motion } from 'framer-motion';
 import MajorSchedule from "@/components/MajorSchedule";
 import { MajorTypes } from '@/types/type';
+// Sala
+// import { GoProjectRoadmap } from "react-icons/go";
+// import { FaBarsStaggered } from "react-icons/fa6";
+import { MdFindInPage } from "react-icons/md";
+// import { RiPhoneFindFill } from "react-icons/ri";
+// Wykładowca
+// import { GoMortarBoard } from "react-icons/go";
+// import { FaImagePortrait } from "react-icons/fa6";
+import { FaPersonCircleQuestion } from "react-icons/fa6";
+// Plan
+import { FaCalendarDays } from "react-icons/fa6";
+import { IconType } from "react-icons";
 
 function Index() {
   const [chosenAction, setChosenAction] = useState<number | null>(null);
@@ -85,7 +95,7 @@ function Index() {
     }
   }
 
-  function ListEl({ mainTask, taskDesc, index }: { mainTask: string, taskDesc: string, index: number }) {
+  function ListEl({ icon: Icon, mainTask, taskDesc, index }: { icon: IconType, mainTask: string, taskDesc: string, index: number }) {
     return (
       <>
         {animationOn ? (
@@ -99,11 +109,12 @@ function Index() {
             }}
             onClick={() => setChosenAction(index)}
             title={taskDesc}
-            className={`relative md:w-52 lg:w-72 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full md:rounded-xl transition-shadow duration-1000 delay-500 dark:duration-1000 dark:delay-100 shadow-[0px_3px_3px_1px_rgb(225,225,225)] dark:shadow-[0px_3px_3px_1px_rgb(10,10,10)] hover:bg-gray-200/75 dark:hover:bg-gray-800/50 cursor-pointer ${colorsSmooth}`}
+            className={`relative md:w-52 lg:w-72 flex items-center flex-row md:flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full md:rounded-xl transition-shadow duration-1000 delay-500 dark:duration-1000 dark:delay-100 shadow-[0px_3px_3px_1px_rgb(225,225,225)] dark:shadow-[0px_3px_3px_1px_rgb(10,10,10)] hover:bg-gray-200/75 dark:hover:bg-gray-800/50 cursor-pointer ${colorsSmooth}`}
           >
+            <Icon className={`text-2xl md:text-3xl text-black dark:text-white ${colorsSmooth}`} />
             <span className="font-bold md:text-xl text-black dark:text-white">{mainTask}</span>
             {index === 2 && (
-              <span className="absolute top-2 md:top-10 pointer-events-none text-yellow-500 md:text-4xl font-bold rotate-12 rounded-sm bg-gray-900 px-3">
+              <span className="absolute -translate-y-1/2 top-1/2 left-1/2 -translate-x-1/2 pointer-events-none text-yellow-500 md:text-4xl font-bold rotate-12 rounded-sm bg-gray-900 px-3">
                 Rozwijane
               </span>
             )}
@@ -114,11 +125,12 @@ function Index() {
           <li
             onClick={() => setChosenAction(index)}
             title={taskDesc}
-            className={`relative md:w-52 lg:w-72 flex items-center flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full md:rounded-xl transition-shadow duration-1000 delay-500 dark:duration-1000 dark:delay-100 shadow-[0px_3px_3px_1px_rgb(225,225,225)] dark:shadow-[0px_3px_3px_1px_rgb(10,10,10)] hover:bg-gray-200/75 dark:hover:bg-gray-800/50 cursor-pointer ${colorsSmooth}`}
+            className={`relative md:w-52 lg:w-72 flex items-center flex-row md:flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full md:rounded-xl transition-shadow duration-1000 delay-500 dark:duration-1000 dark:delay-100 shadow-[0px_3px_3px_1px_rgb(225,225,225)] dark:shadow-[0px_3px_3px_1px_rgb(10,10,10)] hover:bg-gray-200/75 dark:hover:bg-gray-800/50 cursor-pointer ${colorsSmooth}`}
           >
+            <Icon className={`text-2xl md:text-3xl text-black dark:text-white ${colorsSmooth}`} />
             <span className="font-bold md:text-xl text-black dark:text-white">{mainTask}</span>
             {index === 2 && (
-              <span className="absolute top-2 md:top-10 pointer-events-none text-yellow-500 md:text-4xl font-bold rotate-12 rounded-sm bg-gray-900 px-3">
+              <span className="absolute -translate-y-1/2 top-1/2 left-1/2 -translate-x-1/2 pointer-events-none text-yellow-500 md:text-4xl font-bold rotate-12 rounded-sm bg-gray-900 px-3">
                 Rozwijane
               </span>
             )}
@@ -146,7 +158,7 @@ function Index() {
               onChange={() => updateAnimationPreference()}
             />
             <div className="absolute inset-0 bg-slate-200/75 dark:bg-slate-800 rounded-full transition-colors duration-300 group">
-              <span className='absolute -left-[5.5rem] -top-1 md:top-7 md:-left-7 w-20 md:w-24 text-xs md:text-sm leading-3 md:leading-4 text-center  md:opacity-0 md:group-hover:opacity-100 md:-translate-y-4 group-hover:translate-y-0 tranasition-all duration-300 delay-500 px-1 py-1 rounded-md border'>
+              <span className='absolute -left-[5.5rem] -top-1 md:top-7 md:-left-7 w-20 md:w-24 text-xs md:text-sm leading-3 md:leading-4 text-center  md:opacity-0 md:group-hover:opacity-100 md:-translate-y-4 group-hover:translate-y-0 tranasition-all duration-300 delay-500 py-1 rounded-md md:border '>
                 <span className={`text-gray-600 dark:text-gray-200 ${colorsSmooth}`}>
                   Wyłącz/włącz animacje
                 </span>
@@ -214,13 +226,12 @@ function Index() {
             )}
             <ul
               className={`flex flex-col md:flex-row gap-5 py-3 pr-1 ${colorsSmooth}`}>
-              <ListEl mainTask="Wyświetl info o sali" taskDesc="Podaj numer sali, dzień i godzinę, aby sprawdzić, jakie zajęcia się odbędą." index={0} />
-              <ListEl mainTask="Znajdź wykładowcę" taskDesc="Podaj imię, dzień i godzinę, aby zobaczyć, gdzie dany wykładowca ma zajęcia." index={1} />
-              <ListEl mainTask="Sprawdź plan zajęć" taskDesc="Wybierz kierunek i dzień, aby zobaczyć listę przyszłych zajęć." index={2} />
+              <ListEl icon={MdFindInPage} mainTask="Wyświetl info o sali" taskDesc="Podaj numer sali, dzień i godzinę, aby sprawdzić, jakie zajęcia się odbędą." index={0} />
+              <ListEl icon={FaPersonCircleQuestion} mainTask="Znajdź wykładowcę" taskDesc="Podaj imię, dzień i godzinę, aby zobaczyć, gdzie dany wykładowca ma zajęcia." index={1} />
+              <ListEl icon={FaCalendarDays} mainTask="Sprawdź plan zajęć" taskDesc="Wybierz kierunek i dzień, aby zobaczyć listę przyszłych zajęć." index={2} />
             </ul>
           </div>
           {animationOn ? (
-
             <motion.span
               initial={{
                 opacity: 0
@@ -232,14 +243,14 @@ function Index() {
                 duration: 2,
                 ease: 'linear'
               }}
-              className="absolute bottom-3 md:bottom-2 text-gray-500">
+              className="absolute bottom-3 md:bottom-3 text-gray-500">
               {isLoading && "Pobieranie danych..."}
               {!isLoading && firstTryFetchingData && "Dane pobrano pomyślnie."}
               {!isLoading && firstTryFetchingData === null && "Nie udało się pobrać danych."}
             </motion.span>
           ) : (
             <span
-              className="absolute bottom-3 md:bottom-2 text-gray-500">
+              className="absolute bottom-3 md:bottom-3 text-gray-500">
               {isLoading && "Pobieranie danych..."}
               {!isLoading && firstTryFetchingData && "Dane pobrano pomyślnie."}
               {!isLoading && firstTryFetchingData === null && "Nie udało się pobrać danych."}
