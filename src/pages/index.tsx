@@ -243,14 +243,14 @@ function Index() {
                 duration: 2,
                 ease: 'linear'
               }}
-              className="absolute bottom-3 md:bottom-3 text-gray-500">
+              className="absolute -bottom-0.5 md:bottom-1 text-gray-500 opacity-50">
               {isLoading && "Pobieranie danych..."}
               {!isLoading && firstTryFetchingData && "Dane pobrano pomyślnie."}
               {!isLoading && firstTryFetchingData === null && "Nie udało się pobrać danych."}
             </motion.span>
           ) : (
             <span
-              className="absolute bottom-3 md:bottom-3 text-gray-500">
+              className="absolute -bottom-0.5 md:bottom-1 text-gray-500 opacity-50">
               {isLoading && "Pobieranie danych..."}
               {!isLoading && firstTryFetchingData && "Dane pobrano pomyślnie."}
               {!isLoading && firstTryFetchingData === null && "Nie udało się pobrać danych."}

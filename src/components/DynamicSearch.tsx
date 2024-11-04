@@ -4,6 +4,8 @@ import Head from 'next/head';
 import ErrorModal from '@/pages/ErrorModal';
 import { useDev } from '@/contexts/DevContext';
 import { MajorTypes, LessonTypes } from '@/types/type';
+import { FaAngleLeft } from "react-icons/fa6";
+
 
 function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {
     returnToMenu: () => void;
@@ -260,20 +262,26 @@ function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {
             <div className="h-[91vh] md:h-[92vh] flex items-center justify-center">
                 <ul className={`relative -top-9 sm:top-0 h-[78%] flex items-center justify-center flex-col gap-2 md:gap-4 overflow-y-auto overflow-x-hidden px-2 pb-1.5 custom-scrollbar ${isDev && "border border-red-500"}`}>
                     {results.map((LessonTypes, index) => (
-                        <li key={index} className={`w-80 sm:w-96 xl:w-[28rem] 2xl:w-[30rem] text-center text-black dark:text-white rounded-lg flex items-center flex-col md:gap-1 xl:gap-1.5 py-3 mr-1 text-2xl xl:text-3xl 2xl:text-4xl shadow-[0px_3px_8px_2px_rgb(100,100,100)] dark:shadow-[1px_2px_8px_1px_rgb(10,10,10)] transition-all hover:scale-[1.02] duration-100 ${isDev && "border border-blue-500"}`}>
-                            <span>{dayInput}
+                        <li key={index} className={`w-80 sm:w-96 xl:w-[28rem] 2xl:w-[30rem] text-center text-black dark:text-white rounded-lg flex items-center flex-col md:gap-1 xl:gap-1.5 px-5 py-3 mr-1 text-2xl xl:text-3xl 2xl:text-4xl shadow-[0px_3px_8px_2px_rgb(100,100,100)] dark:shadow-[1px_2px_8px_1px_rgb(10,10,10)] transition-all hover:scale-[1.02] duration-100 ${isDev && "border border-blue-500"}`}>
+                            <div className='w-full flex justify-between'>
+                                <span>
+                                    {dayInput}
+                                </span>
                                 <span className={`${searchType == "place" && "font-bold"}`}>
                                     {LessonTypes.place}
                                 </span>
-                            </span>
-                            <span className={`px-10 ${searchType == "teacher" && "font-bold"} `}>{LessonTypes.teacher}</span>
-                            <span>
-                                {formatTime(LessonTypes.start_minute)} - {formatTime(LessonTypes.end_minute)}
-                            </span>
-                            <span>{LessonTypes.subject}</span>
-                            <span className='px-10'>
-                                {LessonTypes.type} {LessonTypes.name}
-                            </span>
+                            </div>
+                            <p className={`${searchType == "teacher" && "font-bold"}`}>{LessonTypes.teacher}
+                                <p className='font-bold'>{LessonTypes.subject}</p>
+                            </p>
+                            <div className='w-full '>
+                                <p>
+                                    {LessonTypes.type} {LessonTypes.name}
+                                </p>
+                                <p>
+                                    {formatTime(LessonTypes.start_minute)} - {formatTime(LessonTypes.end_minute)}
+                                </p>
+                            </div>
                         </li>
                     ))}
                 </ul>
@@ -286,17 +294,16 @@ function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {
                 <title>{searchType == "place" ? "Kto ma w ...?" : "Gdzie jest ...?"}</title>
             </Head>
             {showResults && results.length > 0 && (
-                <button className='relative top-2 sm:top-1 text-black dark:text-white border-2 border-black dark:border-white rounded-md text-2xl 
-                md:text-lg lg:text-3xl 2xl:text-5xl px-4 md:px-3 xl:py-1 mt-2 ml-2 hover:scale-105 active:scale-95 transition-transform duration-150 ' onClick={goBack}>
-                    Wróć
+                <button className='relative top-1 sm:top-1 text-black dark:text-white text-3xl 2xl:text-5xl p-1 mt-2 ml-2 hover:scale-105 active:scale-95 transition-transform duration-150' onClick={goBack}>
+                    <FaAngleLeft />
                 </button>
             )}
             {!showResults && (
                 <div className={`relative h-full flex items-center justify-center flex-col gap-5 md:gap-10 ${isDev && "border border-yellow-500"}`}>
                     <button
                         onClick={returnToMenu}
-                        className={`absolute -top-1 left-2 text-2xl md:text-3xl lg:text-4xl mt-4 border-2 border-gray-400 text-black dark:text-white dark:shadow-gray-600 py-1 px-5 rounded-lg hover:scale-105 active:scale-95 focus:scale-105 transition-transform duration-150 ${colorsSmooth}`}>
-                        Cofnij
+                        className={`absolute -top-1 left-2 text-3xl lg:text-4xl mt-4 text-black dark:text-white dark:shadow-gray-600 p-1 hover:scale-105 active:scale-95 focus:scale-105 transition-transform duration-150 ${colorsSmooth}`}>
+                        <FaAngleLeft />
                     </button>
                     <div
                         className={`bg-transparent shadow-[1px_2px_10px_1px_rgb(125,125,125)] dark:shadow-[1px_2px_8px_1px_rgb(10,10,10)] dark:bg-gray-900 rounded-xl py-7 px-4 md:px-7 flex items-center justify-center flex-col gap-2 ${colorsSmooth} duration-700 ${isDev && "border border-red-500"}`}>

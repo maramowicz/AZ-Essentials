@@ -32,7 +32,7 @@ body {
 
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #6b7280 #111;
+  scrollbar-color: #6b7280 transparent;
 }
 
 .custom-scrollbar::-webkit-scrollbar {

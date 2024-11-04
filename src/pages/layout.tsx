@@ -32,13 +32,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     className="absolute bottom-2 right-3"
                 >
                     {currentTheme === 'dark' ? (
-                        <GoSun className="h-12 md:h-14 lg:h-16 xl:h-20 w-auto px-1 py-1 hover:text-yellow-200 transition-colors duration-500" />
+                        <GoSun className="h-12 md:h-14 lg:h-16 w-auto px-1 py-1 hover:text-yellow-200 transition-colors duration-500" />
                     ) : (
-                        <GoMoon className="h-12 md:h-14 lg:h-16 xl:h-20 w-auto px-1 py-1 text-black hover:text-blue-800 transition-colors duration-500" />
+                        <GoMoon className="h-12 md:h-14 lg:h-16 w-auto px-1 py-1 text-black hover:text-blue-800 transition-colors duration-500" />
                     )}
                 </button>
                 {isDev && (
-                    <div className='absolute top-2 right-2 w-2 h-2 md:w-4 md:h-4 bg-red-500/25 rounded-full' />
+                    <div className='absolute top-2 right-2 w-2 h-2 md:w-4 md:h-4 bg-red-300/25 dark:bg-red-900/25 rounded-full transition-colors duration-1000 delay-200' />
                 )}
             </footer>
 
