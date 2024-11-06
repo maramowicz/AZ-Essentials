@@ -1,6 +1,5 @@
 // Todo: Wybierz dzisiejszy dzień i może godzine domyślnie
 import React, { useState, useEffect } from 'react';
-import Head from 'next/head';
 import ErrorModal from '@/pages/ErrorModal';
 import { useDev } from '@/contexts/DevContext';
 import { MajorTypes, LessonTypes } from '@/types/type';
@@ -290,9 +289,6 @@ function DynamicSearch({ returnToMenu, searchType, firstTryFetchingData }: {
     }
     return (
         <div className={`h-[100vh] bg-white dark:bg-gray-900 transition-colors duration-700 overflow-y-hidden ${isDev && "border"}`}>
-            <Head>
-                <title>{searchType == "place" ? "Kto ma w ...?" : "Gdzie jest ...?"}</title>
-            </Head>
             {showResults && results.length > 0 && (
                 <button className='relative top-1 sm:top-1 text-black dark:text-white text-3xl 2xl:text-5xl p-1 mt-2 ml-2 hover:scale-105 active:scale-95 transition-transform duration-150' onClick={goBack}>
                     <FaAngleLeft />

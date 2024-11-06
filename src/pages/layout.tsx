@@ -1,12 +1,20 @@
 import { useTheme } from 'next-themes';
-import { GoMoon, GoSun } from 'react-icons/go';
 import { useDev } from '@/contexts/DevContext';
 import Head from 'next/head';
+import { GoMoon, GoSun } from '@/assets/icons'
+import { useEffect } from 'react';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const { isDev, setIsDev } = useDev();
     const { systemTheme, theme, setTheme } = useTheme();
     const currentTheme = theme === 'system' ? systemTheme : theme;
+
+    useEffect(() => {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setTheme(prefersDark ? "dark" : "light");
+
+    }, [])
+
     return (
         <section>
             <Head>
@@ -16,6 +24,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
                 <meta name="apple-mobile-web-app-title" content="MyWebSite" />
                 <link rel="manifest" href="/favicon/site.webmanifest" />
+                <title>AZ Essentials</title>
             </Head>
             {children}
             <footer>

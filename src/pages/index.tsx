@@ -1,40 +1,22 @@
-import Head from "next/head";
+// Todo: animacje tylko przy 1 otworzeniu strony
 import DynamicSearch from "@/components/DynamicSearch";
 import { useEffect, useState } from "react";
 import { motion } from 'framer-motion';
 import MajorSchedule from "@/components/MajorSchedule";
 import { MajorTypes } from '@/types/type';
-// Sala
-// import { GoProjectRoadmap } from "react-icons/go";
-// import { FaBarsStaggered } from "react-icons/fa6";
-import { MdFindInPage } from "react-icons/md";
-// import { RiPhoneFindFill } from "react-icons/ri";
-// Wykładowca
-// import { GoMortarBoard } from "react-icons/go";
-// import { FaImagePortrait } from "react-icons/fa6";
-import { FaPersonCircleQuestion } from "react-icons/fa6";
-// Plan
-import { FaCalendarDays } from "react-icons/fa6";
+import { FaPersonCircleQuestion, FaCalendarDays, FaDoorOpen } from '@/assets/icons'
 import { IconType } from "react-icons";
 
 function Index() {
   const [chosenAction, setChosenAction] = useState<number | null>(null);
   const [firstTryFetchingData, setFirstTryFetchingData] = useState<MajorTypes[] | null>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [animationOn, setAnimationOn] = useState(true)
+  const [animationOn, setAnimationOn] = useState<boolean>(true)
 
-  useEffect(() => {
-    const storedPreference = localStorage.getItem("az-essentials");
-    if (storedPreference !== null) {
-      setAnimationOn(storedPreference === 'true');
-    }
-  }, []);
-
-  function updateAnimationPreference() {
-    const newAnimationPreference = !animationOn;
-    setAnimationOn(newAnimationPreference);
-    localStorage.setItem("az-essentials", String(newAnimationPreference));
-  }
+  const handleAnimationEnd = () => {
+    setAnimationOn(false);
+    sessionStorage.setItem("azAnim", 'false');
+  };
 
   const colorsSmooth = "transition-colors duration-100";
 
@@ -107,6 +89,7 @@ function Index() {
               ease: "easeInOut",
               delay: index / 2 + 1.3
             }}
+            onAnimationComplete={() => index == 2 && handleAnimationEnd()}
             onClick={() => setChosenAction(index)}
             title={taskDesc}
             className={`relative md:w-52 lg:w-72 flex items-center flex-row md:flex-col gap-2 text-center px-4 py-1.5 md:py-5 rounded-full md:rounded-xl transition-shadow duration-1000 delay-500 dark:duration-1000 dark:delay-100 shadow-[0px_3px_3px_1px_rgb(225,225,225)] dark:shadow-[0px_3px_3px_1px_rgb(10,10,10)] hover:bg-gray-200/75 dark:hover:bg-gray-800/50 cursor-pointer ${colorsSmooth}`}
@@ -147,30 +130,6 @@ function Index() {
       {chosenAction == null &&
         <div className="h-[92vh] sm:h-screen flex items-center justify-center flex-col gap-16 md:gap-24 lg:gap-32 overflow-hidden">
           {/* Todo: Pokaż za pomocą procentów poprawność danych */}
-          <Head>
-            <title>AZ Essentials</title>
-          </Head>
-          <label className="absolute top-3 right-5 inline-block h-6 w-14 md:border-2 md:border-gray-200 md:dark:border-gray-700 rounded-full" htmlFor="checkbox">
-            <input
-              className='hidden'
-              type="checkbox"
-              id="checkbox"
-              onChange={() => updateAnimationPreference()}
-            />
-            <div className="absolute inset-0 bg-slate-200/75 dark:bg-slate-800 rounded-full transition-colors duration-300 group">
-              <span className='absolute -left-[5.5rem] -top-1 md:top-7 md:-left-7 w-20 md:w-24 text-xs md:text-sm leading-3 md:leading-4 text-center  md:opacity-0 md:group-hover:opacity-100 md:-translate-y-4 group-hover:translate-y-0 tranasition-all duration-300 delay-500 py-1 rounded-md md:border '>
-                <span className={`text-gray-600 dark:text-gray-200 ${colorsSmooth}`}>
-                  Wyłącz/włącz animacje
-                </span>
-              </span>
-              <motion.div
-                className="absolute bottom-1/2 translate-y-1/2 h-4 w-4 bg-white dark:bg-slate-900 rounded-full shadow-md dark:shadow-sm dark:shadow-black"
-                initial={{ left: '4px' }}
-                animate={{ left: animationOn === true ? 'calc(100% - 20px)' : '4px' }}
-                transition={{ type: 'spring', stiffness: 150 }}
-              />
-            </div>
-          </label>
           {animationOn ? (
             <motion.div
               initial={{
@@ -226,7 +185,7 @@ function Index() {
             )}
             <ul
               className={`flex flex-col md:flex-row gap-5 py-3 pr-1 ${colorsSmooth}`}>
-              <ListEl icon={MdFindInPage} mainTask="Wyświetl info o sali" taskDesc="Podaj numer sali, dzień i godzinę, aby sprawdzić, jakie zajęcia się odbędą." index={0} />
+              <ListEl icon={FaDoorOpen} mainTask="Wyświetl info o sali" taskDesc="Podaj numer sali, dzień i godzinę, aby sprawdzić, jakie zajęcia się odbędą." index={0} />
               <ListEl icon={FaPersonCircleQuestion} mainTask="Znajdź wykładowcę" taskDesc="Podaj imię, dzień i godzinę, aby zobaczyć, gdzie dany wykładowca ma zajęcia." index={1} />
               <ListEl icon={FaCalendarDays} mainTask="Sprawdź plan zajęć" taskDesc="Wybierz kierunek i dzień, aby zobaczyć listę przyszłych zajęć." index={2} />
             </ul>
@@ -237,7 +196,7 @@ function Index() {
                 opacity: 0
               }}
               animate={{
-                opacity: isLoading ? [0, 1, 0, 1] : 1
+                opacity: isLoading ? [0, 1, 0, 0.75] : 0.5
               }}
               transition={{
                 duration: 2,

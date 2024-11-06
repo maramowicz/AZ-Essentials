@@ -1,39 +1,29 @@
+// Todo: daj możliwość wpisania albo w innej formie pokazania najbliższych lekcji
 import { useDev } from '@/contexts/DevContext';
 import ErrorModal from '@/pages/ErrorModal';
 import React, { useCallback, useEffect, useState } from 'react';
 import { MajorTypes } from '@/types/type';
-import Head from 'next/head';
-import { FaAngleDown } from "react-icons/fa6";
-import { FaAngleUp } from "react-icons/fa6";
-import { FaAngleLeft } from "react-icons/fa6";
-// My
-import { HiCommandLine } from "react-icons/hi2";
-// Fizjoterapia
-import { FaDumbbell } from "react-icons/fa6";
-// Pielegniarstwo
-import { GiAngelOutfit } from "react-icons/gi";
-// import { FaBriefcaseMedical } from "react-icons/fa6";
-// Położnictwo
-import { FaUserNurse } from "react-icons/fa6";
-// import { FaBaby } from "react-icons/fa6";
-// Fir
-import { FaCoins } from "react-icons/fa";
-// Pedagogika
-import { FaChalkboardTeacher } from "react-icons/fa";
-// Prawo
-import { GoLaw } from "react-icons/go";
-// Bezpieczeństwo narodowe
-import { FaShieldAlt } from "react-icons/fa";
-// Rynek sztuki 
-import { FaImages } from "react-icons/fa";
-// Ratownictwo medyczne
-import { FaAmbulance } from "react-icons/fa";
-// Mechanika i budowa maszyn
-import { MdEngineering } from "react-icons/md";
-// Turystyka i rekreacja
-import { FaMapMarkedAlt } from "react-icons/fa";
-// Logistycy
-import { FaToilet } from "react-icons/fa6";
+
+import {
+    FaAngleDown,
+    FaAngleUp,
+    FaAngleLeft,
+    HiCommandLine,
+    FaDumbbell,
+    GiAngelOutfit,
+    FaUserNurse,
+    FaCoins,
+    FaChalkboardTeacher,
+    GoLaw,
+    FaShieldAlt,
+    FaImages,
+    FaAmbulance,
+    MdEngineering,
+    FaMapMarkedAlt,
+    FaToilet,
+    FaBookOpen,
+    IoFilter
+} from '@/assets/icons';
 
 interface MajorScheduleProps {
     firstTryFetchingData: MajorTypes[] | null | undefined;
@@ -47,21 +37,30 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
     const [searchedMajor, setSearchedMajor] = useState<string>("");
     const [chosenScheduleData, setChosenScheduleData] = useState<MajorTypes | null>(null);
     const [filteredMajors, setFilteredMajors] = useState<MajorTypes[] | undefined>(data);
+    const [devWidth, setDevWidth] = useState<number>(0)
+    const [showYearSelection, setShowYearSelection] = useState<boolean>(false)
     const { isDev } = useDev();
 
     const daysOfWeek = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', "Sobota", "Niedziela"];
-    const [showDays, setShowDays] = useState<boolean[]>(Array(daysOfWeek.length).fill(false));
+    const [showDays, setShowDays] = useState<boolean[]>(() => {
+        const initialShowDays = Array(daysOfWeek.length).fill(false);
+        if (new Date().getDay() - 1 >= 0) {
+            initialShowDays[new Date().getDay() - 1] = true;
+        }
+        return initialShowDays;
+    });
 
     const colorsSmooth = "transition-colors duration-75";
-    const shadowSmooth = "transition-shadow duration-[1.5s] delay-700 dark:duration-1000 dark:delay-100"
+    const shadowSmooth = "transition-shadow duration-[1.25s] delay-300 dark:duration-1000 dark:delay-100"
     const devBorder = "border border-black dark:border-white";
-    const yearSelectionEl = "px-3 py-0.5 text-lg min-[480px]:px-3 min-[480px]:py-0.5 min-[480px]:text-base 2xl:text-2xl rounded-md cursor-pointer bg-gray-300 dark:bg-gray-700 transition-colors duration-100";
+    const yearSelectionEl = "px-3 py-0.5 min-[480px]:px-3 min-[480px]:py-0.5  text-lg min-[480px]:text-base rounded-md cursor-pointer bg-gray-300 dark:bg-gray-700 transition-colors duration-100";
     const interStyles = "md:hover:scale-105 md:active:scale-95 transition-all duration-75"
     const majorYears = ["1", "2", "3"];
 
-
     useEffect(() => {
         console.clear();
+        setDevWidth(window.innerWidth)
+
         if (firstTryFetchingData) {
             if (isDev) console.log("Dane istnieją, nie trzeba ich pobierać");
             if (isDev) console.log(firstTryFetchingData);
@@ -83,7 +82,7 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                     setErrorMessage("Błąd przy pobieraniu danych.");
                     setTimeout(() => {
                         returnToMenu();
-                    }, 2000);
+                    }, 1000);
                 }
             };
             console.clear();
@@ -100,23 +99,15 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
 
         return (
             <div className='w-screen h-screen'>
-                <div className={`flex items-center flex-col bg-slate-800`}>
-                    <span className='w-40 text-center'>
-                        {chosenScheduleData.name} {chosenScheduleData.groups[0]}
-                    </span>
-                    <span>
-                        {chosenScheduleData.type}
-                    </span>
-                </div>
-                <ul className='w-full h-full grid content-start grid-cols-1 md:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6 gap-1 pb-44 md:pb-0 overflow-y-auto custom-scrollbar'>
+                <ul className='w-full h-full grid content-start grid-cols-1 md:grid-cols-3 lg:grid-cols-5 2xl:grid-cols-6 gap-1 md:pb-0 overflow-y-hidden px-2 pt-1'>
                     {
                         chosenScheduleData.plan.map((day, index) => {
                             if (typeof day == "string" || day.length == 0) return
                             if (isDev) console.log(daysOfWeek[index], day)
                             return (
-                                <li key={index} className='w-full flex flex-col bg-gray-900'>
-                                    <div className='flex px-2 border'>
-                                        <label htmlFor={String(index)} className='w-full text-xl py-1 cursor-pointer'>
+                                <li key={index} className={`w-full flex flex-col gap-1 bg-transparent transition-colors duration-[2s] overflow-y-auto px-2 pt-1`}>
+                                    <div className={`flex px-2 text-black dark:text-white border dark:border-gray-950 rounded-lg py-1 shadow-[0px_1px_3px_1px_rgb(150,150,150)] dark:shadow-[0px_1px_3px_1px_rgb(0,0,0)] ${colorsSmooth}`}>
+                                        <label htmlFor={String(index)} className='w-full text-xl py-1 cursor-pointer '>
                                             {daysOfWeek[index]}
                                         </label>
                                         <button id={String(index)} onClick={() => {
@@ -127,24 +118,23 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                                             {showDays[index] ? <FaAngleUp className='text-4xl' /> : <FaAngleDown className='text-4xl' />}
                                         </button>
                                     </div>
-                                    {showDays[index] && (
-                                        day.map((lesson, index) => {
-                                            if (isDev) console.log(lesson);
-                                            return (
-                                                <div key={index} className='h-40 flex items-center justify-center flex-col bg-gray-700 py-2 border-b-2 px-2'>
-                                                    <p className='w-52 text-center'>
-                                                        {lesson.type} {lesson.name}
-                                                    </p>
-                                                    <p>{lesson.teacher}</p>
-                                                    <span>{lesson.subject}</span>
-                                                    <div className='w-full flex justify-between'>
-                                                        <span>{lesson.place}</span>
+                                    <div className='max-h-[77%] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-2 md:gap-3 md:overflow-y-auto custom-scrollbar overflow-x-hidden px-2 pb-1 md:pb-3'>
+                                        {showDays[index] && (
+                                            day.map((lesson, index) => {
+                                                if (isDev) console.log(lesson);
+                                                return (
+                                                    <div key={index} className={`min-h-40 flex items-center text-center justify-center flex-col shadow-[0px_2px_10px_1px_rgb(200,200,200)] dark:shadow-[0px_2px_10px_1px_rgb(10,10,10)] rounded-md  text-black dark:text-white py-2 px-2 ${colorsSmooth}`}>
+                                                        <p className='w-52 text-center'>
+                                                            {lesson.type} {lesson.name.length > 60 ? lesson.name.slice(0, 50) + "..." : lesson.name}
+                                                        </p>
+                                                        <p>{lesson.subject}</p>
+                                                        <p>{lesson.teacher}</p>
                                                         <span>{formatTime(lesson.start_minute)}-{formatTime(lesson.end_minute)}</span>
                                                     </div>
-                                                </div>
-                                            )
-                                        })
-                                    )}
+                                                )
+                                            })
+                                        )}
+                                    </div>
                                 </li>
                             )
                         })
@@ -172,9 +162,9 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
     }
 
     function getMajorIcon(majorName: string) {
-        switch (majorName) {
+        switch (majorName.trim()) {
             case "Pielęgniarstwo":
-                return <GiAngelOutfit className='text-black dark:text-yellow-100' />
+                return <GiAngelOutfit />
             case "Rynek sztuki i zarządzanie w kulturze":
                 return <FaImages />
             case "Fizjoterapia":
@@ -199,12 +189,15 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
                 return <FaShieldAlt />
             case "Logistyka":
                 return <FaToilet />
+            case "Filologia angielska":
+                return <FaBookOpen />
             default:
                 break;
         }
     }
 
     function getMajors(majors: MajorTypes[]) {
+        console.log(devWidth);
         // Todo: Sortowanie, czyli na początku wyświetlą się 1 roki
         return majors.map((major, index) => {
             if (major.name && major.year && major.type && (selectedYear === null || major.year == selectedYear)) {
@@ -241,68 +234,83 @@ const MajorSchedule: React.FC<MajorScheduleProps> = ({ firstTryFetchingData, ret
     }, [filteredMajors, selectedYear, data]);
 
     return (
-        <>
-            <Head>
-                <title>Plany zajęć</title>
-            </Head>
-            <div className={`relative h-[93vh] md:h-screen flex items-center flex-col overflow-hidden ${isDev && devBorder}`}>
-                <div className={`relative w-screen flex items-center py-3 px-2 shadow-[0px_1px_10px_1px_rgb(225,225,225)] dark:shadow-[0px_1px_10px_1px_rgb(10,10,10)] ${shadowSmooth}`}>
-                    {!chosenScheduleData ? (
+        <div className={`relative h-[93vh] flex items-center flex-col overflow-hidden ${isDev && devBorder}`}>
+            <div className={`relative w-screen flex items-center py-3 px-2 shadow-[0px_1px_10px_1px_rgb(225,225,225)] dark:shadow-[0px_1px_10px_1px_rgb(10,10,10)] ${shadowSmooth}`}>
+                {!chosenScheduleData ? (
+                    <div className='relative w-full flex items-center gap-5 pr-5 md:pr-2'>
                         <button
-                            onClick={returnToMenu}
-                            className={`text-2xl md:text-3xl lg:text-4xl text-black dark:text-white dark:shadow-gray-600 hover:scale-105 active:scale-95 focus:scale-105 transition-transform duration-150 ${colorsSmooth}`}>
+                            onClick={() => returnToMenu()}
+                            className={`text-3xl md:text-4xl lg:text-4xl text-black dark:text-white dark:shadow-gray-600 hover:scale-105 active:scale-95 focus:scale-105 transition-transform duration-150 ${colorsSmooth}`}>
                             <FaAngleLeft />
                         </button>
-                    ) : (
+                        <div className='w-full flex justify-center'>
+                            {/* Todo: Dodaj liste proponowanych */}
+                            <input value={searchedMajor} onChange={(e) => fetchSearchedMajor(e.target.value)} className={`w-3/4 pl-2 py-1.5 mt-2 mb-1.5 text-xl md:text-lg 2xl:text-2xl bg-transparent border-2 border-gray-700 rounded-lg outline-none focus:border-gray-200 dark:focus:border-gray-400 shadow-[inset_1px_1px_6px_1px_rgb(225,225,225)] dark:shadow-[inset_1px_1px_6px_1px_rgb(10,10,10)] text-black dark:text-white ${shadowSmooth}`} type="text" placeholder='Wpisz kierunek' />
+                        </div>
+                        <>
+                            <IoFilter onClick={() => setShowYearSelection(!showYearSelection)} className={`text-5xl text-black dark:text-white transition-colors duration-100 cursor-pointer ${interStyles}`} />
+                            {showYearSelection && (
+                                <div className={`absolute right-4 top-14 flex flex-col items-center bg-white dark:bg-gray-900 z-10 p-2 rounded-xl transition-colors duration-[2s]`}>
+                                    <span className={`text-2xl sm:text-3xl mb-1 text-black dark:text-white ${colorsSmooth}`}>Wybierz rok</span>
+                                    <ul className='flex flex-col gap-2'>
+                                        <li
+                                            onClick={() => { setSelectedYear(null); setTimeout(() => { setShowYearSelection(false) }, 100) }}
+                                            className={`${yearSelectionEl} ${interStyles} 
+                                            ${selectedYear == null ? "bg-gray-600 dark:bg-white text-white dark:text-black" : "text-black dark:text-white "}`}>
+                                            <span className={`${selectedYear == null ? "text-white dark:text-black" : "text-black dark:text-white "} text-lg sm:text-2xl`}>
+                                                Wszystkie
+                                            </span>
+                                        </li>
+                                        {majorYears.map((year, index) => (
+                                            <li
+                                                onClick={() => { setSelectedYear(year); setTimeout(() => { setShowYearSelection(false) }, 100) }}
+                                                key={index}
+                                                className={`${yearSelectionEl} ${interStyles} text-center 
+                                            ${selectedYear == year && "bg-gray-600 dark:bg-white"} ${colorsSmooth}`}>
+                                                <span className={`${selectedYear == year ? "text-white dark:text-black " : "text-black dark:text-white"} ${colorsSmooth}`}>
+                                                    Rok {year}
+                                                </span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+                        </>
+                    </div>
+                ) : (
+                    <div className='w-full flex items-center justify-center'>
+                        {/* ; setShowDays(Array(daysOfWeek.length).fill(false))  */}
                         <button
                             onClick={() => setChosenScheduleData(null)}
                             className={`text-2xl md:text-3xl lg:text-4xl text-black dark:text-white  hover:scale-105 active:scale-95 focus:scale-105 transition-transform duration-150 ${colorsSmooth}`}>
                             <FaAngleLeft />
                         </button>
-                    )}
-                </div>
-                {!chosenScheduleData &&
-                    <div className='w-full sm:h-full flex items-center sm:justify-center flex-col overflow-y-hidden sm:px-3'>
-                        <div className={`w-full h-full sm:w-fit min-[1300px]:w-[90vw] flex items-center justify-center flex-col sm:rounded-lg overflow-hidden sm:mb-1 px-2 ${isDev && devBorder}`}>
-                            <div className={`w-screen sm:w-full flex flex-col-reverse sm:flex-row items-center justify-between py-1 px-2 shadow-[0px_5px_5px_1px_rgb(200,200,200)] sm:shadow-[0px_2px_5px_1px_rgb(200,200,200)] dark:shadow-[0px_4px_5px_1px_rgb(10,10,10)] ${shadowSmooth} sm:rounded-md`}>
-                                {/* Todo: Dodaj liste proponowanych */}
-                                <input value={searchedMajor} onChange={(e) => fetchSearchedMajor(e.target.value)} className={`w-[19rem] md:w-72 pl-2 py-1.5 mt-2 mb-1.5 text-xl md:text-lg 2xl:text-2xl bg-transparent border-2 border-gray-700 rounded-lg outline-none focus:border-gray-200 dark:focus:border-gray-400 shadow-[inset_1px_1px_6px_1px_rgb(225,225,225)] dark:shadow-[inset_1px_1px_6px_1px_rgb(10,10,10)] text-black dark:text-white ${shadowSmooth}`} type="text" placeholder='Wpisz kierunek' />
-                                <div className='flex items-center gap-2 md:text-xl pt-1 sm:pt-0'>
-                                    <span className={`text-2xl min-[480px]:text-xl xl:text-2xl text-black dark:text-white transition-colors duration-200`}>Rok:</span>
-                                    <ul className='flex gap-2'>
-                                        <li
-                                            onClick={() => setSelectedYear(null)}
-                                            className={`${yearSelectionEl} ${interStyles} 
-                                                ${selectedYear == null ? "bg-gray-600 dark:bg-white text-white dark:text-black" : "text-black dark:text-white"} ${colorsSmooth}`}>
-                                            Wszysktie
-                                        </li>
-                                        {majorYears.map((year, index) => (
-                                            <li
-                                                onClick={() => setSelectedYear(year)}
-                                                key={index}
-                                                className={`${yearSelectionEl} ${interStyles} 
-                                                    ${selectedYear == year ? "bg-gray-600 dark:bg-white text-white dark:text-black" : "text-black dark:text-white"} ${colorsSmooth}`}>
-                                                {year}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </div>
-                            {/* min-[1893px]:w-fit */}
-                            <ul className={`w-full h-screen grid grid-cols-2 min-[430px]:grid-cols-2 sm:grid-cols-3 min-[886px]:grid-cols-4 min-[1060px]:grid-cols-5 place-items-center content-start gap-2 md:gap-4 px-2 mt-1 md:px-2 lg:px-3 py-2 custom-scrollbar overflow-y-auto overflow-x-hidden text-sm xl:text-base min-[1300px]:text-xl ${isDev && devBorder}`}>
-                                {showMajors()}
-                            </ul>
+                        <div className={`w-full flex items-center justify-center gap-3 text-xl`}>
+                            <span className={`text-center text-black dark:text-white ${colorsSmooth}`}>
+                                {chosenScheduleData.name} {" "}
+                                {chosenScheduleData.groups[0]}
+                            </span>
                         </div>
-                        {errorMessage && (
-                            <ErrorModal message={errorMessage} onClose={() => setErrorMessage(null)} />
-                        )}
                     </div>
-                }
-                {isDev && chosenScheduleData && (
-                    renderChosenSchedule()
                 )}
             </div>
-        </>
+            {!chosenScheduleData &&
+                <div className='w-full sm:h-full flex items-center justify-center flex-col overflow-y-hidden sm:px-3'>
+                    <div className={`w-full min-[1300px]:w-[90vw] h-full flex items-center justify-center flex-col sm:rounded-lg overflow-hidden sm:mb-1 px-2 ${isDev && devBorder}`}>
+                        {/* min-[1893px]:w-fit */}
+                        <ul className={`w-full h-screen grid grid-cols-2 min-[430px]:grid-cols-2 sm:grid-cols-3 min-[886px]:grid-cols-4 min-[1060px]:grid-cols-5 place-items-center content-start gap-2 md:gap-4 px-2 mt-1 md:px-2 lg:px-3 py-2 custom-scrollbar overflow-y-auto overflow-x-hidden text-sm xl:text-base min-[1300px]:text-xl ${isDev && devBorder}`}>
+                            {showMajors()}
+                        </ul>
+                    </div>
+                    {errorMessage && (
+                        <ErrorModal message={errorMessage} onClose={() => setErrorMessage(null)} />
+                    )}
+                </div>
+            }
+            {chosenScheduleData && (
+                renderChosenSchedule()
+            )}
+        </div>
     );
 };
 
