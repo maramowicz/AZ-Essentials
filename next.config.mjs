@@ -1,13 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  compress: false,       // Wyłącza kompresję HTTP
-  swcMinify: false,      // Wyłącza minifikację kodu
+  compress: false, // Wyłącza kompresję
 
   webpack(config) {
+    // Znajdź regułę dla plików .svg
     const fileLoaderRule = config.module.rules.find((rule) =>
       rule.test?.test?.(".svg")
     );
 
+    // Dodaj nowe reguły dla plików SVG
     config.module.rules.push(
       {
         ...fileLoaderRule,
@@ -38,7 +39,11 @@ const nextConfig = {
       }
     );
 
+    // Wyklucz SVG z domyślnego loadera
     fileLoaderRule.exclude = /\.svg$/i;
+
+    // Wyłącz minifikację
+    config.optimization.minimize = false;
 
     return config;
   },
