@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  compress: false,       // Wyłącza kompresję HTTP
+  swcMinify: false,      // Wyłącza minifikację kodu
+
   webpack(config) {
     const fileLoaderRule = config.module.rules.find((rule) =>
       rule.test?.test?.(".svg")
